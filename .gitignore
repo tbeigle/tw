@@ -1,0 +1,4 @@
+.errordocs/*
+error_log
+wp-config.php
+
