@@ -1,0 +1,176 @@
+@charset "UTF-8";
+
+
+
+html, body, div, section, article, aside, header, hgroup, footer, nav, h1, h2, h3, h4, h5, h6, p, blockquote, address, time, span, em, strong, img, ol, ul, li, figure, canvas, video, a {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+a {
+	text-decoration: none;
+}
+
+/*html5 display rule*/
+article, aside, canvas, details, figcaption, figure, footer, header, hgroup, nav, menu, nav, section, summary {
+	display: block;
+}
+
+.clear {clear:both}
+
+body {background:#fff ; font-family:Tahoma, Arial, Helvetica, sans-serif; font-size:15px; color:#423f41; background:url(../images/header.jpg) repeat-x 0 74px ;}
+
+
+@font-face {
+    font-family: 'CenturyGothic';
+    src: url('../assets/gothic.eot');
+    src: url('../assets/gothic.eot?#iefix') format('embedded-opentype'),
+         url('../assets/gothic.woff') format('woff'),
+         url('../assets/gothic.ttf') format('truetype'),
+         url('../assets/gothic.svg#gothic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BeautifulEveryTimeRegular';
+    src: url('../assets/beautifuleverytime-webfont.eot');
+    src: url('../assets/beautifuleverytime-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../assets/beautifuleverytime-webfont.woff') format('woff'),
+         url('../assets/beautifuleverytime-webfont.ttf') format('truetype'),
+         url('../assets/beautifuleverytime-webfont.svg#BeautifulEveryTimeRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+#wrapper {width:1107px; margin:0 auto; }
+
+header#topHeader {width:1107px; height:394px; margin:0 auto}
+
+header#topHeader img {float:left; margin:20px 0 0 56px}
+
+header#topHeader p {float:right; clear:right; font-family:'CenturyGothic', Arial, Helvetica, sans-serif; text-transform:uppercase; color:#77767c; font-size:16px; padding:5px 0 0 0}
+
+header#topHeader img + p {padding:10px 0 0 0}
+
+header#topHeader p img {float:none; margin:0; padding:0 5px}
+
+header#topHeader h1 {font-family:'BeautifulEveryTimeRegular', Arial, Helvetica, sans-serif; font-size:22px; font-weight:100; padding:268px 0 0 20px; float:left; color:#fff;}
+
+header#topHeader h2 {font-family:'BeautifulEveryTimeRegular', Arial, Helvetica, sans-serif; font-size:19px; font-weight:100; padding:160px 40px 0 0; float:right; color:#fff; clear:right}
+
+nav#mainNav {width:1107px; height:59px;}
+
+nav#mainNav h3 {display:none}
+
+nav#mainNav ul {float:left; margin:15px 0 0 23px}
+
+nav#mainNav ul li {float:left; list-style-type:none; font-family:'BeautifulEveryTimeRegular', Arial, Helvetica, sans-serif; text-transform:uppercase; font-size:17px;}
+
+nav#mainNav ul li a {color:#575356; background:url(../images/bullet.jpg) no-repeat; padding:0 0 0 24px; display:block; height:18px; margin:0 0 0 15px}
+
+nav#mainNav ul li a:hover {background:url(../images/bullet.jpg) no-repeat 0 -18px;}
+
+nav#mainNav ul .current a {background:url(../images/bullet.jpg) no-repeat 0 -18px;}
+
+nav#mainNav p {float:right; margin:10px 0 0 0}
+
+nav#mainNav p img {float:left; margin:0 0 0 10px}
+
+section#content {width:1107px; margin:30px 0 0 0}
+
+section#content h2 {display:none}
+
+section#content article {float:left; margin:0 0 0 65px; width:546px}
+
+section#content article h3 {font-family:'CenturyGothic', Arial, Helvetica, sans-serif; font-size:24px; color:#262425; font-weight:100}
+
+section#content article h3 img {position:relative; top:15px; padding:0 5px}
+
+section#content article p {padding:15px 0 0 0; font-size:15px; line-height:22px}
+
+section#content aside {width:317px; float:left; margin:0 0 0 100px}
+
+section#content aside h3 {font-family:'CenturyGothic', Arial, Helvetica, sans-serif; font-size:24px; color:#262425; font-weight:100; padding:17px 0 0 0}
+
+section#content aside p {padding:15px 30px 0 0}
+
+section#content form {padding:0; margin:0;}
+
+section#content aside label span {float:left; clear:left; color:#575356; font-family:'CenturyGothic', Arial, Helvetica, sans-serif; font-size:15px; margin:10px 0 0 0}
+
+section#content aside label input {float:left; clear:left; margin:5px 0 0 0; width:317px;color:#575356; font-family:'CenturyGothic', Arial, Helvetica, sans-serif; font-size:15px; }
+
+section#content aside label textarea {float:left; clear:left; margin:5px 0 0 0; width:317px; height:203px; color:#575356; font-family:'CenturyGothic', Arial, Helvetica, sans-serif; font-size:15px;}
+
+section#content aside .button {font-size:15px; font-family:'CenturyGothic', Arial, Helvetica, sans-serif; background:none; border:0; color:#3a3739; float:right; margin:10px -8px 0 0; padding:0; clear:both}
+
+
+section#subContent {width:1042px; padding:50px 0 0 43px}
+
+.do#subContent {width:1042px; margin:0 0 0 24px}
+
+.do#subContent h2 {font-family:'CenturyGothic', Arial, Helvetica, sans-serif; font-size:24px; color:#262425;; font-weight:100; padding:0}
+
+section#subContent article {float:left; margin:0 40px 0 20px ; width:461px; padding:0}
+
+section#subContent article h2 {font-family:'CenturyGothic', Arial, Helvetica, sans-serif; font-size:24px; color:#262425; font-weight:100; background:url(../images/heading1.jpg) no-repeat center left; padding:5px 0 5px 55px}
+
+section#subContent article h3 {font-family:'CenturyGothic', Arial, Helvetica, sans-serif; font-size:24px; color:#262425; font-weight:100; background:url(../images/heading2.jpg) no-repeat center left; padding:5px 0 5px 35px; margin:143px 0 0 0}
+
+section#subContent article h3 img {position:relative; top:15px; padding:0 5px}
+
+section#subContent article p {padding:15px 0 0 0; font-size:15px; line-height:22px}
+
+section#subContent article img + h3 {margin-top:0}
+
+section#subContent .sub {width:437px; height:972px; background:#dbd3d8; padding:0 20px; margin:30px 40px 0 0}
+
+section#subContent .sub h3 {font-family:'CenturyGothic', Arial, Helvetica, sans-serif; font-size:24px; color:#262425; font-weight:100; background:url(../images/heading3.jpg) no-repeat center left; padding:4px 0 5px 50px; margin:30px 0 0 0}
+
+section#subContent .sub ul {margin:20px 0}
+
+section#subContent .sub ul li {list-style-type:none; background:url(../images/heading4.jpg) no-repeat; padding:0 0 0 30px; margin:10px 0 0 0}
+
+section#subContent .sub p {padding:30px 0 0 0; font-size:15px; line-height:22px}
+
+section#subContent .sub h4 {font-family:'CenturyGothic', Arial, Helvetica, sans-serif; font-size:20px; color:#262425; font-weight:100; background:url(../images/heading5.jpg) no-repeat center left; padding:4px 0 5px 40px; margin:30px 0 0 0}
+
+section#subContent .sub h4 + p {padding:15px 0 0 0}
+
+section#subContent .sub p cite {font-style:normal; font-family:'BeautifulEveryTimeRegular', Arial, Helvetica, sans-serif; font-size:16px;}
+
+section#subContent .sub form {padding:0; margin:0;}
+
+section#subContent .sub label span {float:left; clear:left; color:#575356; font-family:'CenturyGothic', Arial, Helvetica, sans-serif; font-size:15px; margin:10px 0 0 0}
+
+section#subContent .sub label input {float:left; clear:left; margin:5px 0 0 0; width:317px;color:#575356; font-family:'CenturyGothic', Arial, Helvetica, sans-serif; font-size:15px;background:#e9e5e8; border:1px solid #837f82; width:364px }
+
+section#subContent .sub label textarea {float:left; clear:left; margin:5px 0 0 0; width:317px; height:189px; color:#575356; font-family:'CenturyGothic', Arial, Helvetica, sans-serif; font-size:15px; background:#e9e5e8; border:1px solid #837f82;  width:364px }
+
+section#subContent .sub .button {font-size:15px; font-family:'CenturyGothic', Arial, Helvetica, sans-serif; background:none; border:0; color:#3a3739; float:right; margin:10px -8px 0 0; padding:0; clear:both}
+
+section#subContent .artwork {width:300px; float:left; margin:0 0 0 24px}
+
+section#subContent .artwork p {padding:25px 0 0 0}
+
+
+section#subContent aside {width:711px; float:right; margin:25px 0 0 0}
+
+.artwork1#subContent {width:1077px; padding:50px 0 0 40px}
+
+
+
+footer {width:1107px; text-align:center; height:30px; margin:200px 0 0 0}
+
+footer p {color:#404040; font-size:12px;}
+
+footer p a {color:#404040}
+
+footer p a:hover {color:#777676}
+
+
+
+
+

@@ -1,0 +1,203 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Simple contact form\n"
+"POT-Creation-Date: 2014-02-09 00:40+0800\n"
+"PO-Revision-Date: 2014-02-09 00:40+0800\n"
+"Last-Translator: \n"
+"Language-Team: www.gopiplus.com <www.gopiplus.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../simple-contact-form.php:28
+msgid "Your name"
+msgstr ""
+
+#: ../simple-contact-form.php:32
+msgid "Your email"
+msgstr ""
+
+#: ../simple-contact-form.php:36
+msgid "Enter your message"
+msgstr ""
+
+#: ../simple-contact-form.php:40
+msgid "Enter below security code"
+msgstr ""
+
+#: ../simple-contact-form.php:112 ../simple-contact-form.php:122
+#: ../simple-contact-form.php:123 ../simple-contact-form.php:128
+#: ../simple-contact-form.php:129 ../simple-contact-form.php:158
+#: ../simple-contact-form.php:159 ../pages/content-management-show.php:92
+#: ../pages/content-setting.php:5
+msgid "Simple contact form"
+msgstr ""
+
+#: ../simple-contact-form.php:114 ../pages/content-management-show.php:189
+#: ../pages/content-setting.php:104
+msgid "Check official website for more information"
+msgstr ""
+
+#: ../simple-contact-form.php:115 ../pages/content-management-show.php:190
+#: ../pages/content-setting.php:105
+msgid "click here"
+msgstr ""
+
+#: ../simple-contact-save.php:59
+msgid "Message sent successfully."
+msgstr ""
+
+#: ../pages/content-management-show.php:24
+msgid "Oops, selected details doesnt exist."
+msgstr ""
+
+#: ../pages/content-management-show.php:42
+msgid "Selected record was successfully deleted."
+msgstr ""
+
+#: ../pages/content-management-show.php:61
+msgid "Selected record(s) was successfully deleted."
+msgstr ""
+
+#: ../pages/content-management-show.php:113
+#: ../pages/content-management-show.php:123
+msgid "Name"
+msgstr ""
+
+#: ../pages/content-management-show.php:114
+#: ../pages/content-management-show.php:124
+msgid "Email"
+msgstr ""
+
+#: ../pages/content-management-show.php:115
+#: ../pages/content-management-show.php:125
+msgid "Message"
+msgstr ""
+
+#: ../pages/content-management-show.php:116
+#: ../pages/content-management-show.php:126
+msgid "Date"
+msgstr ""
+
+#: ../pages/content-management-show.php:117
+#: ../pages/content-management-show.php:127
+msgid "IP"
+msgstr ""
+
+#: ../pages/content-management-show.php:142
+msgid "Delete"
+msgstr ""
+
+#: ../pages/content-management-show.php:156
+msgid "No records available."
+msgstr ""
+
+#: ../pages/content-management-show.php:167
+msgid " &lt;&lt; "
+msgstr ""
+
+#: ../pages/content-management-show.php:168
+msgid " &gt;&gt; "
+msgstr ""
+
+#: ../pages/content-management-show.php:176
+msgid "Delete all selected records"
+msgstr ""
+
+#: ../pages/content-management-show.php:177
+msgid "Setting"
+msgstr ""
+
+#: ../pages/content-management-show.php:178 ../pages/content-setting.php:99
+msgid "Help"
+msgstr ""
+
+#: ../pages/content-management-show.php:183
+msgid "Plugin configuration option"
+msgstr ""
+
+#: ../pages/content-management-show.php:185
+msgid "Add directly in to the theme using PHP code."
+msgstr ""
+
+#: ../pages/content-management-show.php:186
+msgid "Drag and drop the widget to your sidebar."
+msgstr ""
+
+#: ../pages/content-management-show.php:188
+msgid ""
+"This plugin has been integrated with Email Newsletter plugin. Please use "
+"Email Newsletter plugin to send Newsletters to above listed emails."
+msgstr ""
+
+#: ../pages/content-setting.php:44
+msgid "Details successfully updated."
+msgstr ""
+
+#: ../pages/content-setting.php:50
+msgid "Widget setting"
+msgstr ""
+
+#: ../pages/content-setting.php:52
+msgid "Widget title"
+msgstr ""
+
+#: ../pages/content-setting.php:54
+msgid "Please enter your widget title."
+msgstr ""
+
+#: ../pages/content-setting.php:56
+msgid "Widget dsiplay setting"
+msgstr ""
+
+#: ../pages/content-setting.php:58
+msgid "Display on home page"
+msgstr ""
+
+#: ../pages/content-setting.php:63
+msgid "Do you want to show this widget in home page?"
+msgstr ""
+
+#: ../pages/content-setting.php:65
+msgid "Display on posts"
+msgstr ""
+
+#: ../pages/content-setting.php:70
+msgid "Do you want to show this widget in all posts?"
+msgstr ""
+
+#: ../pages/content-setting.php:72
+msgid "Display on pages"
+msgstr ""
+
+#: ../pages/content-setting.php:77 ../pages/content-setting.php:86
+msgid "Do you want to show this widget in all pages?"
+msgstr ""
+
+#: ../pages/content-setting.php:79
+msgid "Email setting"
+msgstr ""
+
+#: ../pages/content-setting.php:81 ../pages/content-setting.php:88
+msgid "Admin email"
+msgstr ""
+
+#: ../pages/content-setting.php:90
+msgid "Please enter admin email address to receive mails."
+msgstr ""
+
+#: ../pages/content-setting.php:92
+msgid "Email subject"
+msgstr ""
+
+#: ../pages/content-setting.php:94
+msgid "Please enter admin email subject."
+msgstr ""
+
+#: ../pages/content-setting.php:98
+msgid "Submit"
+msgstr ""

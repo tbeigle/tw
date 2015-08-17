@@ -1,0 +1,201 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* RESET */
+
+html, body, h1, h2, h3, h4, h5, h6, p, ul, li, a, img, form, input, textarea {margin:0; padding:0;}
+
+img, textarea {border:none;}
+
+a {text-decoration:none;}
+
+.clear {clear:both;}
+
+html {-webkit-text-size-adjust:none;}
+
+body {background:url(../images/background.jpg) repeat; font-family:"Corbel", Arial, Helvetica, sans-serif; font-size:15px; color:#423f41}
+
+	@font-face {
+        font-family: "LunchBox Slab";
+        src: url('../assets/645111084-Lunchbox_Slab.eot');
+        src: url('../assets/645111084-Lunchbox_Slab.eot?#iefix') format('embedded-opentype'),
+        url('../assets/645111084-Lunchbox_Slab.svg#LunchBox Slab') format('svg'),
+        url('../assets/645111084-Lunchbox_Slab.woff') format('woff'),
+        url('../assets/645111084-Lunchbox_Slab.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+	@font-face {
+        font-family: "Corbel";
+        src: url('../assets/997894288-corbel.eot');
+        src: url('../assets/997894288-corbel.eot?#iefix') format('embedded-opentype'),
+        url('../assets/997894288-corbel.svg#Corbel') format('svg'),
+        url('../assets/997894288-corbel.woff') format('woff'),
+        url('../assets/997894288-corbel.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+	
+	@font-face {
+	font-family: 'Conv_Mathlete-Skinny';
+	src: url('../assets/Mathlete-Skinny.eot');
+	src: local('☺'), url('../assets/Mathlete-Skinny.woff') format('woff'), url('../assets/Mathlete-Skinny.ttf') format('truetype'), url('../assets/Mathlete-Skinny.svg') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+#wrapper {background:#fff; max-width:997px; width:95%; margin:0 auto;
+-webkit-box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, .15);
+-moz-box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, .15);
+box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, .15); 
+}
+
+#top {width:90%; padding:0 5%}
+
+#top img {margin:10px 0 0 0; float:left; width:90%; max-width:270px;}
+
+#top ul {float:right; margin-top:10px;}
+
+#top ul li {list-style-type:none; font-family:'Conv_Mathlete-Skinny', Arial, Helvetica, sans-serif; font-size:27px; color:#fff; margin:4px 0 0 0}
+
+#top ul li a {display:block; outline:0; width:154px; height:40px; background:url(../images/nav-bg.png) no-repeat; color:#fff; text-align:center}
+
+#top ul li a:hover {background:url(../images/nav-bg.png) no-repeat 0 -40px;}
+
+#top ul #current a {background:url(../images/nav-bg.png) no-repeat 0 -40px;}
+
+#header {padding:20px 0 0 0}
+
+#header img {width:100%; max-width:997px}
+
+#content {width:93%; padding:0 2% 50px 5%}
+
+#left {width:54%; margin:20px 0 0 0; float:left}
+
+#left .meals {width:100%; max-width:501px}
+
+#left h2 {font-family:"LunchBox Slab", Arial, Helvetica, sans-serif; color:#5b5b7a; font-size:30px; font-weight:100; padding:20px 0 0 0}
+
+#left p {padding:20px 0 0 0; line-height:21px}
+
+#left .texture {width:100%; max-width:435px}
+
+#left .what-we-cook1 {width:100%; max-width:435px; margin:15px 0 0 0}
+
+#left .dishes {float:left; margin:10px 3% 0 0}
+
+#left .dishes + p {max-width:435px; padding-bottom:20px}
+
+#left .weekly-meals {width:100%; max-width:421px}
+
+#left .press-praise1 {width:100%; max-width:434px}
+
+#left .special-request {margin:20px 0 0 0; width:100%; max-width:258px}
+
+#left .special-events1 {width:100%; max-width:434px}
+
+.events #left {width:47%; max-width:434px}
+
+#planing .lets-start-planing {margin:20px 0 0 0; width:100%; max-width:260px}
+
+#left .press-praise {width:100%; max-width:258px}
+
+#left input {width:60%; border:1px solid #cccccc; color:#423f41; font-size:13px; padding:0.3em 1%; margin:20px 0 0 0; font-family:"Corbel", Arial, Helvetica, sans-serif; float:left; clear:left}
+
+#left textarea {width:90%; border:1px solid #cccccc; color:#423f41; font-size:13px; padding:0.3em 1%; margin:20px 0 0 0; font-family:"Corbel", Arial, Helvetica, sans-serif; float:left; clear:left; height:200px}
+
+#left .sign-up2 { width:106px; height:32px; padding:0; border:0; float:right; clear:none; margin:20px 0 0 0}
+
+#right {width:36%; max-width:379px; float:left; background: url(../images/right-top.jpg) repeat-x top left, url(../images/right-bottom.jpg) repeat-x bottom left; background-color:#f4f4f5; margin:20px 0 0 5%; padding:1px 2% 30px 2%}
+
+#right img {margin:20px auto 0 auto; display:block; width:100%; max-width:293px;}
+
+#right img + img {max-width:349px}
+
+#right p {color:#423f41; padding:10px 0 0 0; line-height:20px;}
+
+#right .email {float:left; width:65%; background:#f4f4f5; border:1px solid #c3c3c4; font-family:"Corbel", Arial, Helvetica, sans-serif; font-size:15px; padding:0.2em; margin:20px 0 0 0 }
+
+#right .sign-up {float:left; margin:20px 0 0 2%}
+
+#press .press-praise2 {width:100%; max-width:272px}
+
+#press {width:36%; max-width:379px; float:left;  margin:20px 0 0 5%; padding:1px 2% 30px 2%}
+
+#press p {color:#423f41; padding:20px 0 0 0; line-height:20px;}
+
+#press .read-more1 {float:right; margin:20px 0 0 0}
+
+
+.events #right {width:48%; padding:0; max-width:431px; background:none; margin-top:120px }
+
+.events #right img {width:100%; max-width:431px;}
+
+#planing p {padding:20px 0 0 0; line-height:21px}
+
+#planing input {width:37%; border:1px solid #cccccc; color:#423f41; font-size:13px; padding:0.3em 1%; margin:20px 0 0 0; font-family:"Corbel", Arial, Helvetica, sans-serif; float:left; clear:left}
+
+#planing textarea {width:37%; border:1px solid #cccccc; color:#423f41; font-size:13px; padding:0.3em 1%; margin:20px 0 0 0; font-family:"Corbel", Arial, Helvetica, sans-serif; float:left; clear:left;}
+
+#planing .restrictions {height:80px}
+
+#planing .else {clear:none; height:350px; float:left; margin-left:3%; margin-top:-248px;}
+
+#planing .send-info { width:15% ;max-width:155px; height:auto; padding:0; border:0; float:right; clear:none; margin:85px 1% 0 0}
+
+#footer {width:100%; background:#dedee5; border-top:3px solid #fff; margin:40px 0 0 0 ;}
+
+#footer-wrapper {width:95%; max-width:1100px; margin:0 auto}
+
+.footer-box {width:28%; float:left; padding:30px 2%; color:#262425}
+
+.footer-box img {width:90%; max-width:256px}
+
+.footer-box + .footer-box {border-left:1px solid #fff; border-right:1px solid #fff; padding-bottom:100px}
+
+.footer-box + .footer-box + .footer-box {border-left:0; border-right:0; width:31%; padding-bottom:0}
+
+.footer-box .connect img {width:15%; max-width:42px; margin: 0 1%}
+
+.footer-box .connect .connect-with-us {width:50%; max-width:189px; margin:0}
+
+.footer-box p {font-size:16px; padding:20px 0 0 0; line-height:24px;}
+
+.footer-box .read-more {display:block; outline:0; text-indent:-9999px; width:133px; height:25px; background:url(../images/read-more.jpg) no-repeat; float:right; margin:20px 0 0 0}
+
+.footer-box .lets-talk {display:block; margin:20px 0 0 10%; width:80%; max-width:282px}
+
+.footer-box h5 {font-weight:100; font-size:15px; text-align:right; padding:20px 0 0 0; line-height:20px}
+
+.footer-box h5 a {color:#262425}
+
+.footer-box h5 a:hover {color:#595959}
+
+
+@media only screen and (min-width:0px) and (max-width:780px) {
+#right .email {float:left; width:80%;}
+}
+
+@media only screen and (min-width:0px) and (max-width:580px) {
+#left {float:none; width:100%}
+#right {float:none; width:94%;max-width:auto; margin:20px 0 0 0}
+#press {float:none; width:94%;max-width:auto; margin:20px 0 0 0}
+.events #left {width:100%; max-width:auto}
+.events #right {width:94%;max-width:auto; margin-top:0}
+}
+
+@media only screen and (min-width:0px) and (max-width:620px) {
+#top {padding-top:20px}
+#top img {float:none; display:block; margin:0 auto}
+#top ul {float:none; display:block; margin:20px auto 0 auto; width:177px}
+.footer-box {width:100%; padding:20px 0; float:none}
+.footer-box + .footer-box {border-left:0; border-right:0; padding-bottom:10px}
+.footer-box + .footer-box + .footer-box {border-left:0; border-right:0; width:100%}
+#planing input {width:95%; float:none}
+#planing textarea {width:95%; float:none}
+#planing .else {float:none; margin:20px 0 0 0;}
+#planing .send-info { width:100%; margin:20px 2% 0 0} 
+}
+
+
