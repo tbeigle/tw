@@ -5,7 +5,7 @@
 Nashville, Tennessee</p>
 
 <p>Weekly Meals & Market<br/>
-Wednesdays 2-6pm</p>
+Tuesdays-Fridays 11am-6pm</p>
 
 <img src="<?php bloginfo('template_url'); ?>/images/lets-talk2.png" class="lets-talk2" />
 
