@@ -284,6 +284,7 @@ function tinwings_clover_options() {
 
 /*
   TO DO:
+    Figure out where this should live so you can get the damn thing approved and usable by Tin Wings (clover.tinwings.designated-developers.com?)
     Add calls to get merchant orders
     Add calls to get inventory
     Add calls to get the stock of all inventory items
