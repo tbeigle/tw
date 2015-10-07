@@ -91,11 +91,12 @@ if (!class_exists( 'TinWingsHelper')) {
 if (!class_exists( 'TinWingsClover')) {
   class TinWingsClover {
     // Vars
-    private $client_id = 'XBV2A5BTAEPDM';
-    private $client_secret = '7f663c3f-d438-ff62-a636-660199c15a24';
-    private $code;
-    private $access_token;
-    private $merchant_id;
+    //private $client_id = 'XBV2A5BTAEPDM';
+    //private $client_secret = '7f663c3f-d438-ff62-a636-660199c15a24';
+    private $client_id = 'NJASA1B5VA0MP';
+    private $client_secret = '3e32545e-6a10-de95-6219-af52539ab3fc';
+    var $access_token;
+    var $merchant_id;
     private $valid = FALSE;
     
     /**
@@ -115,12 +116,54 @@ if (!class_exists( 'TinWingsClover')) {
     }
     
     /**
+     * Checks if access is already set.
+     */
+    public function good_to_go() {
+      $opt = get_option('tw_clover', array(
+        'access_token' => '',
+        'merchant_id' => '',
+      ));
+      
+      $this->access_token = $opt['access_token'];
+      $this->merchant_id = $opt['merchant_id'];
+      
+      return !empty($this->access_token) && !empty($this->merchant_id) && !empty($this->client_id) && !empty($this->client_secret);
+    }
+    
+    /**
+     * Prints a link for fetching an oauth code.
+     */
+    public function get_code() {
+      echo '<a href="https://www.clover.com/oauth/authorize?client_id=' . $this->client_id . '&redirect_uri=' . get_site_url() . '/twclover/auth">';
+      echo 'Authorize the App';
+      echo '</a>';
+    }
+    
+    /**
      * Retrieves an oauth token.
      */
     public function authorize($code) {
       $url = 'https://www.clover.com/oauth/token?client_id=' . $this->client_id . '&client_secret=' . $this->client_secret . '&code=' . $code;
-      // TO DO: Send GET request to the $url and decode and save the JSON response
-      // {"access_token": ”[your access token]”}
+      
+      $response = wp_remote_get($url);
+      
+      if (!is_array($response)) {
+        echo '<pre>' . print_r($response) . '</pre>';
+      }
+      elseif (!empty($response['body'])) {
+        $decoded = json_decode($response['body']);
+        
+        $opt = get_option('tw_clover', array(
+          'access_token' => '',
+          'merchant_id' => '',
+        ));
+        
+        if (!empty($decoded->access_token)) {
+          $opt['access_token'] = $decoded->access_token;
+        }
+        
+        update_option('tw_clover', $opt);
+      }
       
       // To make a call using the token (from command line, example for orders request)
       // curl -s https://api.clover.com/v3/merchants/[Merchant ID]/orders --header "Authorization:Bearer [API Token]" | python -mjson.tool
@@ -154,14 +197,29 @@ if (!class_exists( 'TinWingsClover')) {
   }
 }
 
-add_action('plugins_loaded', array('TinWingsHelper', 'init'), 20);
-//add_action('init', array('TinWingsClover', 'addListener'));
+if (is_admin()) {
+  add_action('admin_menu', 'tinwings_menu');
+  add_action('admin_init', 'tinwings_register_settings');
+}
 
-add_action( 'init', 'tinwings_register_extra_pages');
+add_action('plugins_loaded', array('TinWingsHelper', 'init'), 20);
+add_action('init', 'tinwings_register_extra_pages');
+
 
 function tinwings_register_extra_pages() {
   add_feed('twclover', 'tinwings_clover_oauth_auth');
   add_feed('twclover/auth', 'tinwings_clover_oauth_receive');
+}
+
+function tinwings_register_settings() {
+  register_setting('tinwings_clover', 'tw_clover');
+  
+  if (get_option('tw_clover') === FALSE) {
+    update_option('tw_clover', array(
+      'access_token' => '',
+      'merchant_id' => '',
+    ));
+  }
 }
 
 function tinwings_clover_oauth_auth() {
@@ -169,19 +227,23 @@ function tinwings_clover_oauth_auth() {
 }
 
 function tinwings_clover_oauth_receive() {
-  $twc = new TinWingsClover();
-  
-  //print '<p>It works part 2!</p>';
-  $params['code'] = get_query_var('merchant_id', '');
-  $params['merchant_id'] = get_query_var('merchant_id', '');
-  $params['employee_id'] = get_query_var('employee_id', '');
-  $params['client_id'] = get_query_var('client_id', '');
-  
-  print '<pre>' . print_r($params, TRUE) . '</pre>';
-  print '<pre>' . print_r($_GET, TRUE) . '</pre>';
-  
   if (!empty($_GET['code'])) {
+    $opt = get_option('tw_clover', array(
+      'access_token' => '',
+      'merchant_id' => '',
+    ));
+    
+    if (!empty($_GET['merchant_id'])) {
+      $opt['merchant_id'] = $_GET['merchant_id'];
+    }
+    
+    update_option('tw_clover', $opt);
+    
+    $twc = new TinWingsClover();
     $twc->authorize($_GET['code']);
+    
+    wp_redirect('/wp-admin/options-general.php?page=tinwings-clover-options');
+    exit();
   }
 }
 
@@ -190,4 +252,40 @@ URLs:
   listen (callback)
   authorize (form)
   
+*/
+
+function tinwings_menu() {
+  add_options_page('Tinwings Clover', 'Tinwings Clover', 'manage_options', 'tinwings-clover-options', 'tinwings_clover_options');
+}
+
+function tinwings_clover_options() {
+  if (!current_user_can('manage_options')) {
+    wp_die(__('You do not have sufficient permissions to access this page.'));
+  }
+  
+  $twc = new TinWingsClover();
+  
+  echo '<div class="wrap">';
+  
+  if (!$twc->good_to_go()) {
+    $twc->get_code();
+  }
+  else {
+    echo '<h2>Clover Settings</h2>';
+    echo '<form method="post" action="options.php">';
+    echo '<div><label>Merchant ID</label><input type="text" name="tw_clover[merchant_id]" value="' . $twc->merchant_id . '"></div>';
+    echo '<div><label>Access Token</label><input type="text" name="tw_clover[access_token]" value="' . $twc->access_token . '"></div>';
+    submit_button();
+    echo '</form>';
+  }
+  
+  echo '</div>';
+}
+
+/*
+  TO DO:
+    Add calls to get merchant orders
+    Add calls to get inventory
+    Add calls to get the stock of all inventory items
+    
 */
