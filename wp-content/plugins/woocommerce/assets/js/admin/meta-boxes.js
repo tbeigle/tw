@@ -16,7 +16,7 @@ jQuery( function ( $ ) {
 	runTipTip();
 
 	// Allow Tabbing
-	$( '#titlediv #title' ).keyup( function( event ) {
+	$( '#titlediv' ).find( '#title' ).keyup( function( event ) {
 		var code = event.keyCode || event.which;
 
 		// Tab key
@@ -27,10 +27,8 @@ jQuery( function ( $ ) {
 		}
 	});
 
-	$( function() {
-		$( '.wc-metabox > h3' ).click( function() {
-			$( this ).parent( '.wc-metabox' ).toggleClass( 'closed' ).toggleClass( 'open' );
-		});
+	$( '.wc-metaboxes-wrapper' ).on( 'click', '.wc-metabox > h3', function() {
+		$( this ).parent( '.wc-metabox' ).toggleClass( 'closed' ).toggleClass( 'open' );
 	});
 
 	// Tabbed Panels

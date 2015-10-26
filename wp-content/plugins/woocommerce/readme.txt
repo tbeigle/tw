@@ -1,10 +1,9 @@
 === WooCommerce - excelling eCommerce ===
-Contributors: woothemes, automattic, mikejolley, jameskoster, claudiosanches, royho
+Contributors: automattic, mikejolley, jameskoster, claudiosanches, royho, woothemes
 Tags: ecommerce, e-commerce, commerce, woothemes, wordpress ecommerce, affiliate, store, sales, sell, shop, shopping, cart, checkout, configurable, variable, widgets, reports, download, downloadable, digital, inventory, stock, reports, shipping, tax
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=paypal@woothemes.com&item_name=Donation+for+WooCommerce
-Requires at least: 4.0
+Requires at least: 4.1
 Tested up to: 4.3
-Stable tag: 2.4.4
+Stable tag: 2.4.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -81,7 +80,7 @@ When you download WooCommerce, you join a community of more than a million store
 
 If you’re interested in contributing to WooCommerce we’ve got more than 350 contributors, and there’s always room for more. Head over to the [WooCommerce GitHub Repository](https://github.com/woothemes/woocommerce) to find out how you can pitch in.
 
-Want to add a new language to WooCommerce? Swell! You can contribute through [Transifex](https://www.transifex.com/woothemes/woocommerce/).
+Want to add a new language to WooCommerce? Swell! You can contribute via [translate.wordpress.org](http://translate.wordpress.org/projects/wp-plugins/woocommerce).
 
 And, finally, consider joining or spearheading a WooCommerce Meetup locally, more about those [here](http://www.woothemes.com/woocommerce/meetups/).
 
@@ -124,7 +123,7 @@ For extending or theming WooCommerce, see our [codex](http://docs.woothemes.com/
 
 = Where can I get support or talk to other users? =
 
-If you get stuck you can ask for help on the [WooThemes Community Forum](https://support.woothemes.com/hc/communities/public/topics).
+If you get stuck, you can ask for help in the [WooCommerce Plugin Forum](https://wordpress.org/support/plugin/woocommerce).
 
 For help with premium add-ons from WooThemes, use [our helpdesk](http://support.woothemes.com/).
 
@@ -158,6 +157,103 @@ Yes you can! Join in on our [GitHub repository](http://github.com/woothemes/wooc
 6. A product archive (grid).
 
 == Changelog ==
+
+= 2.4.8 - 26/10/2015 =
+* Fix - Help tips in variations admin.
+* Fix - API - Fixed customer count method.
+* Fix - Locale switching for city field.
+* Fix - Notice in wc_nav_menu_items when endpoint is not set.
+* Fix - Loading of correct variation prices when display is true and false in the same page load.
+* Fix - Shipping priority for methods with colons in the name.
+* Fix - Saving of passwords with '&' inside.
+* Fix - Remove double escaping of coupon descriptions.
+* Fix - Settings API default value should not apply if value of option is 0 .
+* Fix - Avoid potential PHP Fatals by avoiding premature script enqueues.
+* Fix - Pass mimes when checking file type .
+* Fix - Reset shipping totals before calculation to prevent totals being used incorrectly.
+* Fix - API - Corrected how attributes terms saves non-latin characters.
+* Fix - API - Variations price sync.
+* Fix - API - Fixed lost variable products data when create/edit an order.
+* Tweak - Add trailing slash in get_page_uris to reduce likelihood of conflicts.
+* Tweak - API - Added refunded_item_id on GET orders/<id>/refunds endpoint.
+* Tweak - API - Allow variable products to get retrieved by SKU.
+* Tweak - API - Allow edit variations without define the product type to variable.
+
+= 2.4.7 - 21/09/2015 =
+* Fix - Handle Switzerland in get_european_union_countries.
+* Fix - For geolocation with static cache support, ensure hash is appended during form submission.
+* Fix - To prevent discounts being applied in 'random' order (based on order added to cart), sort cart items based on subtotal during calculate_totals.
+* Fix - Removed extra ob_start() in class-wc-shortcodes.php.
+* Fix - Show counts in category dropdown.
+* Fix - Escape add to cart messages to stop translations from breaking cart events.
+* Fix - Display of product/order tables in the dashboard when viewed on handheld devices.
+* Fix - API order item 'key' value.
+* Fix - Check specifically for Post IDs in WC Query verbose rules fix.
+* Fix - Only run maybe_set_cart_cookies if cart was loaded to prevent notices.
+* Fix - Variation loading/refresh after attribute saving.
+* Fix - Added monthly cron schedule.
+* Fix - Remove use of 'input' event in checkout scripts to prevent IE11 triggering updates on placeholder change.
+* Fix - AJAX variations not being found in some cases when product version was < 2.4, but attributes were updated after sync().
+* Fix - Changed the way variable product prices get cached for greater plugin compatibility. See http://wp.me/p6wtcw-5x
+* Fix - Highlighting of reports chart.
+* Fix - Network activated plugins not showing up in system status report.
+* Fix - Tax fields showing on bulk/quick edit when disabled the tax system.
+* Fix - Tax status and tax class values within bulk edit.
+* Tweak - Allow bulk edit price to 0 .
+* Tweak - Add filters to control "shipped via" text.
+* Tweak - Allow line breaks in non-variation attributes.
+* Tweak - Renamed wc_var_prices transient to allow them to flush on product save.
+* Tweak - woocommerce_save_account_details_required_fields hook.
+* Tweak - Only 'count' published variations.
+* Tweak - Display of order total in admin with refunds.
+* Tweak - Use Geolocation class for customer IP detection.
+* Tweak - Use the needs_payment function (DRY).
+* Tweak - Tweak wc_create_page to work with trashed pages.
+* Tweak - Redirect 'not right now' to referer in onboarding wizard.
+* Tweak - woocommerce_update_new_customer_past_order action.
+* Tweak - Prevent empty terms when using `wc_get_formatted_variation()`.
+* Tweak - Unslash shipping label on orders admin screen.
+* Tweak - Prevent wrong phone numbers on PayPal for CA and US when users add the prefix `+1`.
+* Template - Removed 'Payment' heading in `templates/checkout/form-pay.php`.
+* Template - Removed unnecessary clearing div in `templates/checkout/payment.php`.
+
+= 2.4.6 - 24/08/2015 =
+* Fix - menu_order notices on IIS.
+* Fix - Grouped product is_purchasable check during add to cart.
+* Fix - Subscriptions 2.0 (unreleased) compatibility.
+* Fix - Encode variation data in add_to_cart_url method.
+* Fix - Bulk update variation: Set manage stock when _manage_stock meta data is missing.
+* Fix - Bulk update variation: Allow stock to be set to 0.
+* Fix - Ajax variation < 2.4 attribute name handling.
+* Fix - During updates, only recreate .htaccess if not using redirect download method.
+* Fix - Handle non standard decimals in flat rate costs.
+* Tweak - WC Setup wizard: Fix manual setting of decimal/thousand separator.
+* Tweak - Set ajax/nocache headers for ajax requests.
+* Tweak - Add tooltips for tax status and tax class options.
+* Tweak - WC Setup wizard: multi-line step styling.
+* Tweak - WC Setup wizard: site icon display on WP 4.3.
+* Tweak - WC Setup wizard: tweaked wording.
+* Tweak - WC Setup wizard: Add spinner/loading indication between onboarding steps.
+* Tweak - Allow HTML in store notice.
+
+= 2.4.5 - 20/08/2015 =
+* Fix - Global text based attribute saving on product page.
+* Fix - save_account_details should check display name of current user.
+* Fix - Show the right 'no shipping available' message when a country does not have states.
+* Fix - Add required postcode marker after label replace.
+* Fix - Flush product cache so prices are regenerated after scheduled sale ends.
+* Fix - Removed /page/ when using layered nav dropdown.
+* Tweak - Allowed Zip/Post Codes description for Local Delivery.
+* Tweak - Improve display_item_downloads numbering and use same function in emails.
+* Tweak - API - Fixes notices about deprecated `$HTTP_RAW_POST_DATA` on PHP 5.6.
+* Tweak - In add_to_cart_action, check is_purchasable rather than post status.
+* Tweak - Add expand/close links for attributes and match variation UI.
+* Tweak - Added locale info for BD, NP, JP and HU
+* Tweak - woocommerce_delete_version_transients_limit filter.
+* Tweak - Suppress errors when calling set_time_limit to avoid hosting conflicts.
+* Tweak - Keep new variation in sync so actions can modify data.
+* Tweak - Improved download numbering in emails and order page.
+* Tweak - Allowed users to install translations for the current language during the Setup Wizard.
 
 = 2.4.4 - 14/08/2015 =
 * Fix - Ajax variation handling when 'any' attribute is set.

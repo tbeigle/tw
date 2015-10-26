@@ -16,13 +16,13 @@ extract( $variation_data );
 	<h3>
 		<a href="#" class="remove_variation delete" rel="<?php echo esc_attr( $variation_id ); ?>"><?php _e( 'Remove', 'woocommerce' ); ?></a>
 		<div class="handlediv" title="<?php esc_attr_e( 'Click to toggle', 'woocommerce' ); ?>"></div>
-		<div class="tips sort" data-tip="<?php esc_attr_e( 'Drag and drop, or click to set menu order manually', 'woocommerce' ); ?>"></div>
+		<div class="tips sort" data-tip="<?php esc_attr_e( 'Drag and drop, or click to set admin variation order', 'woocommerce' ); ?>"></div>
 		<strong>#<?php echo esc_html( $variation_id ); ?>: </strong>
 		<?php
 			foreach ( $parent_data['attributes'] as $attribute ) {
 
 				// Only deal with attributes that are variations
-				if ( ! $attribute['is_variation'] ) {
+				if ( ! $attribute['is_variation'] || 'false' === $attribute['is_variation'] ) {
 					continue;
 				}
 
@@ -56,7 +56,7 @@ extract( $variation_data );
 			}
 		?>
 		<input type="hidden" name="variable_post_id[<?php echo $loop; ?>]" value="<?php echo esc_attr( $variation_id ); ?>" />
-		<input type="hidden" class="variation_menu_order" name="variation_menu_order[<?php echo $loop; ?>]" value="<?php echo absint( $menu_order ); ?>" />
+		<input type="hidden" class="variation_menu_order" name="variation_menu_order[<?php echo $loop; ?>]" value="<?php echo isset( $menu_order ) ? absint( $menu_order ) : 0; ?>" />
 	</h3>
 	<div class="woocommerce_variable_attributes wc-metabox-content" style="display: none;">
 		<div class="data">
