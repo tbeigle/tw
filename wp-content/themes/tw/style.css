@@ -1,0 +1,16 @@
+/*
+ Theme Name:   Tinwings Child Theme
+ Theme URI:    http://planleft.com
+ Description:  Tinwings Theme with WooCommerce integration
+ Author:       Plan Left, LLC
+ Author URI:   http://planleft.com
+ Template:     BLANK-Theme
+ Version:      1.0.0
+ Tags:         black, green, white, light, dark, two-columns, three-columns, left-sidebar, right-sidebar, fixed-layout, responsive-layout, custom-background, custom-header, custom-menu, editor-style, featured-images, flexible-header, full-width-template, microformats, post-formats, rtl-language-support, sticky-post, theme-options, translation-ready, accessibility-ready, responsive-layout, infinite-scroll, post-slider, design, food, journal, magazine, news, photography, portfolio, clean, contemporary, dark, elegant, modern, professional, sophisticated, woocommerce
+ Text Domain:  tw
+*/
+
+/* small display fix, do not remove */
+#find, #right {
+	clear: right;
+}
