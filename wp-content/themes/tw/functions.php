@@ -40,9 +40,6 @@ if ( is_woocommerce_activated() ) {
 	function tw_woocommerce() {
 	  echo '</div>';
 	}
-
-	remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10);
-	remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end', 10);
 }
 
 add_action( 'after_setup_theme', 'tw_woocommerce_support' );
