@@ -1,0 +1,138 @@
+<?php
+$contentBackgroundOpacity = $settings['contentBackgroundOpacity']/10;
+$rgb = $this->convertHexToRgb($settings['contentBackground']);
+
+?>
+<style>
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .content
+    {
+        background-color: rgba(
+            <?php echo $rgb[0]; ?>,
+            <?php echo $rgb[1]; ?>,
+            <?php echo $rgb[2]; ?>,
+            <?php echo $contentBackgroundOpacity; ?>
+        );
+    }
+    
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li
+    {
+        border-color: <?php echo $settings['disabledTabsColor']; ?>;
+
+    }
+    
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li a,
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li a span
+    {
+        color: <?php echo $settings['disabledFontColor']; ?>;
+    }
+    
+    #pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li:before
+    {
+        background-color: <?php echo $settings['disabledTabsColor']; ?>;
+    }
+    
+    /*current*/
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.current
+    {
+        border-color: <?php echo $settings['activeTabsColor']; ?>;
+    }
+    
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.current a,
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.current a span
+    {
+        color: <?php echo $settings['activeFontColor']; ?>;
+    }
+    
+    #pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.current:before
+    {
+        background-color: <?php echo $settings['activeTabsColor']; ?>;
+    }
+    
+    /*done*/
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.done
+    {
+        border-color: <?php echo $settings['doneTabsColor']; ?>;
+    }
+    
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.done a,
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.done a span
+    {
+        color: <?php echo $settings['doneFontColor']; ?>;
+    }
+    
+    #pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.done:before
+    {
+        background-color: <?php echo $settings['doneTabsColor']; ?>;
+    }
+    
+    /*error*/
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.current.error
+    {
+        border-color: <?php echo $settings['errorTabsColor']; ?>;
+    }
+    
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.current.error a,
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.current.error a span
+    {
+        color: <?php echo $settings['errorFontColor']; ?>;
+    }
+    
+    #pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.current.error:before
+    {
+        background-color: <?php echo $settings['errorTabsColor']; ?>;
+    }
+    
+    /*hover*/
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.current:hover,
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.done:hover
+    {
+        border-color: <?php echo $settings['hoverTabsColor']; ?>;
+    }
+    
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.current:hover a,
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.current:hover a span,
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.done:hover a,
+    div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.done:hover a span
+    {
+        color: <?php echo $settings['hoverFontColor']; ?>;
+    }
+    
+    #pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.current:hover:before,
+    #pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li.done:hover:before
+    {
+        background-color: <?php echo $settings['hoverTabsColor']; ?>;
+    }
+     
+     /*actions buttons*/
+    div#pluginator-checkout-steps-wizard.pluginator-wizard> div.actions > ul > li a
+    {
+        background-color: <?php echo $settings['actionsButtonsColor']; ?>;
+        color: <?php echo $settings['actionsButtonsFontColor']; ?>;
+    }
+    
+    div#pluginator-checkout-steps-wizard.pluginator-wizard> div.actions > ul > li a:hover
+    {
+        background-color: <?php echo $settings['hoverActionsButtonsColor']; ?>;
+        color: <?php echo $settings['hoverActionsButtonsFontColor']; ?>;;
+    }
+    
+    div#pluginator-checkout-steps-wizard.pluginator-wizard> div.actions > ul > li.disabled a,
+    div#pluginator-checkout-steps-wizard.pluginator-wizard> div.actions > ul > li.disabled a:hover
+    {
+       background-color: <?php echo $settings['disabledActionsButtonsColor']; ?>;
+        color: <?php echo $settings['disabledActionsButtonsFontColor']; ?>;
+    }
+    
+    
+    div#pluginator-checkout-steps-wizard.pluginator-wizard p.terms
+    {
+        float: <?php echo $settings['termsAndConditionsPosition']; ?>;
+        clear: <?php echo $settings['termsAndConditionsPosition']; ?>;
+    }
+    
+    /* Require Filds*/
+    div#pluginator-checkout-steps-wizard.pluginator-wizard p.form-row label.pluginator-require-field
+    {
+        color: <?php echo $settings['requireFieldsTextColor']; ?>;
+    }
+</style>

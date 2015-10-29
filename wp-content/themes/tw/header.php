@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+
+<head>
+	<meta charset="<?php bloginfo('charset'); ?>" />
+	
+	<?php if (is_search()) { ?>
+	   <meta name="robots" content="noindex, nofollow" /> 
+	<?php } ?>
+
+	<title>
+		   <?php
+		      if (function_exists('is_tag') && is_tag()) {
+		         single_tag_title("Tag Archive for &quot;"); echo '&quot; - '; }
+		      elseif (is_archive()) {
+		         wp_title(''); echo ' Archive - '; }
+		      elseif (is_search()) {
+		         echo 'Search for &quot;'.wp_specialchars($s).'&quot; - '; }
+		      elseif (!(is_404()) && (is_single()) || (is_page())) {
+		         wp_title(''); echo ' - '; }
+		      elseif (is_404()) {
+		         echo 'Not Found - '; }
+		      if (is_home()) {
+		         bloginfo('name'); echo ' - '; bloginfo('description'); }
+		      else {
+		          bloginfo('name'); }
+		      if ($paged>1) {
+		         echo ' - page '. $paged; }
+		   ?>
+	</title>
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+	<link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>">
+	
+	<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>">
+
+	<?php if ( is_singular() ) wp_enqueue_script('comment-reply'); ?>
+
+	<?php wp_head(); ?>
+</head>
+
+<body <?php body_class(); ?>>
+
+<div id="wrapper">
+
+<div id="top">
+<img src="<?php bloginfo('template_url'); ?>/images/logo.jpg" />
+
+<?php wp_nav_menu(array('menu' => "Main Menu")); ?>
+
+<div class="clear"></div>
+</div>
+<!--end top-->
+	
+	
+
+<div id="header">
+<a href="<?php print get_permalink( woocommerce_get_page_id( 'shop' ) ); ?>" id="order-now"><img src="<?php print get_stylesheet_directory_uri(); ?>/images/order_now.png"></a>
+<?php 
+    echo do_shortcode("[metaslider id=84]"); 
+?>
+</div>
+
+<!--end header-->

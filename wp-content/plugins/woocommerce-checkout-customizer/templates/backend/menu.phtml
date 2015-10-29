@@ -1,0 +1,34 @@
+<div class="pluginator-menu">
+    <ul class="pluginator-menu-nav pluginator-menu-nav-tabs">
+    <?php
+    
+    foreach ($this->menuOptions as $ident => $caption) {
+        $params = array(
+            'tab' => $ident,
+            'refresh_completed' => '',
+            'refresh_plugin' => '',
+            'delete_role' => ''
+        );
+        $url = $this->getUrl($params);
+        
+        $selectTab = '';
+        
+        if ($this->hasOptionPageInRequest()) {
+            if ($_GET['tab'] == $ident) {
+                $selectTab = 'class="pluginator-menu-active"';
+            }
+             
+        } else if ($ident == $this->defaultMenuOption) {
+            $selectTab = 'class="pluginator-menu-active"';
+        }
+    ?>   
+        <li  <?php echo $selectTab;?>>
+            <a href="<?php echo $url; ?>" data-toggle="tab">
+                <?php echo __($caption, $this->languageDomain); ?>
+            </a>
+        </li>
+    <?php
+    }
+    ?>   
+    </ul>
+</div>

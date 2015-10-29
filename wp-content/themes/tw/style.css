@@ -14,3 +14,238 @@
 #find, #right {
 	clear: right;
 }
+
+.img-responsive {
+	max-width: 100%;
+	height: auto;
+}
+
+.woocommerce ul.products li.product,
+.woocommerce-page ul.products li.product {
+	width: 100% !important;
+}
+
+.woocommerce #content div.product div.summary,
+.woocommerce div.product div.summary,
+.woocommerce-page #content div.product div.summary,
+.woocommerce-page div.product div.summary {
+	width: 100% !important;
+}
+
+@media screen and (min-width: 768px) {
+	.woocommerce ul.products li.product .button {
+		margin-top: -2em !important;
+	}
+}
+
+.woocommerce .widget_shopping_cart .total,
+.woocommerce.widget_shopping_cart .total {
+	border: 0 !important;
+}
+
+.woocommerce ul.cart_list li,
+.woocommerce ul.product_list_widget li {
+	padding: 4px 4px 4px 2em !important;
+}
+
+.woocommerce ul.cart_list li dl dd,
+.woocommerce ul.product_list_widget li dl dd {
+	padding: 0 !important;
+}
+
+.woocommerce .widget_shopping_cart .cart_list li a.remove,
+.woocommerce.widget_shopping_cart .cart_list li a.remove {
+	top: 4px !important;
+	left: 4px !important;
+}
+
+.woocommerce .product h3 {
+	color: #423f41 !important;
+	font-size: 1.7em !important;
+}
+
+.woocommerce .product .variations,
+.woocommerce .product .variations .value {
+	width: 100%;
+}
+
+.woocommerce .product .variations .label {
+	display: none;
+}
+
+.woocommerce .product .single_variation_wrap {
+	width: 100%;
+	display: block;
+}
+
+@media screen and (min-width: 768px) {
+	.woocommerce .product .single_variation {
+		width: 40%;
+		float: left;
+		display: inline-block;
+	}
+
+	.woocommerce .product .variations_button {
+		width: 60%;
+		float: left;
+		display: inline-block;
+	}
+
+	.woocommerce .product .variations_button button {
+		float: right;
+	}
+}
+
+.variations fieldset {
+	padding: 1em 0 !important;
+}
+
+.prod-variation {
+	display: block;
+	width: 100%;
+	padding-right: 10px;
+}
+
+@media screen and (min-width: 768px) {
+	.prod-variation {
+		display: inline-block;
+		float: left;
+		width: auto;
+	}
+}
+
+.prod-variation input {
+	width: auto !important;
+	margin: 0 10px 0 0 !important;
+	padding: 0 !important;
+}
+
+.woocommerce .product.odd,
+.mini_cart_item.odd {
+	background-color: #fff;
+}
+
+.woocommerce .product.even,
+.mini_cart_item.even {
+	background-color: #f2f2f3;
+}
+
+.woocommerce .product {
+	padding: 15px 15px 30px 15px !important;
+}
+
+img.product-cat {
+	width: 100%;
+	height: auto;
+}
+
+@media screen and (min-width: 768px) {
+	img.product-cat {
+		width: 30%;
+		height: auto;
+	}
+}
+
+.woocommerce-page #right {
+	background: transparent !important;
+}
+
+.market-hours-sidebar {
+	padding: 10px 5px !important;
+	text-transform: uppercase;
+	text-align: center;
+	font-weight: bold;
+	margin-bottom: 80px;
+	color: #727280 !important;
+}
+
+.woocommerce .single_add_to_cart_button {
+	background-color: transparent !important;
+	background: url(images/add_to_cart.png) no-repeat 0 0 !important;
+	width: 144px;
+	height: 48px;
+	text-indent: -9999px;
+}
+
+.woocommerce td.product-name dl.variation dd {
+	padding: 0 !important;
+	margin: 0;
+}
+
+#right .widget_shopping_cart {
+	padding: 30px;
+}
+
+.mini_cart_item {
+	line-height: 1.6;
+}
+
+.mini_cart_item .variation dd {
+	margin: 3px 0 0 0 !important;
+}
+
+.mini_cart_item .variation {
+	margin: 0 0 0 .5em !important;
+	padding: 0 0 0 .5em !important;
+	display: inline-block;
+	float: left;
+	border-left: 0 !important;
+}
+
+.mini_cart_item p {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.mini_cart_item .product-name {
+	font-weight: bold;
+	display: inline-block;
+    float: left;
+}
+
+.mini_cart_item .quantity {
+	margin-left: 5px;
+}
+
+.widget_shopping_cart_content .buttons .button {
+	background-color: transparent !important;
+	background: url(images/review_order.png) no-repeat 0 0 !important;
+	width: 193px;
+	height: 53px;
+	text-indent: -9999px;
+}
+
+@media screen and (min-width: 768px) {
+	.product .tagged_as {
+		float: right;
+	    margin-top: -3.5em;
+	    margin-bottom: 0 !important
+	}
+}
+
+.product .tagged_as a {
+	font-family: 'Conv_Mathlete-Skinny', Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 30px;
+	display: inline-block;
+	width: 26px;
+	height: 26px;
+	border-radius: 13px;
+	text-align: center;
+	background-color: #72727f;
+	color: #fff;
+	line-height: .75;
+}
+
+#header {
+	position: relative;
+}
+#order-now {
+	position: absolute;
+	top: 60px;
+	right: 40px;
+	z-index: 200;
+}
+#order-now img {
+	width: auto !important;
+}

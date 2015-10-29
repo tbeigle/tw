@@ -1,0 +1,50 @@
+<?php
+    $params = array(
+        'refresh_completed' => '',
+        'refresh_plugin' => ''
+    );
+    $url = $this->getUrl($params);
+?>
+<div class="pluginator-checkout-steps-wizard">
+    <!--<h2><?php echo __('Themes', $this->languageDomain); ?></h2>-->
+    <form name="themes" action="<?php echo $url; ?>"  method="post" class="pluginator-checkout-steps-wizard-form">
+        <input type="hidden" name="__action" value="changeTheme" />
+        <div class="pluginator-header-options"><?php echo __('General Settings', $this->languageDomain); ?>  </div>
+        <fieldset class="pluginator-checkout-steps-wizard-options">
+            <table cellpadding="0" cellspacing="0"  class="pluginator-checkout-steps-wizard-form-table">
+                <tbody>                
+                     <tr>
+                        <th>
+                            <?php echo __('Wizard Stylesheet', $this->languageDomain); ?>
+                            <img
+                            class="pluginator-checkout-steps-wizard-help-tip" 
+                            title="<?php echo __(
+                                                'Select your wizard alternative color scheme',
+                                                $this->languageDomain
+                                            ); ?>"
+                            src="<?php echo $this->getPluginImagesUrl('help.png'); ?>"
+                            height="16"
+                            width="16"
+                        >
+                        </th>
+                        <td valign="middle">
+                            <select name="themeSelector">
+                                <?php 
+                                    foreach ($themes as $key => $item) {
+                                        $selected = ($currentTheme == $key) ? ' selected="selected"' : '';
+                                        
+                                ?>
+                                        <option <?php echo $selected ?> value="<?php echo $key ?>">
+                                                <?php echo $item['name']; ?>
+                                        </option>
+                                <?php
+                                    }
+                                ?>
+                            </select>
+                        </td>
+                     </tr>
+                </tbody>
+            </table>
+        </fieldset>
+    </form>
+</div>

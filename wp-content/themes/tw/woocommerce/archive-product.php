@@ -80,6 +80,7 @@ get_header( 'shop' ); ?>
 
 		<?php endif; ?>
 
+		<img src="<?php print get_stylesheet_directory_uri() . '/images/tags.png' ?>" class="img-responsive">
 	<?php
 		/**
 		 * woocommerce_after_main_content hook
@@ -88,34 +89,28 @@ get_header( 'shop' ); ?>
 		 */
 		do_action( 'woocommerce_after_main_content' );
 	?>
-	</div>
 
 	<div id="right">
+	<img src="<?php print get_stylesheet_directory_uri() . '/images/market_hours.png' ?>" class="img-responsive">
+	<p class="market-hours-sidebar">Tuesday-Friday 11am-6pm</p>
+	<img src="<?php print get_stylesheet_directory_uri() . '/images/my_cart.png' ?>" class="img-responsive">
 	<?php
 		/**
 		 * woocommerce_sidebar hook
 		 *
 		 * @hooked woocommerce_get_sidebar - 10
 		 */
-		do_action( 'woocommerce_sidebar' );
+		//do_action( 'woocommerce_sidebar' );
+
+		if ( is_active_sidebar( 'ordernow' ) ) {
+			dynamic_sidebar( 'ordernow' );
+		}
 	?>
 	</div>
-
-	<div id="find">
-<?php if ( is_active_sidebar( 'do' ) ) : ?>
-<?php dynamic_sidebar( 'do' ); ?>
-<?php endif; ?>
-</div>
-
-<div class="connect1">
-<img src="<?php bloginfo('template_url'); ?>/images/connect.png" class="connect-with-us" />
-<a href="https://www.facebook.com/pages/TinWings/211929357754" target="_blank"><img src="<?php bloginfo('template_url'); ?>/images/facebook.png" /></a>
-<a href="http://www.pinterest.com/TinWings/" target="_blank"><img src="<?php bloginfo('template_url'); ?>/images/pinterest.png" /></a>
-<a href="http://instagram.com/tinwings615" target="_blank"><img src="<?php bloginfo('template_url'); ?>/images/instangram.png" /></a>
-</div>
 </div>
 
 <div class="clear"></div>
+</div>
 </div>
 <!--end content-->
 

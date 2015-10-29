@@ -3,8 +3,8 @@ Contributors: itthinx
 Donate link: http://www.itthinx.com/plugins/woocommerce-coupon-shortcodes
 Tags: conditional, coupon, coupons, discount, discounts, display, info, information, marketing, promotion, shortcode, shortcodes, subscription, subscriptions, woocommerce
 Requires at least: 4.0
-Tested up to: 4.2
-Stable tag: 1.2.5
+Tested up to: 4.3
+Stable tag: 1.2.6
 License: GPLv3
 
 Show coupon discount info using shortcodes. Allows to render coupon information and content conditionally, based on the validity of coupons.
@@ -43,7 +43,7 @@ A coupon enumerator shortcode allows to list all or a set of coupons, to show th
 
 = Documentation =
 
-Please refer to the plugin's [documentation pages](http://www.itthinx.com/documentation/woocommerce-coupon-shortcodes/) for detailed descriptions.
+Please refer to the plugin's [documentation pages](http://docs.itthinx.com/document/woocommerce-coupon-shortcodes/) for detailed descriptions.
 
 
 = Examples =
@@ -65,7 +65,7 @@ If you purchase 5 Widgets, you can use the coupon [coupon_code] to get 25% off y
 
 Full usage instructions and help is provided on these pages:
 
-- Please refer to the plugin's documentation pages for detailed information [Documentation](http://www.itthinx.com/documentation/woocommerce-coupon-shortcodes/)
+- Please refer to the plugin's documentation pages for detailed information [Documentation](http://docs.itthinx.com/document/woocommerce-coupon-shortcodes/)
 - Questions, feedback and suggestions can be posted on the plugin page [WooCommerce Coupon Shortcodes plugin page and Support](http://www.itthinx.com/plugins/woocommerce-coupon-shortcodes/)
 
 
@@ -78,7 +78,7 @@ Full usage instructions and help is provided on these pages:
 
 = Where is the documentation? =
 
-[Documentation](http://www.itthinx.com/documentation/woocommerce-coupon-shortcodes/)
+[Documentation](http://docs.itthinx.com/document/woocommerce-coupon-shortcodes/)
 
 = I have a question, where do I ask? =
 
@@ -91,6 +91,10 @@ See the plugin page [WooCommerce Coupon Shortcodes](http://www.itthinx.com/plugi
 
 
 == Changelog ==
+
+= 1.2.6 =
+* Tested with WordPress 4.3 and WooCommerce 2.4.6.
+* Updated the documentation links.
 
 = 1.2.5 =
 * WordPress 4.1 and WooCommerce 2.3.x compatibility checked
@@ -123,26 +127,5 @@ See the plugin page [WooCommerce Coupon Shortcodes](http://www.itthinx.com/plugi
 
 == Upgrade Notice ==
 
-= 1.2.5 =
-* WordPress 4.1 and WooCommerce 2.3.x compatibility checked
-
-= 1.2.4 =
-* WordPress 3.9 compatibility checked
-
-= 1.2.3 =
-* Improved coupon currency symbol rendering, this is now consistent with WooCommerce settings.
-
-= 1.2.2 =
-* WordPress 3.8 compatibility checked
-
-= 1.2.1 =
-* Fixes a PHP Warning when no codes are supplied to a shortcode.
-
-= 1.2.0 =
-* New shortcodes, added support for subscription coupons and bug fixes.
-
-= 1.1.0 =
-* New shortcode allowing to show content based on coupons applied. Added new description and discount info rendering options.
-
-= 1.0.0 =
-* Initial release.
+= 1.2.6 =
+* WordPress 4.3 and WooCommerce 2.4.x compatibility checked and updated documentation links. 

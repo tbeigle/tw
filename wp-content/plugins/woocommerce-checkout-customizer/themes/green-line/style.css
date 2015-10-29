@@ -1,0 +1,206 @@
+/*Wizard Start*/
+div#pluginator-checkout-steps-wizard.pluginator-wizard
+{
+    /*border: 1px solid;*/
+}
+
+div#pluginator-checkout-steps-wizard.pluginator-wizard ul li
+{
+        list-style: none;
+}
+/*Steps Start*/
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps
+{
+    /*border: 1px solid;*/
+    width: 100%;
+    display: inline-block;
+}
+
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul
+{
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    overflow: visible;
+}
+
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li
+{
+    margin: 0;
+    padding: 0;
+    position:relative;
+    float: left;
+    text-align: center;
+    border-bottom: 4px solid;
+    height: 40px;
+}
+
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li a
+{
+    display: inline-block;
+    padding: 10px;
+    text-decoration: none;
+    outline: none;
+}
+
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li a,
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li a span
+{
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li:before
+{
+    content: "";
+    position: relative;
+    float: left;
+    left: 50%;
+    background-color: #98A1D3;
+    height: 12px;
+    width: 12px;
+    border-radius: 12px;
+    bottom: -36px;
+    top: 36px;
+}
+
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.steps ul li a span.current-info
+{
+    display: none;
+}
+
+/*content Start*/
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.content
+{    
+    display: inline-block;
+    margin-top: 20px;
+    /*border: 1px solid green;*/
+    overflow: hidden;
+    /*display: block;*/
+    position: relative; 
+    width: 100%;
+    
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.content h1
+{
+    display: none;
+}
+
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.content div.body
+{
+    position: absolute;
+    padding: 10px;
+    position: absolute;
+    width: 95%;
+    padding: 2.5%;
+}
+
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.actions
+{
+    position: relative;
+    display: inline-block;
+    text-align: right;
+    width: 100%;
+    margin-top: 20px;
+}
+
+
+
+/*Actions Start*/
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.actions ul
+{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: inline-block;
+}
+
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.actions > ul > li
+{
+    margin: 0 10px;
+    float: left;
+    list-style: none;
+}
+
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.actions > ul > li a
+{
+    display: block;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    cursor: pointer;
+
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.actions > ul > li.disabled a,
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.actions > ul > li.disabled a:hover,
+div#pluginator-checkout-steps-wizard.pluginator-wizard > div.actions > ul > li.disabled a:active
+{
+    cursor: default;
+}
+
+div#pluginator-checkout-steps-wizard.pluginator-wizard[data-steps-count="1"]  > div.steps ul li
+{
+    width: 100%;
+}
+div#pluginator-checkout-steps-wizard.pluginator-wizard[data-steps-count="2"] > div.steps ul li
+{
+    width: 50%;
+}
+div#pluginator-checkout-steps-wizard.pluginator-wizard[data-steps-count="3"] > div.steps ul li
+{
+    width: 33.33%;
+}
+div#pluginator-checkout-steps-wizard.pluginator-wizard[data-steps-count="4"] > div.steps ul li
+{
+    width: 25%;
+}
+div#pluginator-checkout-steps-wizard.pluginator-wizard[data-steps-count="5"] > div.steps ul li
+{
+    width: 20%;
+}
+div#pluginator-checkout-steps-wizard.pluginator-wizard[data-steps-count="6"] > div.steps ul li
+{
+    width: 16.66%;
+}
+/*terms*/
+div#pluginator-checkout-steps-wizard.pluginator-wizard p.terms.pluginator-error
+{
+    display: inline-block;
+    border: 1px dotted red;
+}
+div#pluginator-checkout-steps-wizard.pluginator-wizard p.terms
+{
+    margin-top:10px;
+}
+
+
+/***smart phone**/
+@media(max-width: 600px){
+    div#pluginator-checkout-steps-wizard.pluginator-wizard .steps ul > li{
+        float: none;
+        font-size: 14px;
+        margin-left: 0;
+        margin-top: 10px;
+        width: 100% !important;
+    }
+
+    div#pluginator-checkout-steps-wizard.pluginator-wizard .steps ul > li a{
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+    
+    body #pluginator-checkout-steps-wizard.pluginator-wizard.vertical > .steps,
+    body #pluginator-checkout-steps-wizard.pluginator-wizard.vertical > .content
+    {
+        width: 100% !important;
+    }
+}

@@ -1,0 +1,167 @@
+<?php
+if (isset($settings['stepsOrientation'])) {
+    $offsetFromTheContainerSteps = 1;
+    $fullWizardWidth = 100;
+    $contentWidth = $fullWizardWidth - $offsetFromTheContainerSteps;
+    $contentWidth = $contentWidth - $settings['stepsContainerWidth'];
+} else {
+    $contentWidth = 99;
+}
+
+$contentBackgroundOpacity = $settings['contentBackgroundOpacity']/10;
+$rgb = $this->convertHexToRgb($settings['contentBackground']);
+
+?>
+
+<style>
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .content
+    {
+        background-color: rgba(
+            <?php echo $rgb[0]; ?>,
+            <?php echo $rgb[1]; ?>,
+            <?php echo $rgb[2]; ?>,
+            <?php echo $contentBackgroundOpacity; ?>
+        );
+        -webkit-border-radius: <?php echo $settings['contentBorderRadius']; ?>px;
+        -moz-border-radius: <?php echo $settings['contentBorderRadius']; ?>px;
+        border-radius: <?php echo $settings['contentBorderRadius']; ?>px;
+    }
+    
+    body #pluginator-checkout-steps-wizard.pluginator-wizard.vertical > .content
+    {
+        width: <?php echo $contentWidth; ?>%;
+    }
+    
+    /*------- Tabs------*/
+   /* Interval */
+    body #pluginator-checkout-steps-wizard.pluginator-wizard.vertical > .steps
+    {
+        float: <?php echo $settings['stepsPosition']; ?>;
+        width: <?php echo $settings['stepsContainerWidth']; ?>%;
+    }
+  
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .steps a
+    {
+        margin-right: <?php echo $settings['tabsHorizontalInterval']; ?>px;
+        margin-left: <?php echo $settings['tabsHorizontalInterval']; ?>px;
+    }
+    
+    body #pluginator-checkout-steps-wizard.pluginator-wizard.vertical > .steps a
+    {
+        margin-top: <?php echo $settings['tabsVerticalInterval']; ?>px;
+        margin-bottom: <?php echo $settings['tabsVerticalInterval']; ?>px;
+    }
+    
+        
+    /* Disabled Steps */
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .steps a {
+        color: <?php echo $settings['disabledFontColor']; ?>;
+        background-color: <?php echo $settings['disabledTabsColor']; ?>;
+        -webkit-border-radius: <?php echo $settings['tabsBorderRadius']; ?>px;
+        -moz-border-radius: <?php echo $settings['tabsBorderRadius']; ?>px;
+        border-radius: <?php echo $settings['tabsBorderRadius']; ?>px;
+        padding-top: <?php echo $settings['tabsPaddingTop']; ?>px;
+        padding-bottom: <?php echo $settings['tabsPaddingBottom']; ?>px;
+        
+        
+        font-size: <?php echo $settings['tabsFontSize']; ?>px;
+    }
+
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .steps li span.number.number
+    {
+        color: <?php echo $settings['disabledNumbersFontColor']; ?>;
+        font-size: <?php echo $settings['numbersFontSize']; ?>px;
+    }
+    
+
+    
+    /* Completed Steps */
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .steps li.done a {
+        color: <?php echo $settings['doneFontColor']; ?>;
+        background-color: <?php echo $settings['doneTabsColor']; ?>;
+    }
+
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .steps li.done span.number {
+        color: <?php echo $settings['doneNumbersFontColor']; ?>;
+    }
+
+    /* = ACTIVE STEPS
+----------------------------*/
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .steps li.current a {
+        color: <?php echo $settings['activeFontColor']; ?>;
+        background-color: <?php echo $settings['activeTabsColor']; ?>;
+    }
+
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .steps li.current span.number {
+        color: <?php echo $settings['activeNumbersFontColor']; ?>;
+    }
+    
+    /* = HOVER STATES
+----------------------------*/
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .steps li.done:hover a,
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .steps li.current:hover a
+    {
+        color: <?php echo $settings['hoverFontColor']; ?>;
+        background-color: <?php echo $settings['hoverTabsColor']; ?>;
+    }
+
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .steps li.done:hover span.number,
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .steps li.current:hover span.number
+    {
+        color: <?php echo $settings['hoverNumbersFontColor']; ?>;
+    }
+    
+    /* = ERROR STATES
+    ----------------------------*/
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .steps li.current.error a {
+        color: <?php echo $settings['errorFontColor']; ?>;
+        background-color: <?php echo $settings['errorTabsColor']; ?>;
+    }
+
+    
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .steps li.current.error span.number {
+        color: <?php echo $settings['errorNumbersFontColor']; ?>;
+    }
+    
+    /* = ACTIONS BUTTONS
+    ----------------------------*/
+    
+    
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .actions a
+    {
+        background-color: <?php echo $settings['actionsButtonsColor']; ?>;
+        color: <?php echo $settings['actionsButtonsFontColor']; ?>;
+        
+        font-size: <?php echo $settings['actionsButtonsFontSize']; ?>px;
+        
+        -webkit-border-radius: <?php echo $settings['actionsButtonsBorderRadius']; ?>px;
+        -moz-border-radius: <?php echo $settings['actionsButtonsBorderRadius']; ?>px;
+        border-radius: <?php echo $settings['actionsButtonsBorderRadius']; ?>px;
+    }
+    
+    body #pluginator-checkout-steps-wizard.pluginator-wizard > .actions a:hover
+    {
+        background-color: <?php echo $settings['hoverActionsButtonsColor']; ?>;
+        color: <?php echo $settings['hoverActionsButtonsFontColor']; ?>;;
+    }
+    
+    #pluginator-checkout-steps-wizard.pluginator-wizard > .actions .disabled a,
+    #pluginator-checkout-steps-wizard.pluginator-wizard > .actions .disabled a:hover
+    {
+        background-color: <?php echo $settings['disabledActionsButtonsColor']; ?>;
+        color: <?php echo $settings['disabledActionsButtonsFontColor']; ?>;
+    }
+    
+    div#pluginator-checkout-steps-wizard.pluginator-wizard p.terms
+    {
+        float: <?php echo $settings['termsAndConditionsPosition']; ?>;
+        clear: <?php echo $settings['termsAndConditionsPosition']; ?>;
+    }
+    
+    /* Require Filds*/
+    div#pluginator-checkout-steps-wizard.pluginator-wizard p.form-row label.pluginator-require-field
+    {
+        color: <?php echo $settings['requireFieldsTextColor']; ?>;
+    }
+
+</style>
