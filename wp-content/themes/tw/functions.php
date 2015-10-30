@@ -215,3 +215,50 @@ add_action( 'wp_enqueue_scripts', 'tw_enqueue_icheck_styles' );
 function tw_enqueue_icheck_styles() {
   wp_enqueue_style( 'icheck', get_stylesheet_directory_uri() . '/js/icheck/skins/square/purple.css' );
 }
+
+/*
+ * tw_load_jqueryvalidate
+ *
+ * Loads the jQuery Validate library
+ */
+function tw_load_jqueryvalidate(){
+    wp_register_script( 
+        'validate', 
+        get_stylesheet_directory_uri() . '/js/validate/jquery.validate.min.js', 
+        array( 'jquery' )
+    );
+    wp_enqueue_script( 'validate' );
+
+    wp_register_script( 
+        'additional-methods', 
+        get_stylesheet_directory_uri() . '/js/validate/additional-methods.min.js', 
+        array( 'jquery', 'validate' )
+    );
+    wp_enqueue_script( 'additional-methods' );
+}
+add_action('wp_enqueue_scripts', 'tw_load_jqueryvalidate');
+
+/*
+ * tw_load_steps
+ *
+ * Loads the Steps library to customize checkout page
+ */
+function tw_load_steps(){
+    wp_register_script( 
+        'steps', 
+        get_stylesheet_directory_uri() . '/js/steps/jquery.steps.min.js', 
+        array( 'jquery' )
+    );
+    wp_enqueue_script( 'steps' );
+}
+add_action('wp_enqueue_scripts', 'tw_load_steps');
+
+/*
+ * tw_enqueue_icheck_styles
+ *
+ * Adds the css from the iCheck css
+ */
+add_action( 'wp_enqueue_scripts', 'tw_enqueue_steps_styles' );
+function tw_enqueue_steps_styles() {
+  wp_enqueue_style( 'steps', get_stylesheet_directory_uri() . '/js/steps/jquery.steps.css' );
+}

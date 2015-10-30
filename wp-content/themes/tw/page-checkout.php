@@ -65,7 +65,7 @@
 <!--end header-->
 
 <div id="content">
-<div id="left">
+<div id="full-width">
 
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 			
@@ -86,30 +86,11 @@
 		<?php endwhile; endif; ?>
         
         </div>
-<!--end left-->
-
-
-
-<div id="right">
-<?php get_sidebar(); ?>
-</div>
-<!--end right-->
-
-<div id="find">
-<?php if ( is_active_sidebar( 'do' ) ) : ?>
-<?php dynamic_sidebar( 'do' ); ?>
-<?php endif; ?>
-</div>
-
-<div class="connect1">
-<img src="<?php bloginfo('template_url'); ?>/images/connect.png" class="connect-with-us" />
-<a href="https://www.facebook.com/pages/TinWings/211929357754" target="_blank"><img src="<?php bloginfo('template_url'); ?>/images/facebook.png" /></a>
-<a href="http://www.pinterest.com/TinWings/" target="_blank"><img src="<?php bloginfo('template_url'); ?>/images/pinterest.png" /></a>
-<a href="http://instagram.com/tinwings615" target="_blank"><img src="<?php bloginfo('template_url'); ?>/images/instangram.png" /></a>
-</div>
+<!--end content-->
 </div>
 
 <div class="clear"></div>
+</div>
 </div>
 <!--end content-->
 
@@ -127,4 +108,3 @@
 <?php endif; ?>
 
 <?php get_footer(); ?>
-
