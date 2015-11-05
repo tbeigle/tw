@@ -262,3 +262,43 @@ add_action( 'wp_enqueue_scripts', 'tw_enqueue_steps_styles' );
 function tw_enqueue_steps_styles() {
   wp_enqueue_style( 'steps', get_stylesheet_directory_uri() . '/js/steps/jquery.steps.css' );
 }
+
+/*
+ * tw_show_product_categories_hero
+ *
+ * Displays a big image at the top of every product archive page
+ */
+add_action( 'woocommerce_archive_description', 'tw_show_product_categories_hero', 0 );
+function tw_show_product_categories_hero() {
+    echo '<img src="' . get_stylesheet_directory_uri() . '/images/ordernow_hero.png"" class="img-responsive product-cat-hero">';
+}
+
+/*
+ * tw_show_product_categories
+ *
+ * Displays the product categories in the product archives
+ */
+add_action( 'woocommerce_before_shop_loop', 'tw_show_product_categories', 30 );
+function tw_show_product_categories() {
+    echo '<div class="category-tabs">';
+    echo '<a href="/order-now/main"><img src="' . get_stylesheet_directory_uri() . '/images/cat_mains.png" class="product-cat"></a>';
+    echo '<a href="/order-now/sides"><img src="' . get_stylesheet_directory_uri() . '/images/cat_sides.png" class="product-cat"></a>';
+    echo '<a href="/order-now/extra"><img src="' . get_stylesheet_directory_uri() . '/images/cat_extras.png" class="product-cat"></a>';
+    echo '</div>';
+}
+
+/*
+ * tw_redirect_ordernow_page
+ *
+ * Redirects the Order Now page to the Main category
+ */
+add_action( 'wp', 'tw_redirect_ordernow_page' );
+function tw_redirect_ordernow_page() {    
+    global $wp;
+    $current_uri = str_replace(get_site_url(), '', home_url(add_query_arg(array(),$wp->request)));
+
+    if ( $current_uri == '/order-now' ) {
+      wp_redirect( '/order-now/main', 301 );
+      exit;
+    }
+}

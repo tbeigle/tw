@@ -10,6 +10,22 @@
  Text Domain:  tw
 */
 
+.woocommerce #left {
+  width: 65% !important;
+  box-sizing: border-box;
+}
+
+.woocommerce #right {
+  width: 35% !important;
+  box-sizing: border-box;
+}
+
+@media screen and (min-width: 768px) {
+  .woocommerce #right {
+    padding-left: 75px;
+  }
+}
+
 input[type="text"],
 input[type="password"],
 input[type="number"],
@@ -39,6 +55,8 @@ input[type="tel"] {
 .woocommerce ul.products li.product,
 .woocommerce-page ul.products li.product {
     width: 100% !important;
+    font-size: 12px;
+    box-sizing: border-box;
 }
 
 .woocommerce #content div.product div.summary,
@@ -208,7 +226,7 @@ img.product-cat {
 }
 
 #right .widget_shopping_cart {
-    padding: 30px;
+    padding: 30px 0;
 }
 
 .mini_cart_item {
@@ -234,8 +252,10 @@ img.product-cat {
 
 .mini_cart_item .product-name {
     font-weight: bold;
-    display: inline-block;
-    float: left;
+    display: block;
+    float: none;
+    clear: both;
+    width: 100%;
 }
 
 .mini_cart_item .quantity {
@@ -246,12 +266,18 @@ img.product-cat {
     list-style-type: none;
 }
 
+.widget_shopping_cart_content .buttons {
+  margin-top: 50px;
+}
+
 .widget_shopping_cart_content .buttons .button {
     background-color: transparent !important;
     background: url(images/review_order.png) no-repeat 0 0 !important;
-    width: 193px;
+    width: 196px;
     height: 53px;
     text-indent: -9999px;
+    float: right;
+    padding: 0;
 }
 
 @media screen and (min-width: 768px) {
@@ -265,15 +291,15 @@ img.product-cat {
 .product .tagged_as a {
     font-family: 'Conv_Mathlete-Skinny', Arial, Helvetica, sans-serif;
     font-weight: bold;
-    font-size: 30px;
+    font-size: 28px;
     display: inline-block;
-    width: 26px;
-    height: 26px;
-    border-radius: 13px;
+    width: 28px;
+    height: 28px;
+    border-radius: 14px;
     text-align: center;
     background-color: #72727f;
     color: #fff;
-    line-height: .75;
+    line-height: .9;
 }
 
 #header {
@@ -356,4 +382,9 @@ img.product-cat {
 .wizard > .actions .disabled a:hover,
 .wizard > .actions .disabled a:active {
     background: #dedee5 !important;
+}
+
+.page-description,
+.term-description {
+  padding: 20px 0;
 }
