@@ -34,6 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				else {
 					$zebra = 'odd';
 				}
+				//print_r($_product);
 
 				if ( $_product && $_product->exists() && $cart_item['quantity'] > 0 && apply_filters( 'woocommerce_widget_cart_item_visible', true, $cart_item, $cart_item_key ) ) {
 
@@ -54,7 +55,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<div class="product-name"><?php echo str_replace( array( 'http:', 'https:' ), '', $thumbnail ) . $product_name . '&nbsp;'; ?></div>
 						<?php echo WC()->cart->get_item_data( $cart_item ); ?>
 
-						<?php echo apply_filters( 'woocommerce_widget_cart_item_quantity', '<span class="quantity">(' . sprintf( '%s', $product_price ) . ')</span>', $cart_item, $cart_item_key ); ?>
+						<?php 
+  						if ($_product->product_type == 'simple') {
+  						  echo apply_filters( 'woocommerce_widget_cart_item_quantity', '<span class="quantity">' . sprintf( '%s &times; %s', $cart_item['quantity'], $product_price ) . '</span>', $cart_item, $cart_item_key );
+  						}
+  						else {
+                echo apply_filters( 'woocommerce_widget_cart_item_quantity', '<span class="quantity">(' . sprintf( '%s', $product_price ) . ')</span>', $cart_item, $cart_item_key );
+  						}
+  				  ?>
 					</li>
 					<?php
 				}
