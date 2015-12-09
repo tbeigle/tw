@@ -50,6 +50,7 @@ $get_checkout_url = apply_filters( 'woocommerce_get_checkout_url', WC()->cart->g
 	</div>
 
 	<?php do_action( 'woocommerce_checkout_after_order_review' ); ?>
+  <a href="javascript:window.print();" class="btn-print">Print Invoice</a>
 	</section>
 
 </form>

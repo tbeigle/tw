@@ -151,6 +151,35 @@ function tw_remove_prices( $price ) {
 }
 
 /*
+ * tw_show_price_and_stock_after_description
+ *
+ * Add the price and stock after the description
+ */
+add_action( 'tw_woocommerce_price_after_description', 'tw_show_price_and_stock_after_description', 10 );
+function tw_show_price_and_stock_after_description() {
+  global $product;
+  
+  if ($product->product_type == 'simple') {
+    echo '<span class="price">' . woocommerce_price($product->price) . '</span>';
+  }
+  
+  if ($product->stock_status == 'instock') {
+    echo '<span class="stock">' . number_format($product->stock, 0) . ' in stock</span>';
+  }
+  else {
+    echo '<span class="stock">Out of stock</span>';
+  }
+}
+
+/**
+ * Hide Stock message
+ */
+add_filter( 'woocommerce_get_availability', 'tw_hide_stock', 1, 2);
+function tw_hide_stock( $availability, $_product ) {
+  // do nothing
+}
+
+/*
  * Removes "Showing results..." in the product archives
  */
 remove_action( 'woocommerce_after_shop_loop', 'woocommerce_result_count', 20 );
@@ -301,4 +330,14 @@ function tw_redirect_ordernow_page() {
       wp_redirect( '/order-now/main', 301 );
       exit;
     }
+}
+
+/*
+ * tw_coupon_code_message
+ *
+ * Changes the "coupon code" to "gift card code"
+ */
+add_filter( 'woocommerce_checkout_coupon_message', 'tw_coupon_code_message' );
+function tw_coupon_code_message() {
+  return __( 'Have a gift card code?', 'woocommerce' ) . ' <a href="#" class="showcoupon">' . __( 'Click here to enter your gift card code', 'woocommerce' ) . '</a>';
 }

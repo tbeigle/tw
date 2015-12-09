@@ -67,7 +67,7 @@ input[type="tel"] {
 }
 
 @media screen and (min-width: 768px) {
-    .woocommerce ul.products li.product .button {
+    .woocommerce ul.products li.product .variations_button .button {
         margin-top: -2em !important;
     }
 }
@@ -89,6 +89,10 @@ input[type="tel"] {
     .woocommerce-page table.cart td.actions .input-text {
         width: 50% !important;
     }
+}
+
+.woocommerce .input-text.qty.text {
+    width: auto !important;
 }
 
 .woocommerce .widget_shopping_cart .total,
@@ -144,7 +148,8 @@ input[type="tel"] {
         display: inline-block;
     }
 
-    .woocommerce .product .variations_button button {
+    .woocommerce .product .variations_button button,
+    .woocommerce .product button.single_add_to_cart_button {
         float: right;
     }
 }
@@ -203,13 +208,31 @@ img.product-cat {
     background: transparent !important;
 }
 
-.market-hours-sidebar {
+.woocommerce ul.products li.product .price {
+  font-size: 2em !important;
+  clear: both;
+}
+
+.woocommerce ul.products li.product .stock {
+  clear: both;
+  display: block;
+}
+
+.market-hours-sidebar,
+.location-sidebar {
     padding: 10px 5px !important;
     text-transform: uppercase;
     text-align: center;
     font-weight: bold;
-    margin-bottom: 80px;
+    margin-bottom: 20px;
     color: #727280 !important;
+}
+
+.location-sidebar {
+  font-family: "LunchBox Slab", Arial, Helvetica, sans-serif;
+  margin-bottom: 80px;
+  font-size: 22px;
+  text-transform: none;
 }
 
 .woocommerce .single_add_to_cart_button {
@@ -317,8 +340,9 @@ img.product-cat {
     width: auto !important;
 }
 
-#order_comments_field {
-    display: none;
+#order_comments_field textarea {
+    border: 1px solid #afafaf;
+    padding: 5px;
 }
 
 .shop_table.cart .product-thumbnail {
@@ -387,4 +411,22 @@ img.product-cat {
 .page-description,
 .term-description {
   padding: 20px 0;
+}
+
+.btn-print {
+  display: block;
+  font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
+  margin:0 auto;
+  background: #5b5c7a;
+  border-radius: 6px;
+  color: #fff;
+  padding: 6px 12px;
+  width: 100%;
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+  .btn-print {
+    width: 20%;
+  }
 }
