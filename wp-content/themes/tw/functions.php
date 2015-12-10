@@ -27,12 +27,12 @@ function tw_enqueue_parent_styles() {
  * Loads the theme scripts
  */
 function tw_load_scripts(){
-    wp_register_script( 
-        'tw-scripts', 
-        get_stylesheet_directory_uri() . '/js/scripts.js',
-        array( 'jquery', 'icheck' )
-    );
-    wp_enqueue_script( 'tw-scripts' );
+  wp_register_script( 
+    'tw-scripts', 
+    get_stylesheet_directory_uri() . '/js/scripts.js',
+    array( 'jquery', 'icheck' )
+  );
+  wp_enqueue_script( 'tw-scripts' );
 }
 add_action('wp_enqueue_scripts', 'tw_load_scripts');
 
@@ -91,7 +91,7 @@ if ( is_woocommerce_activated() ) {
 add_action( 'after_setup_theme', 'tw_woocommerce_support' );
 function tw_woocommerce_support() {
 	if ( is_woocommerce_activated() ) {
-    	add_theme_support( 'woocommerce' );
+    add_theme_support( 'woocommerce' );
 	}
 }
 
@@ -134,7 +134,27 @@ function tw_remove_related_products( $args ) {
  */
 add_action( 'init', 'tw_remove_wc_breadcrumbs' );
 function tw_remove_wc_breadcrumbs() {
-    remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20, 0 );
+  remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20, 0 );
+}
+
+/*
+ * tw_redirect_on_disabled_shop
+ *
+ * Redirect to a new page if the Woocommerce Shop has been disabled
+ */
+add_action( 'wp', 'tw_redirect_on_disabled_shop' );
+function tw_redirect_on_disabled_shop() {
+  global $wp, $wc_cvo;
+  
+  $current_uri = str_replace(get_site_url(), '', home_url(add_query_arg(array(),$wp->request)));
+  
+  // check for urls that contain order-now, cart and checkout and redirect if the shop is disabled
+  if ( $wc_cvo->setting( 'wc_cvo_prices' ) != 'enabled' || $wc_cvo->setting( 'wc_cvo_atc' ) != 'enabled' ) {
+    if ( preg_match('/order-now/', $current_uri) || preg_match('/cart/', $current_uri) || preg_match('/checkout/', $current_uri) ) {
+      wp_redirect( '/shop-disabled' );
+      exit;
+    }
+  }
 }
 
 /*
@@ -157,10 +177,15 @@ function tw_remove_prices( $price ) {
  */
 add_action( 'tw_woocommerce_price_after_description', 'tw_show_price_and_stock_after_description', 10 );
 function tw_show_price_and_stock_after_description() {
-  global $product;
+  global $product, $wc_cvo;
   
   if ($product->product_type == 'simple') {
-    echo '<span class="price">' . woocommerce_price($product->price) . '</span>';
+		if ( ($wc_cvo->setting( 'wc_cvo_prices' ) == 'secured' && !catalog_visibility_user_has_access()) || $wc_cvo->setting( 'wc_cvo_prices' ) == 'disabled' ) {
+			echo '<span class="price"></span>'; // hide the price when the shop is disabled
+		}
+		else {
+  		echo '<span class="price">' . woocommerce_price($product->price) . '</span>';
+		}
   }
   
   if ($product->stock_status == 'instock') {
@@ -205,9 +230,9 @@ function tw_remove_product_tabs( $tabs ) {
  */
 add_action( 'woocommerce_after_shop_loop_item_title', 'tw_show_tags_in_archive', 30 );
 function tw_show_tags_in_archive() {
-    global $product;
+  global $product;
 
-    echo $product->get_tags( ' ', '<span class="tagged_as">', '</span>' );
+  echo $product->get_tags( ' ', '<span class="tagged_as">', '</span>' );
 }
 
 /*
@@ -226,12 +251,12 @@ function tw_remove_wc_archive_title( $page_title ) {
  * Loads the iCheck library to customize and theme the radio boxes in the product archives
  */
 function tw_load_icheck(){
-    wp_register_script( 
-        'icheck', 
-        get_stylesheet_directory_uri() . '/js/icheck/icheck.min.js', 
-        array( 'jquery' )
-    );
-    wp_enqueue_script( 'icheck' );
+  wp_register_script( 
+    'icheck', 
+    get_stylesheet_directory_uri() . '/js/icheck/icheck.min.js', 
+    array( 'jquery' )
+  );
+  wp_enqueue_script( 'icheck' );
 }
 add_action('wp_enqueue_scripts', 'tw_load_icheck');
 
@@ -251,19 +276,19 @@ function tw_enqueue_icheck_styles() {
  * Loads the jQuery Validate library
  */
 function tw_load_jqueryvalidate(){
-    wp_register_script( 
-        'validate', 
-        get_stylesheet_directory_uri() . '/js/validate/jquery.validate.min.js', 
-        array( 'jquery' )
-    );
-    wp_enqueue_script( 'validate' );
+  wp_register_script( 
+    'validate', 
+    get_stylesheet_directory_uri() . '/js/validate/jquery.validate.min.js', 
+    array( 'jquery' )
+  );
+  wp_enqueue_script( 'validate' );
 
-    wp_register_script( 
-        'additional-methods', 
-        get_stylesheet_directory_uri() . '/js/validate/additional-methods.min.js', 
-        array( 'jquery', 'validate' )
-    );
-    wp_enqueue_script( 'additional-methods' );
+  wp_register_script( 
+    'additional-methods', 
+    get_stylesheet_directory_uri() . '/js/validate/additional-methods.min.js', 
+    array( 'jquery', 'validate' )
+  );
+  wp_enqueue_script( 'additional-methods' );
 }
 add_action('wp_enqueue_scripts', 'tw_load_jqueryvalidate');
 
@@ -273,12 +298,12 @@ add_action('wp_enqueue_scripts', 'tw_load_jqueryvalidate');
  * Loads the Steps library to customize checkout page
  */
 function tw_load_steps(){
-    wp_register_script( 
-        'steps', 
-        get_stylesheet_directory_uri() . '/js/steps/jquery.steps.min.js', 
-        array( 'jquery' )
-    );
-    wp_enqueue_script( 'steps' );
+  wp_register_script( 
+    'steps', 
+    get_stylesheet_directory_uri() . '/js/steps/jquery.steps.min.js', 
+    array( 'jquery' )
+  );
+  wp_enqueue_script( 'steps' );
 }
 add_action('wp_enqueue_scripts', 'tw_load_steps');
 
@@ -299,7 +324,7 @@ function tw_enqueue_steps_styles() {
  */
 add_action( 'woocommerce_archive_description', 'tw_show_product_categories_hero', 0 );
 function tw_show_product_categories_hero() {
-    echo '<img src="' . get_stylesheet_directory_uri() . '/images/ordernow_hero.png"" class="img-responsive product-cat-hero">';
+  echo '<img src="' . get_stylesheet_directory_uri() . '/images/ordernow_hero.png"" class="img-responsive product-cat-hero">';
 }
 
 /*
@@ -309,11 +334,11 @@ function tw_show_product_categories_hero() {
  */
 add_action( 'woocommerce_before_shop_loop', 'tw_show_product_categories', 30 );
 function tw_show_product_categories() {
-    echo '<div class="category-tabs">';
-    echo '<a href="/order-now/main"><img src="' . get_stylesheet_directory_uri() . '/images/cat_mains.png" class="product-cat"></a>';
-    echo '<a href="/order-now/sides"><img src="' . get_stylesheet_directory_uri() . '/images/cat_sides.png" class="product-cat"></a>';
-    echo '<a href="/order-now/extra"><img src="' . get_stylesheet_directory_uri() . '/images/cat_extras.png" class="product-cat"></a>';
-    echo '</div>';
+  echo '<div class="category-tabs">';
+  echo '<a href="/order-now/main"><img src="' . get_stylesheet_directory_uri() . '/images/cat_mains.png" class="product-cat"></a>';
+  echo '<a href="/order-now/sides"><img src="' . get_stylesheet_directory_uri() . '/images/cat_sides.png" class="product-cat"></a>';
+  echo '<a href="/order-now/extra"><img src="' . get_stylesheet_directory_uri() . '/images/cat_extras.png" class="product-cat"></a>';
+  echo '</div>';
 }
 
 /*
@@ -323,13 +348,13 @@ function tw_show_product_categories() {
  */
 add_action( 'wp', 'tw_redirect_ordernow_page' );
 function tw_redirect_ordernow_page() {    
-    global $wp;
-    $current_uri = str_replace(get_site_url(), '', home_url(add_query_arg(array(),$wp->request)));
+  global $wp;
+  $current_uri = str_replace(get_site_url(), '', home_url(add_query_arg(array(),$wp->request)));
 
-    if ( $current_uri == '/order-now' ) {
-      wp_redirect( '/order-now/main', 301 );
-      exit;
-    }
+  if ( $current_uri == '/order-now' ) {
+    wp_redirect( '/order-now/main', 301 );
+    exit;
+  }
 }
 
 /*
