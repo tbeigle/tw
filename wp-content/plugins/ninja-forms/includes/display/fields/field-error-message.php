@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Outputs any error messages with the location of field_id.
 **/
@@ -24,8 +24,10 @@ function ninja_forms_display_field_processing_error( $field_id ){
 		$style = 'display:none;';
 	}
 
+	$class = apply_filters( 'ninja_forms_display_field_processing_error_class', 'ninja-forms-field-error', $field_id );
+
 	?>
-	<div id="ninja_forms_field_<?php echo $field_id;?>_error" style="<?php echo $style;?>" class="ninja-forms-field-error">
+	<div id="ninja_forms_field_<?php echo $field_id;?>_error" style="<?php echo $style;?>" class="<?php echo $class; ?>">
 	<?php
 	if(is_array($field_errors)){
 		foreach($field_errors as $error){

@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 function ninja_forms_req_fields_process(){
 	global $ninja_forms_processing, $ninja_forms_fields;
@@ -83,7 +83,7 @@ function ninja_forms_req_fields_process(){
 						}
 					}else{
 						if($label_pos == 'inside'){
-							if( $user_value == $label OR empty( $user_value ) ){
+							if( $user_value == $label OR ( empty( $user_value ) && $user_value !== "0" ) ){
 								$ninja_forms_processing->add_error('required-'.$field_id, $req_field_error, $field_id);
 								$ninja_forms_processing->add_error('required-general', $req_error_label, 'general');
 							}

@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 function ninja_forms_register_field_submit(){
 	$args = array(
 		'name' => __( 'Submit', 'ninja-forms' ),
@@ -27,7 +27,7 @@ function ninja_forms_register_field_submit(){
 
 add_action('init', 'ninja_forms_register_field_submit');
 
-function ninja_forms_field_submit_display($field_id, $data){
+function ninja_forms_field_submit_display( $field_id, $data, $form_id = '' ){
 	global $ninja_forms_loading, $ninja_forms_processing;
 
 	if ( isset ( $ninja_forms_loading ) ) {
@@ -42,7 +42,7 @@ function ninja_forms_field_submit_display($field_id, $data){
 		$show_field = true;
 	}
 
-	$field_class = ninja_forms_get_field_class($field_id);
+	$field_class = ninja_forms_get_field_class( $field_id, $form_id );
 	if(isset($data['label']) AND $data['label'] != ''){
 		$label = $data['label'];
 	}else{
@@ -57,7 +57,7 @@ function ninja_forms_field_submit_display($field_id, $data){
 		<input type="submit" name="_ninja_forms_field_<?php echo $field_id;?>" class="<?php echo $field_class;?>" id="ninja_forms_field_<?php echo $field_id;?>" value="<?php echo $label;?>" rel="<?php echo $field_id;?>" >
 	</div>
 	<div id="nf_processing_<?php echo $form_id; ?>" style="display:none;">
-		<input type="submit" name="" class="<?php echo $field_class; ?>" value="<?php echo $processing_msg; ?>" rel="<?php echo $field_id;?>" disabled>
+		<input type="submit" name="_ninja_forms_field_<?php echo $field_id;?>" class="<?php echo $field_class; ?>" id="ninja_forms_field_<?php echo $field_id;?>" value="<?php echo $processing_msg; ?>" rel="<?php echo $field_id;?>" disabled>
 	</div>
 	<?php
 

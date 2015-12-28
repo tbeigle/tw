@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Equation Operating System Classes.
  * 
@@ -23,7 +23,7 @@
  * - Add factorial support. (ie 5! = 120)
  *
  * @author Jon Lawrence <jlawrence11@gmail.com>
- * @copyright Copyright ©2005-2013, Jon Lawrence
+ * @copyright Copyright ï¿½2005-2013, Jon Lawrence
  * @license http://opensource.org/licenses/LGPL-2.1 LGPL 2.1 License
  * @package EOS
  * @version 2.0
@@ -67,7 +67,7 @@ require_once "stack.class.php";
  * This class was created for PHP4 in 2005, updated to fully PHP5 in 2013.
  * 
  * @author Jon Lawrence <jlawrence11@gmail.com>
- * @copyright Copyright ©2005-2013, Jon Lawrence
+ * @copyright Copyright ï¿½2005-2013, Jon Lawrence
  * @license http://opensource.org/licenses/LGPL-2.1 LGPL 2.1 License
  * @package Math
  * @subpackage EOS
@@ -282,30 +282,30 @@ class eqEOS {
 			else {
 				switch ($pf[$i]) {
 					case '+':
-						$temp[$hold-2] = $temp[$hold-2] + $temp[$hold-1];
+						@$temp[$hold-2] = $temp[$hold-2] + $temp[$hold-1];
 						break;
 					case '-':
-						$temp[$hold-2] = $temp[$hold-2] - $temp[$hold-1];
+						@$temp[$hold-2] = $temp[$hold-2] - $temp[$hold-1];
 						break;
 					case '*':
-						$temp[$hold-2] = $temp[$hold-2] * $temp[$hold-1];
+						@$temp[$hold-2] = $temp[$hold-2] * $temp[$hold-1];
 						break;
 					case '/':
 						if($temp[$hold-1] == 0) {
 							throw new Exception("Division by 0 on: '{$temp[$hold-2]} / {$temp[$hold-1]}' in {$this->inFix}", EQEOS_E_DIV_ZERO);
 							return false;
 						}
-						$temp[$hold-2] = $temp[$hold-2] / $temp[$hold-1];
+						@$temp[$hold-2] = $temp[$hold-2] / $temp[$hold-1];
 						break;
 					case '^':
-						$temp[$hold-2] = pow($temp[$hold-2], $temp[$hold-1]);
+						@$temp[$hold-2] = pow($temp[$hold-2], $temp[$hold-1]);
 						break;
 					case '%':
 						if($temp[$hold-1] == 0) {
 							throw new Exception("Division by 0 on: '{$temp[$hold-2]} % {$temp[$hold-1]}' in {$this->inFix}", EQEOS_E_DIV_ZERO);
 							return false;
 						}
-						$temp[$hold-2] = bcmod($temp[$hold-2], $temp[$hold-1]);
+						@$temp[$hold-2] = bcmod($temp[$hold-2], $temp[$hold-1]);
 						break;
 				}
 				// Decrease the hold var to one above where the last number is 
@@ -441,7 +441,7 @@ class eqEOS {
  * equation to the user.  Extends the eqEOS class.
  *
  * @author Jon Lawrence <jlawrence11@gmail.com>
- * @copyright Copyright ©2005-2013 Jon Lawrence
+ * @copyright Copyright ï¿½2005-2013 Jon Lawrence
  * @license http://opensource.org/licenses/LGPL-2.1 LGPL 2.1 License
  * @package Math
  * @subpackage EOS

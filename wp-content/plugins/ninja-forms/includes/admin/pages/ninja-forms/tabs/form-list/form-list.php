@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 function ninja_forms_register_form_export(){
@@ -15,7 +15,7 @@ function ninja_forms_register_form_duplicate(){
 		$form_id = absint( $_REQUEST['form_id'] );
 		$form_row = ninja_forms_serialize_form( $form_id );
 		ninja_forms_import_form( $form_row );
-		$url = remove_query_arg( array( 'duplicate_form', 'form_id' ) );
+		$url = esc_url_raw( remove_query_arg( array( 'duplicate_form', 'form_id' ) ) );
 		wp_redirect( $url );
 	}
 }
@@ -23,7 +23,7 @@ function ninja_forms_register_form_duplicate(){
 add_action( 'admin_init', 'ninja_forms_register_form_duplicate' );
 
 function ninja_forms_register_tab_form_list(){
-	$new_link = esc_url(add_query_arg(array('form_id' => 'new', 'tab' => 'form_settings')));
+	$new_link = esc_url( add_query_arg( array('form_id' => 'new', 'tab' => 'form_settings') ) );
 	$args = array(
 		'name' => __( 'All Forms', 'ninja-forms' ),
 		'page' => 'ninja-forms',
@@ -34,16 +34,19 @@ function ninja_forms_register_tab_form_list(){
 		'inactive_class' => 'form-list-inactive',
 		'show_tab_links' => false,
 		'show_this_tab_link' => false,
-		'title' => '<h2>Forms <a href="'.$new_link.'" class="add-new-h2">'.__( 'Add New Form', 'ninja-forms' ).'</a></h2>',
+		// 'title' => '<h2>Forms <a href="'.$new_link.'" class="add-new-h2">'.__( 'Add New Form', 'ninja-forms' ).'</a></h2>',
 	);
 	ninja_forms_register_tab('form_list', $args);
 }
 
 add_action('admin_init', 'ninja_forms_register_tab_form_list');
 
-function ninja_forms_tab_form_list($form_id, $data){
-	global $wpdb;
-	$all_forms = ninja_forms_get_all_forms();
+function ninja_forms_tab_form_list(){
+
+	do_action( 'nf_admin_before_form_list' );
+
+	$all_forms = Ninja_Forms()->forms()->get_all();
+
 	$form_count = count($all_forms);
 
 	if( isset( $_REQUEST['limit'] ) ){
@@ -76,7 +79,7 @@ function ninja_forms_tab_form_list($form_id, $data){
 			$end = $form_count;
 		}else{
 			$end = $current_page * $limit;
-			$end = $end - 1;
+			// $end = $end - 1;
 		}
 
 		if( $end > $form_count ){
@@ -96,7 +99,6 @@ function ninja_forms_tab_form_list($form_id, $data){
 			<select id="" class="" name="bulk_action">
 				<option value=""><?php _e( 'Bulk Actions', 'ninja-forms' );?></option>
 				<option value="delete"><?php _e( 'Delete', 'ninja-forms' );?></option>
-				<!-- <option value="export"><?php _e( 'Export Forms', 'ninja-forms' );?></option> -->
 			</select>
 			<input type="submit" name="submit" value="<?php _e( 'Apply', 'ninja-forms' ); ?>" class="button-secondary">
 		</div>
@@ -118,18 +120,18 @@ function ninja_forms_tab_form_list($form_id, $data){
 			}
 				if($page_count > 1){
 
-					$first_page = remove_query_arg('paged');
-					$last_page = add_query_arg(array('paged' => $page_count));
+					$first_page = esc_url( remove_query_arg( 'paged' ) );
+					$last_page = esc_url( add_query_arg( array( 'paged' => $page_count ) ) );
 
 					if($current_page > 1){
 						$prev_page = $current_page - 1;
-						$prev_page = add_query_arg(array('paged' => $prev_page));
+						$prev_page = esc_url( add_query_arg( array('paged' => $prev_page ) ) );
 					}else{
 						$prev_page = $first_page;
 					}
 					if($current_page != $page_count){
 						$next_page = $current_page + 1;
-						$next_page = add_query_arg(array('paged' => $next_page));
+						$next_page = esc_url( add_query_arg( array('paged' => $next_page ) ) );
 					}else{
 						$next_page = $last_page;
 					}
@@ -138,7 +140,7 @@ function ninja_forms_tab_form_list($form_id, $data){
 			<span class="pagination-links">
 				<a class="first-page disabled" title="<?php _e( 'Go to the first page', 'ninja-forms' ); ?>" href="<?php echo $first_page;?>">«</a>
 				<a class="prev-page disabled" title="<?php _e( 'Go to the previous page', 'ninja-forms' ); ?>" href="<?php echo $prev_page;?>">‹</a>
-				<span class="paging-input"><input class="current-page" title="Current page" type="text" name="paged" value="<?php echo $current_page;?>" size="2"> of <span class="total-pages"><?php echo $page_count;?></span></span>
+				<span class="paging-input"><input class="current-page" title="<?php _e( 'Current page', 'ninja-forms' ); ?>" type="text" name="paged" value="<?php echo $current_page;?>" size="2"> <?php _e( 'of', 'ninja-forms' ); ?> <span class="total-pages"><?php echo $page_count;?></span></span>
 				<a class="next-page" title="<?php _e( 'Go to the next page', 'ninja-forms' ); ?>" href="<?php echo $next_page;?>">›</a>
 				<a class="last-page" title="<?php _e( 'Go to the last page', 'ninja-forms' ); ?>" href="<?php echo $last_page;?>">»</a>
 			</span>
@@ -161,16 +163,16 @@ function ninja_forms_tab_form_list($form_id, $data){
 	<?php
 	if(is_array($all_forms) AND !empty($all_forms) AND $current_page <= $page_count){
 		for ($i = $start; $i < $end; $i++) {
-			$form_id = $all_forms[$i]['id'];
-			$data = $all_forms[$i]['data'];
-			$date_updated = $all_forms[$i]['date_updated'];
+			$form_id = $all_forms[$i];
+			$data = Ninja_Forms()->form( $form_id )->get_all_settings();
+			$date_updated = $data['date_updated'];
 			$date_updated = strtotime( $date_updated );
-			$date_updated = date_i18n( __( 'F d, Y', 'ninja-forms' ), $date_updated );
-			$edit_link = esc_url( add_query_arg( array( 'tab' => 'form_settings', 'form_id' => $form_id ) ) );
+			$date_updated = date_i18n( 'F d, Y', $date_updated );
+			$link = esc_url( remove_query_arg( array( 'paged' ) ) );
+			$edit_link = esc_url( add_query_arg( array( 'tab' => 'builder', 'form_id' => $form_id ), $link ) );
 			$subs_link = admin_url( 'edit.php?post_status=all&post_type=nf_sub&action=-1&m=0&form_id=' . $form_id . '&paged=1&mode=list&action2=-1' );
-			$export_link = esc_url( add_query_arg( array( 'export_form' => 1, 'form_id' => $form_id ) ) );
-			$duplicate_link = esc_url( add_query_arg( array( 'duplicate_form' => 1, 'form_id' => $form_id ) ) );
-			$shortcode = apply_filters ( "ninja_forms_form_list_shortcode", "[ninja_forms_display_form id=" .  $form_id . "]", $form_id );
+			$duplicate_link = esc_url( add_query_arg( array( 'duplicate_form' => 1, 'form_id' => $form_id ), $link ) );
+			$shortcode = apply_filters ( "ninja_forms_form_list_shortcode", "[ninja_forms id=" .  $form_id . "]", $form_id );
 			$template_function = apply_filters ( "ninja_forms_form_list_template_function", "<pre>if( function_exists( 'ninja_forms_display_form' ) ){ ninja_forms_display_form( " . "$form_id" . " ); }</pre>", $form_id );
 			?>
 			<tr id="ninja_forms_form_<?php echo $form_id;?>_tr">
@@ -179,12 +181,11 @@ function ninja_forms_tab_form_list($form_id, $data){
 				</th>
 				<td class="post-title page-title column-title">
 					<strong>
-						<a href="<?php echo $edit_link;?>"><?php echo $data['form_title'];?></a>
+						<a href="<?php echo $edit_link;?>"><?php echo stripslashes( $data['form_title'] );?></a>
 					</strong>
 					<div class="row-actions">
 						<span class="edit"><a href="<?php echo $edit_link;?>"><?php _e( 'Edit', 'ninja-forms' ); ?></a> | </span>
 						<span class="trash"><a class="ninja-forms-delete-form" title="<?php _e( 'Delete this form', 'ninja-forms' ); ?>" href="#" id="ninja_forms_delete_form_<?php echo $form_id;?>"><?php _e( 'Delete', 'ninja-forms' ); ?></a> | </span>
-						<span class="export"><a href="<?php echo $export_link;?>" title="<?php _e( 'Export Form', 'ninja-forms' ); ?>"><?php _e( 'Export', 'ninja-forms' ); ?></a> | </span>
 						<span class="duplicate"><a href="<?php echo $duplicate_link;?>" title="<?php _e( 'Duplicate Form', 'ninja-forms' ); ?>"><?php _e( 'Duplicate', 'ninja-forms' ); ?></a> | </span>
 						<span class="bleep"><?php echo ninja_forms_preview_link( $form_id ); ?> | </span>
 						<span class="subs"><a href="<?php echo $subs_link;?>" class="" title="<?php _e( 'View Submissions', 'ninja-forms' ); ?>"><?php _e( 'View Submissions', 'ninja-forms' ); ?></a></span>
@@ -228,7 +229,7 @@ function ninja_forms_save_form_list( $data ){
 			foreach( $data['form_ids'] as $form_id ){
 				switch( $data['bulk_action'] ){
 					case 'delete':
-						ninja_forms_delete_form( $form_id );
+						Ninja_Forms()->form( $form_id )->delete();
 						$ninja_forms_admin_update_message = count( $data['form_ids'] ).' ';
 						if( count( $data['form_ids'] ) > 1 ){
 							$update_message = __( 'Forms Deleted', 'ninja-forms' );
@@ -242,6 +243,8 @@ function ninja_forms_save_form_list( $data ){
 				}
 			}
 		}
+		$debug = ! empty ( $_REQUEST['debug'] ) ? true : false;
+		Ninja_Forms()->forms()->update_cache( $debug );
 		return $update_message;
 	}
 }

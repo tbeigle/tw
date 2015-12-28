@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 /*
  * Outputs the HTML for displaying success messages or error messages set to display at location 'general'
  *
@@ -6,6 +6,10 @@
 
 function ninja_forms_display_response_message( $form_id ){
 	global $ninja_forms_processing;
+
+//	if ( ! is_object( $ninja_forms_processing ) || $ninja_forms_processing->get_form_ID() != $form_id ) {
+//		return false;
+//	}
 
 	$plugin_settings = nf_get_settings();
 
@@ -33,6 +37,8 @@ function ninja_forms_display_response_message( $form_id ){
 	}else{
 		$class = '';
 	}
+
+	$class = apply_filters( 'ninja_forms_display_response_message_class', $class, $form_id );
 
 	//if ( $class != '' ) {
 		echo '<div id="ninja_forms_form_' . $form_id . '_response_msg" style="' . $display . '" class="ninja-forms-response-msg '.$class.'">';

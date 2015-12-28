@@ -1,16 +1,11 @@
 jQuery(document).ready(function(jQuery) {
-	// Initiate our response function list variable.
-	window['ninja_forms_response_function_list'] = {};
-
-	// Initiate our beforeSubmit function list variable.
-	window['ninja_forms_before_submit_function_list'] = {};
 
 	// Prevent the enter key from submitting the form.
 	jQuery(".ninja-forms-form input").bind("keypress", function(e) {
 		if (e.keyCode == 13) {
 			var type = jQuery(this).attr("type");
 			if( type != "textarea" ){
-				return false;
+				// return false;
 			}
 		}
 	});
@@ -48,9 +43,7 @@ jQuery(document).ready(function(jQuery) {
 	}
 
 	if( jQuery.fn.datepicker ){
-		jQuery(".ninja-forms-datepicker").datepicker({
-			dateFormat: ninja_forms_settings.date_format
-		});
+		jQuery(".ninja-forms-datepicker").datepicker( ninja_forms_settings.datepicker_args );
 	}
 
 	if( jQuery.fn.autoNumeric ){
@@ -125,7 +118,12 @@ jQuery(document).ready(function(jQuery) {
 	jQuery(".ninja-forms-form").each(function(){
 		var form_id = this.id.replace("ninja_forms_form_", "");
 		var settings = window['ninja_forms_form_' + form_id + '_settings'];
-		ajax = settings.ajax
+		if ( typeof settings != 'undefined' ) {
+			ajax = settings.ajax
+		} else {
+			ajax = 0;
+		}
+		
 		if(ajax == 1){
 			var options = {
             beforeSerialize: function($form, add_product_form_options) {
@@ -447,8 +445,18 @@ jQuery(document).ready(function(jQuery) {
 									}
 
 									if ( typeof ninja_forms_settings.currency_symbol !== 'undefined' ) {
-										new_value = new_value.replace( ninja_forms_settings.currency_symbol, "" );
-										new_value = new_value.replace( /,/g, "" );
+                                        // Strip the Currency Symbol
+                                        f_value = new_value.replace( ninja_forms_settings.currency_symbol, "" );
+
+                                        // Strip the Thousands Separator
+                                        f_value = f_value.replace( /thousandsSeparator/g, "" );
+
+                                        // If the Decimal Point is not `.`
+                                        if ( '.' != decimalPoint ) {
+
+                                            // Replace the Decimal Point
+                                            f_value = f_value.replace( decimalPoint, "." );
+                                        }
 									}
 
 									if ( isNaN( new_value ) ) {
@@ -490,8 +498,20 @@ jQuery(document).ready(function(jQuery) {
 
 							// Make sure that our current total is made up of numbers.
 							if ( typeof ninja_forms_settings.currency_symbol !== 'undefined' && typeof current_value != 'undefined' ) {
-								current_value = current_value.replace( ninja_forms_settings.currency_symbol, "" );
-								current_value = current_value.replace( /,/g, "" );
+
+                                // Strip the Currency Symbol
+                                f_value = current_value.replace( ninja_forms_settings.currency_symbol, "" );
+
+                                // Strip the Thousands Separator
+                                f_value = f_value.replace( /thousandsSeparator/g, "" );
+
+                                // If the Decimal Point is not `.`
+                                if ( '.' != decimalPoint ) {
+
+                                    // Replace the Decimal Point
+                                    f_value = f_value.replace( decimalPoint, "." );
+                                }
+
 							}
 							if ( !isNaN( current_value ) ) {
 								// Convert those string numbers into operable ones.
@@ -615,8 +635,19 @@ jQuery(document).ready(function(jQuery) {
 								}
 
 								if ( typeof ninja_forms_settings.currency_symbol !== 'undefined' && isNaN( f_value ) && typeof f_value != 'undefined' ) {
+
+                                    // Strip the Currency Symbol
 									f_value = f_value.replace( ninja_forms_settings.currency_symbol, "" );
-									f_value = f_value.replace( /,/g, "" );
+
+                                    // Strip the Thousands Separator
+									f_value = f_value.replace( /thousandsSeparator/g, "" );
+
+                                    // If the Decimal Point is not `.`
+                                    if ( '.' != decimalPoint ) {
+
+                                        // Replace the Decimal Point
+                                        f_value = f_value.replace( decimalPoint, "." );
+                                    }
 								}
 
 								if ( isNaN( f_value ) || f_value == '' || !f_value || typeof f_value === 'undefined' ) {
@@ -718,20 +749,6 @@ function ninja_forms_response(responseText, statusText, xhr, jQueryform){
 	}
 }
 
-function ninja_forms_register_response_function(form_id, name){
-	if( typeof window['ninja_forms_response_function_list'][form_id] == 'undefined' ){
-		window['ninja_forms_response_function_list'][form_id] = {};
-	}
-	window['ninja_forms_response_function_list'][form_id][name] = name;
-}
-
-function ninja_forms_register_before_submit_function(form_id, name){
-	if( typeof window['ninja_forms_before_submit_function_list'][form_id] == 'undefined' ){
-		window['ninja_forms_before_submit_function_list'][form_id] = {};
-	}
-	window['ninja_forms_before_submit_function_list'][form_id][name] = name;
-}
-
 function ninja_forms_default_before_submit(formData, jqForm, options){
 	var form_id = jQuery(jqForm).prop("id").replace("ninja_forms_form_", "" );
 
@@ -749,10 +766,13 @@ function ninja_forms_default_before_submit(formData, jqForm, options){
 function ninja_forms_default_response(response){
 	var form_id = response.form_id;
 
-	//jQuery("#ninja_forms_form_" + form_id + "_process_msg").hide();
+	ninja_forms_update_error_msgs(response);
+	ninja_forms_update_success_msg(response);
 
-	ninja_forms_update_error_msgs(response)
-	ninja_forms_update_success_msg(response)
+	if ( response.errors == false && typeof response.form_settings['landing_page'] != 'undefined' && response.form_settings['landing_page'] != '' ) {
+		window.location = response.form_settings['landing_page'];
+	}
+
 	return true;
 }
 
@@ -773,6 +793,8 @@ function ninja_forms_update_success_msg(response){
 			jQuery("#ninja_forms_form_" + form_id + "_response_msg").removeClass("ninja-forms-error-msg")
 			jQuery("#ninja_forms_form_" + form_id + "_response_msg").addClass("ninja-forms-success-msg")
 			jQuery("#ninja_forms_form_" + form_id + "_response_msg").prop("innerHTML", innerHTML);
+			jQuery("#ninja_forms_form_" + form_id + "_response_msg").show();
+
 		}
 		if(hide_complete == 1 ){
 			jQuery("#ninja_forms_form_" + form_id ).hide();
@@ -845,6 +867,9 @@ function ninja_forms_toggle_login_register(form_type, form_id) {
 
 function ninja_forms_get_form_id(element){
 	var form_id = jQuery(element).closest('form').prop("id");
+	if ( 'undefined' === typeof form_id ) {
+		return false;
+	}
 	form_id = form_id.replace("ninja_forms_form_", "");
 	if(form_id == '' || form_id == 'ninja_forms_admin'){
 		form_id = jQuery("#_form_id").val();

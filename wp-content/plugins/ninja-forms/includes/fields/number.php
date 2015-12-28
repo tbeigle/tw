@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 function ninja_forms_register_field_number() {
 	$args = array(
 		'name' => __( 'Number', 'ninja-forms' ),
@@ -6,19 +6,19 @@ function ninja_forms_register_field_number() {
 		'edit_function' => 'ninja_forms_field_number_edit',
 		'edit_options' => array(
 			array(
-				'type' => 'number',
+				'type' => 'text',
 				'class' => 'medium-text',
 				'name' => 'number_min',
 				'label' => __( 'Minimum Value', 'ninja-forms' ),
 			),
 			array(
-				'type' => 'number',
+				'type' => 'text',
 				'class' => 'medium-text',
 				'name' => 'number_max',
 				'label' => __( 'Maximum Value', 'ninja-forms' ),
 			),
 			array(
-				'type' => 'number',
+				'type' => 'text',
 				'class' => 'medium-text',
 				'name' => 'number_step',
 				'label' => __( 'Step (amount to increment by)', 'ninja-forms' ),
@@ -89,7 +89,7 @@ function ninja_forms_field_number_edit( $field_id, $data ) {
 	<?php
 }
 
-function ninja_forms_field_number_display( $field_id, $data ) {
+function ninja_forms_field_number_display( $field_id, $data, $form_id = '' ) {
 	if ( isset( $data['default_value'] ) ) {
 		$default_value = $data['default_value'];
 	} elseif( isset( $data['number_min'] ) ) {
@@ -97,26 +97,26 @@ function ninja_forms_field_number_display( $field_id, $data ) {
 	}
 
 	if ( isset( $data['number_min'] ) ) {
-		$min = 'min="' . esc_attr( $data['number_min'] ) . '"';
+		$min = ' min="' . esc_attr( $data['number_min'] ) . '"';
 	} else {
 		$min = '';
 	}
 
 	if ( isset( $data['number_max'] ) ) {
-		$max = 'max="' . esc_attr( $data['number_max'] ) . '"';
+		$max = ' max="' . esc_attr( $data['number_max'] ) . '"';
 	} else {
 		$max = '';
 	}
 
 	if ( isset( $data['number_step'] ) ) {
-		$step = 'step="' . esc_attr( $data['number_step'] ) . '"';
+		$step = ' step="' . esc_attr( $data['number_step'] ) . '"';
 	} else {
 		$step = '';
 	}
 
-	$field_class = ninja_forms_get_field_class( $field_id );
+	$field_class = ninja_forms_get_field_class( $field_id, $form_id );
 
 ?>
-		<input type="number" <?php echo $min . $max . $step; ?>name="ninja_forms_field_<?php echo esc_attr( $field_id ); ?>" id="ninja_forms_field_<?php echo esc_attr( $field_id ); ?>" class="<?php echo esc_attr( $field_class ); ?>" rel="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $default_value ); ?>"/>
+		<input type="number"<?php echo $min . $max . $step; ?> name="ninja_forms_field_<?php echo esc_attr( $field_id ); ?>" id="ninja_forms_field_<?php echo esc_attr( $field_id ); ?>" class="<?php echo esc_attr( $field_class ); ?>" rel="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $default_value ); ?>"/>
 <?php
 }

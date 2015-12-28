@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Begin Form Interaction Functions
 
@@ -34,49 +34,6 @@ function ninja_forms_insert_field( $form_id, $args = array() ){
 	return $new_id;
 }
 
-function ninja_forms_get_form_by_id($form_id){
-	global $wpdb;
-	$form_row = $wpdb->get_row($wpdb->prepare("SELECT * FROM ".NINJA_FORMS_TABLE_NAME." WHERE id = %d", $form_id), ARRAY_A);
-	$form_row['data'] = unserialize($form_row['data']);
-	$form_row['data'] = ninja_forms_stripslashes_deep($form_row['data']);
-	return $form_row;
-}
-
-function ninja_forms_get_all_forms( $debug = false ){
-	global $wpdb;
-	if( isset( $_REQUEST['debug'] ) AND $_REQUEST['debug'] == true ){
-		$debug = true;
-	}
-	$form_results = $wpdb->get_results("SELECT * FROM ".NINJA_FORMS_TABLE_NAME, ARRAY_A);
-	if(is_array($form_results) AND !empty($form_results)){
-		$x = 0;
-		$count = count($form_results) - 1;
-		while($x <= $count){
-			if( isset( $form_results[$x]['data'] ) ){
-				$form_results[$x]['data'] = unserialize($form_results[$x]['data']);
-				$form_results[$x]['name'] = $form_results[$x]['data']['form_title'];
-				if( substr( $form_results[$x]['data']['form_title'], 0, 1 ) == '_' ){
-					if( !$debug ){
-						unset( $form_results[$x] );
-					}
-				}
-			}
-			$x++;
-		}
-	}
-	$form_results = array_values( $form_results );
-	$form_results = ninja_forms_subval_sort( $form_results, 'name' );
-	return $form_results;
-}
-
-function ninja_forms_get_form_by_field_id( $field_id ){
-	global $wpdb;
-	$form_id = $wpdb->get_row($wpdb->prepare("SELECT form_id FROM ".NINJA_FORMS_FIELDS_TABLE_NAME." WHERE id = %d", $field_id), ARRAY_A);
-	$form_row = $wpdb->get_row($wpdb->prepare("SELECT * FROM ".NINJA_FORMS_TABLE_NAME." WHERE id = %d", $form_id), ARRAY_A);
-	$form_row['data'] = unserialize($form_row['data']);
-	return $form_row;
-}
-
 function ninja_forms_get_form_ids_by_post_id( $post_id ){
 	global $wpdb;
 	$form_ids = array();
@@ -108,20 +65,12 @@ function ninja_forms_get_form_ids_by_post_id( $post_id ){
 
 function ninja_forms_get_form_by_sub_id( $sub_id ){
 	global $wpdb;
-	$sub_row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM ".NINJA_FORMS_SUBS_TABLE_NAME." WHERE id = %d", $sub_id ), ARRAY_A );
-	$form_id = $sub_row['form_id'];
+	$form_id = Ninja_Forms()->sub( $sub_id )->form_id;
 	$form_row = ninja_forms_get_form_by_id( $form_id );
 	return $form_row;
 }
 
-// The ninja_forms_delete_form( $form_id ) function is in includes/admin/ajax.php
-
-function ninja_forms_update_form( $args ){
-	global $wpdb;
-	$update_array = $args['update_array'];
-	$where = $args['where'];
-	$wpdb->update(NINJA_FORMS_TABLE_NAME, $update_array, $where);
-}
+// The ninja_forms_delete_form( $form_id ) function is in includes/deprecated.php
 
 // Begin Field Interaction Functions
 
@@ -284,6 +233,14 @@ function ninja_forms_esc_html_deep( $value ){
     return $value;
 }
 
+function nf_wp_kses_post_deep( $value ){
+    $value = is_array( $value ) ?
+        array_map( 'nf_wp_kses_post_deep', $value ) :
+        wp_kses_post($value);
+
+    return $value;
+}
+
 function ninja_forms_strip_tags_deep($value ){
  	$value = is_array($value) ?
         array_map('ninja_forms_strip_tags_deep', $value) :
@@ -302,7 +259,8 @@ function ninja_forms_json_response(){
 	$form_settings = $ninja_forms_processing->get_all_form_settings();
 	$extras = $ninja_forms_processing->get_all_extras();
 
-
+	// Success will default to false if there is not success message.
+	if ( ! $success && ! $errors ) $success = true;
 
 	if( version_compare( phpversion(), '5.3', '>=' ) ){
 		$json = json_encode( array( 'form_id' => $form_id, 'errors' => $errors, 'success' => $success, 'fields' => $fields, 'form_settings' => $form_settings, 'extras' => $extras ), JSON_HEX_QUOT | JSON_HEX_TAG  );
@@ -368,6 +326,10 @@ function ninja_forms_set_transient(){
 	global $ninja_forms_processing;
 
 	$form_id = $ninja_forms_processing->get_form_ID();
+	$transient_id = Ninja_Forms()->session->get( 'nf_transient_id' );
+	if ( ! $transient_id ) {
+		$transient_id = Ninja_Forms()->set_transient_id();
+	}
 	// Setup our transient variable.
 	$transient = array();
 	$transient['form_id'] = $form_id;
@@ -378,24 +340,18 @@ function ninja_forms_set_transient(){
 	if ( $ninja_forms_processing->get_all_fields() ) {
 		foreach ( $ninja_forms_processing->get_all_fields() as $field_id => $user_value ) {
 			$field_settings = $ninja_forms_processing->get_field_settings( $field_id );
-			$all_fields_settings[$field_id] = $field_settings; 
-		}		
+			$all_fields_settings[$field_id] = $field_settings;
+		}
 	}
 
 	$transient['field_settings'] = $all_fields_settings;
 
-	// Set errors and success messages as $_SESSION variables.
+	// Set errors and success messages as Ninja_Forms()->session variables.
 	$success = $ninja_forms_processing->get_all_success_msgs();
 	$errors = $ninja_forms_processing->get_all_errors();
 
 	$transient['success_msgs'] = $success;
 	$transient['error_msgs'] = $errors;
-	if ( ! isset ( $_SESSION['ninja_forms_transient_id'] ) )
-		ninja_forms_set_transient_id();
-
-	if ( isset ( $_SESSION['ninja_forms_transient_id'] ) ) {
-		$transient_id = $_SESSION['ninja_forms_transient_id'];		
-	}
 
 	//delete_transient( 'ninja_forms_test' );
 	set_transient( $transient_id, $transient, DAY_IN_SECONDS );
@@ -410,41 +366,36 @@ function ninja_forms_set_transient(){
  */
 
 function ninja_forms_delete_transient(){
-	if( isset( $_SESSION['ninja_forms_transient_id'] ) ) {
-		delete_transient( $_SESSION['ninja_forms_transient_id'] );
+	$transient_id = Ninja_Forms()->session->get( 'nf_transient_id' );
+	if( $transient_id ) {
+		delete_transient( $transient_id );
 	}
 }
 
 /**
  * Get a count of submissions for a form
- * 
+ *
  * @since 2.7
  * @param int $post_id
  * @return int $count
  */
 function nf_get_sub_count( $form_id, $post_status = 'publish' ) {
-	$args = array(
-		'meta_key' => '_form_id',
-	    'meta_value' => $form_id,
-	    'post_type' => 'nf_sub',
-	    'posts_per_page' => -1,
-	    'post_status' => $post_status,
-	);
-	$posts = get_posts( $args );
+	global $wpdb;
 
-	return count( $posts );
- }
+	$meta_key = '_form_id';
+	$meta_value = $form_id;
 
-/**
- * Get an array of form settings by form ID
- * 
- * @since 2.7
- * @param int $form_id
- * @return array $form['data']
- */
-function nf_get_form_settings( $form_id ) {
-	$form = ninja_forms_get_form_by_id( $form_id );
-	return $form['data'];
+	$sql = "SELECT count(DISTINCT pm.post_id)
+	FROM $wpdb->postmeta pm
+	JOIN $wpdb->posts p ON (p.ID = pm.post_id)
+	WHERE pm.meta_key = '$meta_key'
+	AND pm.meta_value = '$meta_value'
+	AND p.post_type = 'nf_sub'
+	AND p.post_status = '$post_status'";
+
+	$count = $wpdb->get_var($sql);
+
+	return $count;
 }
 
 /**
