@@ -56,7 +56,6 @@
 	
 
 <div id="header">
-<a href="<?php print get_permalink( woocommerce_get_page_id( 'shop' ) ); ?>" id="order-now"><img src="<?php print get_stylesheet_directory_uri(); ?>/images/order_now.png"></a>
 <?php 
     echo do_shortcode("[metaslider id=84]"); 
 ?>

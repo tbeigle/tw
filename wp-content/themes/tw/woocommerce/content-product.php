@@ -76,9 +76,11 @@ else {
 		 * @hooked woocommerce_template_loop_price - 10
 		 */
 		do_action( 'woocommerce_after_shop_loop_item_title' );
+		remove_action('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price');
 	?>
 	
-	<br /><?php echo apply_filters( 'woocommerce_short_description', $post->post_excerpt ) ?>
+	<br />
+	<?php echo apply_filters( 'woocommerce_short_description', $post->post_excerpt ); ?>
 
 	<?php
 
@@ -89,7 +91,8 @@ else {
 		 */
 		add_action('woocommerce_after_shop_loop_item','woocommerce_template_single_add_to_cart');
 		remove_action('woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
-
+    add_action('woocommerce_after_shop_loop_item', 'tw_show_price_and_stock_after_description');
+    
 		do_action( 'woocommerce_after_shop_loop_item' );
 
 	?>
