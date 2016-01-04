@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 /*
  * Function to register a new field for user's country
  *
@@ -257,7 +257,7 @@ function ninja_forms_register_field_country(){
 		$tmp_array[] = array( 'name' => $country, 'value' => $abbr );
 	}
 	$args = array(
-		'name' => 'Country',
+		'name' => __( 'Country', 'ninja-forms' ),
 		'sidebar' => '',
 		'display_function' => 'ninja_forms_field_country_display',
 		'group' => 'standard_fields',
@@ -310,7 +310,7 @@ add_action( 'init', 'ninja_forms_register_field_country' );
  * @returns void
  */
 
-function ninja_forms_field_country_display( $field_id, $data ) {
+function ninja_forms_field_country_display( $field_id, $data, $form_id = '' ) {
 	$countries = array(
 		__( 'Afghanistan', 'ninja-forms' ) => 'AF',
 		__( 'Albania', 'ninja-forms' ) => 'AL',
@@ -510,6 +510,7 @@ function ninja_forms_field_country_display( $field_id, $data ) {
 		__( 'Somalia', 'ninja-forms' ) => 'SO',
 		__( 'South Africa', 'ninja-forms' ) => 'ZA',
 		__( 'South Georgia, South Sandwich Islands', 'ninja-forms' ) => 'GS',
+		__( 'South Sudan', 'ninja-forms' ) => 'SS',
 		__( 'Spain', 'ninja-forms' ) => 'ES',
 		__( 'Sri Lanka', 'ninja-forms' ) => 'LK',
 		__( 'St. Helena', 'ninja-forms' ) => 'SH',
@@ -568,10 +569,10 @@ function ninja_forms_field_country_display( $field_id, $data ) {
 	}
 
 	if ( isset ( $data['country_use_custom_first'] ) AND $data['country_use_custom_first'] == 1 ) {
-		$countries = array_merge( array( $country_custom_first => $country_custom_first ), $countries );
+		$countries = array_merge( array( $country_custom_first => '' ), $countries );
 	}
 
-	$field_class = ninja_forms_get_field_class( $field_id );
+	$field_class = ninja_forms_get_field_class( $field_id, $form_id );
 	?>
 
 	<input type="hidden" id="ninja_forms_field_<?php echo $field_id;?>_list_type" value="dropdown">

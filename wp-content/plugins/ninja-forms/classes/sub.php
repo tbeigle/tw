@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 /**
  * Submission.
  * This class handles storing, retrieving, editing a submission.
@@ -75,9 +75,31 @@ class NF_Sub {
 		// Set our sub id
 		$this->sub_id = $sub_id;
 
+		// Populate our fields
+		$this->fields = array();
+		$this->retrieve_fields();
+
+		// Setup our form id var
+		$this->form_id = $this->get_meta( '_form_id' );
+		// Setup our action var
+		$this->action = $this->get_meta( '_action' );
+		// Setup our sequential id
+		$this->seq_num = $this->get_meta( '_seq_num' );
+		// Setup our user_id var
+		$this->user_id = $sub->post_author;
+		// Setup our date submitted var
+		$this->date_submitted = get_the_time( 'Y-m-d G:i:s', $sub_id );
+		// Setup our date modified var
+		$this->date_modified = get_post_modified_time( 'Y-m-d G:i:s', false, $sub_id );
+
+	}
+
+	private function retrieve_fields() {
+		global $ninja_forms_fields;
+
 		// Setup our fields and meta vars.
 		$post_meta = get_post_custom( $this->sub_id );
-		$this->fields = array();
+
 		foreach ( $post_meta as $key => $array ) {
 			if ( is_serialized( $array[0] ) ) {
 				$meta_value = unserialize( $array[0] );
@@ -97,6 +119,7 @@ class NF_Sub {
 				} else {
 					$process_field = false;
 				}
+
 				if ( $process_field ) {
 					$this->fields[ $field_id ] = $meta_value;
 				}
@@ -105,21 +128,6 @@ class NF_Sub {
 				$this->meta[ $key ] = $meta_value;
 			}
 		}
-
-		// Setup our form id var
-		$this->form_id = $this->get_meta( '_form_id' );
-		// Setup our action var
-		$this->action = $this->get_meta( '_action' );
-		// Setup our sequential id
-		$this->seq_num = $this->get_meta( '_seq_num' );
-		// Setup our user_id var
-		$this->user_id = $sub->post_author;
-		// Setup our date submitted var
-		$this->date_submitted = get_the_time( 'Y-m-d G:i:s', $sub_id );
-		// Setup our date modified var
-		$this->date_modified = get_post_modified_time( 'Y-m-d G:i:s', false, $sub_id );
-
-
 	}
 
 	/**
@@ -267,6 +275,22 @@ class NF_Sub {
 	}
 
 	/**
+	 * Delete a meta value.
+	 *
+	 * @access public
+	 * @since 2.9
+	 * @return bool
+	 */
+	public function delete_meta( $meta_key, $value = '' ) {
+		if ( empty( $value ) ) {
+			return delete_post_meta( $this->sub_id, $meta_key );
+		} else {
+			return delete_post_meta( $this->sub_id, $meta_key, $value );
+		}
+		
+	}
+
+	/**
 	 * Add a field value to our submission.
 	 *
 	 * @access public
@@ -332,6 +356,9 @@ class NF_Sub {
 	 * @return array $sub
 	 */
 	public function get_all_fields() {
+		if ( empty ( $this->fields ) ) {
+			$this->retrieve_fields();
+		}
 		return $this->fields;
 	}
 

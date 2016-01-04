@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 function ninja_forms_register_field_rating(){
 	$args = array(
 		'name' => __( 'Star Rating', 'ninja-forms' ),
@@ -29,7 +29,7 @@ function ninja_forms_register_field_rating(){
 
 add_action('init', 'ninja_forms_register_field_rating');
 
-function ninja_forms_field_rating_display( $field_id, $data ){
+function ninja_forms_field_rating_display( $field_id, $data, $form_id = '' ){
 	if( isset( $data['default_value'] ) ){
 		$default_value = $data['default_value'];
 	}else{

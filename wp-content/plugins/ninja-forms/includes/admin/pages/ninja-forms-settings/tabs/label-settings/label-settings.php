@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 add_action( 'init', 'ninja_forms_register_tab_label_settings' );
 
 function ninja_forms_register_tab_label_settings(){
@@ -80,6 +80,12 @@ function ninja_forms_register_label_settings_metabox(){
 				'type' => 'text',
 				'label' => __( 'Processing Submission Label', 'ninja-forms' ),
 				'desc' => __( 'This message is shown inside the submit button whenever a user clicks "submit" to let them know it is processing.', 'ninja-forms' ),
+			),
+			array(
+				'name' => 'password_mismatch',
+				'type' => 'text',
+				'label' => __( 'Password Mismatch Label', 'ninja-forms' ),
+				'desc' => __( 'This message is shown to a user when non-matching values are placed in the password field.', 'ninja-forms' ),
 			),
 		),
 	);

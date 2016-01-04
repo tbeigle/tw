@@ -1,24 +1,14 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 add_action( 'init', 'ninja_forms_preview_form' );
 function ninja_forms_preview_form() {
 	global $ninja_forms_append_page_form_id;
-	if( isset( $_REQUEST['form_id'] ) AND isset($_REQUEST['preview']) ) { //I
+	if( ! empty ( $_REQUEST['form_id'] ) AND ! empty ( $_REQUEST['preview'] ) ) { //I
 		$form_id = absint( $_REQUEST['form_id'] );
-	} else {
-		$form_id = '';
-	}
-
-	$form_data = ninja_forms_get_form_by_id( $form_id );
-
-	//if( '' != $form_data['data'] ) {
-	if(isset($form_data['data']) AND !empty($form_data['data'])){ // In order to prevent notices and errors, it's best to use these two checks when you are evaluating arrays.
 		$ninja_forms_append_page_form_id = array($form_id);
-		add_filter( 'the_content', 'ninja_forms_append_to_page', 9999 );
+		add_filter( 'the_content', 'ninja_forms_append_to_page', 9999 );		
 	}
 }
-
-
 
 function ninja_forms_preview_link( $form_id = '', $echo = true ) {
 	if( $form_id == '' ){
@@ -32,8 +22,9 @@ function ninja_forms_preview_link( $form_id = '', $echo = true ) {
 
 	$form_data = ninja_forms_get_form_by_id( $form_id );
 
-	//if( '' == $form_data['data']['append_page'] ) {
-	if(!isset($form_data['data']['append_page']) OR empty($form_data['data']['append_page'])){ // See the comment above about this check. !empty will ensure that it's not either empty quotes or null.
+	$append_page = Ninja_Forms()->form( $form_id )->get_setting( 'append_page' );
+
+	if ( empty( $append_page ) ) {
 		$opt =  nf_get_settings();
 		if ( isset ( $opt['preview_id'] ) ) {
 			$page_id = $opt['preview_id'];
@@ -41,7 +32,7 @@ function ninja_forms_preview_link( $form_id = '', $echo = true ) {
 			$page_id = '';
 		}
 	} else {
-		$page_id = $form_data['data']['append_page'];
+		$page_id = $append_page;
 	}
 
 	if( $echo ){

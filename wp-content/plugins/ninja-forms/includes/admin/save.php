@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined( 'ABSPATH' ) ) exit;
 
 function ninja_forms_admin_save(){
 	global $ninja_forms_tabs, $ninja_forms_sidebars, $ninja_forms_tabs_metaboxes, $ninja_forms_admin_update_message;
@@ -10,11 +10,15 @@ function ninja_forms_admin_save(){
 			$data_array = array();
 			if ( isset( $_REQUEST['form_id'] ) and $_REQUEST['form_id'] != 'new' ) {
 				$form_id = absint( $_REQUEST['form_id'] );
+
+				// Dump our current form transient.
+				delete_transient( 'nf_form_' . $form_id );
 			} else if ( isset ( $_REQUEST['form_id'] ) and $_REQUEST['form_id'] == 'new' ) {
 				$form_id = 'new';
 			} else {
 				$form_id = '';
 			}
+
 			foreach ( $_POST as $key => $val ) {
 				if ( substr($key, 0, 1) != '_') {
 					$data_array[$key] = $val;
@@ -107,9 +111,9 @@ function ninja_forms_admin_save(){
 			}
 			if ( $tab_reload ) {
 				$redirect_array = array( 'update_message' => urlencode( $ninja_forms_admin_update_message ) );
-				$url = add_query_arg( $redirect_array );
+				$url = esc_url_raw( add_query_arg( $redirect_array ) );
 				wp_redirect( $url );
-			}		
+			}
 		}
 	}
 }
