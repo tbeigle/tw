@@ -1,0 +1,113 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Sidebar Login Widget\n"
+"POT-Creation-Date: 2014-09-20 12:17+1000\n"
+"PO-Revision-Date: 2014-09-20 12:18+1000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: bn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.4\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../tt-sidebar-login.php:70
+msgid "Title"
+msgstr "শিরোনাম"
+
+#: ../tt-sidebar-login.php:88
+msgid "Show Avatar"
+msgstr "অবতার দেখান"
+
+#: ../tt-sidebar-login.php:101
+msgid "Show Logged in User name"
+msgstr "ব্যবহারকারী লগ ইন  নাম দেখান"
+
+#: ../tt-sidebar-login.php:114
+msgid "Show Dashboard Link"
+msgstr "ড্যাশবোর্ড লিংক দেখান"
+
+#: ../tt-sidebar-login.php:127
+msgid "Show Profile Link"
+msgstr "প্রোফাইল লিংক দেখান"
+
+#: ../tt-sidebar-login.php:140
+msgid "Show Remember me"
+msgstr "দেখান আমাকে মনে রাখুন"
+
+#: ../tt-sidebar-login.php:153
+msgid "Show Register Link"
+msgstr "দেখান রেজিস্টার লিংক"
+
+#: ../tt-sidebar-login.php:166
+msgid "Show Forgotten Password Link"
+msgstr "দেখান ভুলে যাওয়া পাসওয়ার্ড লিংক"
+
+#: ../tt-sidebar-login.php:179
+msgid "Show Post Count"
+msgstr "দেখান পোস্ট সংখ্যা"
+
+#: ../tt-sidebar-login.php:197
+msgid "Member's Login"
+msgstr "সদস্য এর লগইন"
+
+#: ../tt-sidebar-login.php:207
+msgid "Welcome"
+msgstr "স্বাগত"
+
+#: ../tt-sidebar-login.php:224
+msgid "Enter both Username and Password"
+msgstr "ব্যবহারকারীর নাম ও পাসওয়ার্ড উভয় লিখুন"
+
+#: ../tt-sidebar-login.php:227
+msgid "Username is not registered"
+msgstr "ব্যবহারকারীর নাম নিবন্ধিত নয়"
+
+#: ../tt-sidebar-login.php:230
+msgid "Incorrect Password"
+msgstr "ভুল পাসওয়ার্ড"
+
+#: ../tt-sidebar-login.php:252
+msgid "Logged in as "
+msgstr "লগ ইন করেছেন "
+
+#: ../tt-sidebar-login.php:256
+msgid "Posts by you"
+msgstr "আপনি পোস্ট করেছেন"
+
+#: ../tt-sidebar-login.php:265
+msgid "Dashboard"
+msgstr "ড্যাশবোর্ড"
+
+#: ../tt-sidebar-login.php:268
+msgid "Profile"
+msgstr "প্রোফাইল"
+
+#: ../tt-sidebar-login.php:270
+msgid "Logout"
+msgstr "লগআউট"
+
+#: ../tt-sidebar-login.php:282
+msgid "Username"
+msgstr "ব্যবহারকারীর নাম"
+
+#: ../tt-sidebar-login.php:283
+msgid "Password"
+msgstr "পাসওয়ার্ড"
+
+#: ../tt-sidebar-login.php:289
+msgid "Register"
+msgstr "নিবন্ধন"
+
+#: ../tt-sidebar-login.php:291
+msgid "Forgot Password?"
+msgstr "পাসওয়ার্ড ভুলে গেছেন?"
+
+#: ../tt-sidebar-login.php:334
+msgid "<strong>ERROR</strong>: Invalid username or incorrect password."
+msgstr ""

@@ -1,0 +1,113 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Sidebar Login Widget\n"
+"POT-Creation-Date: 2014-09-20 12:28+1000\n"
+"PO-Revision-Date: 2014-09-20 12:28+1000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.4\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../tt-sidebar-login.php:70
+msgid "Title"
+msgstr "제목"
+
+#: ../tt-sidebar-login.php:88
+msgid "Show Avatar"
+msgstr "보기 아바타"
+
+#: ../tt-sidebar-login.php:101
+msgid "Show Logged in User name"
+msgstr "쇼는 사용자 이름에 기록"
+
+#: ../tt-sidebar-login.php:114
+msgid "Show Dashboard Link"
+msgstr "대시 보드 표시 링크"
+
+#: ../tt-sidebar-login.php:127
+msgid "Show Profile Link"
+msgstr "프로필 링크보기"
+
+#: ../tt-sidebar-login.php:140
+msgid "Show Remember me"
+msgstr "쇼는 저를 기억"
+
+#: ../tt-sidebar-login.php:153
+msgid "Show Register Link"
+msgstr "보기 회원 가입 링크"
+
+#: ../tt-sidebar-login.php:166
+msgid "Show Forgotten Password Link"
+msgstr "보기 비밀 번호 찾기 링크"
+
+#: ../tt-sidebar-login.php:179
+msgid "Show Post Count"
+msgstr "쇼의 게시물 개수"
+
+#: ../tt-sidebar-login.php:197
+msgid "Member's Login"
+msgstr "회원 로그인 "
+
+#: ../tt-sidebar-login.php:207
+msgid "Welcome"
+msgstr "에 오신 것을 환영합니다"
+
+#: ../tt-sidebar-login.php:224
+msgid "Enter both Username and Password"
+msgstr " 사용자 이름과 암호를 모두 입력"
+
+#: ../tt-sidebar-login.php:227
+msgid "Username is not registered"
+msgstr "사용자 이름은 등록되어 있지 않습니다"
+
+#: ../tt-sidebar-login.php:230
+msgid "Incorrect Password"
+msgstr "잘못된 암호"
+
+#: ../tt-sidebar-login.php:252
+msgid "Logged in as "
+msgstr "로 로그인"
+
+#: ../tt-sidebar-login.php:256
+msgid "Posts by you"
+msgstr "당신의 게시물"
+
+#: ../tt-sidebar-login.php:265
+msgid "Dashboard"
+msgstr "대시 보드"
+
+#: ../tt-sidebar-login.php:268
+msgid "Profile"
+msgstr "프로필"
+
+#: ../tt-sidebar-login.php:270
+msgid "Logout"
+msgstr "로그 아웃"
+
+#: ../tt-sidebar-login.php:282
+msgid "Username"
+msgstr "아이디"
+
+#: ../tt-sidebar-login.php:283
+msgid "Password"
+msgstr "비밀번호"
+
+#: ../tt-sidebar-login.php:289
+msgid "Register"
+msgstr "회원 가입"
+
+#: ../tt-sidebar-login.php:291
+msgid "Forgot Password?"
+msgstr "비밀 번호를 잊으 셨나요?"
+
+#: ../tt-sidebar-login.php:334
+msgid "<strong>ERROR</strong>: Invalid username or incorrect password."
+msgstr ""
+"<strong>ERROR</strong>: 잘못된 사용자 이름 또는 잘못된 암호를 입력합니다."

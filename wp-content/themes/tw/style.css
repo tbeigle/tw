@@ -430,3 +430,90 @@ img.product-cat {
     width: 20%;
   }
 }
+
+.widget_sidebarlogin {
+  padding: 0 10px;
+}
+
+@media screen and (min-width: 1024px) {
+  .widget_sidebarlogin {
+    margin-left: 60%;
+  }
+}
+
+.widget_sidebarlogin .sidebar-login-info p {
+  text-align: right !important;
+  margin: 0 0 10px 0 !important;
+}
+
+ul#sidebar-login-links-left {
+  text-align: right !important;
+}
+
+.widget_sidebarlogin .widget-title {
+  text-align: right;
+}
+
+.login-widget.not-loggedin .widget-title {
+  display: none;
+}
+
+.widget_sidebarlogin #loginform {
+  display: table;
+  padding: 0 !important;
+  margin-top: -25px;
+}
+
+@media screen and (min-width: 1024px) {
+  .widget_sidebarlogin #loginform {
+    margin-top: -25px;
+  }
+}
+
+.widget_sidebarlogin #loginform .login-username,
+.widget_sidebarlogin #loginform .login-password,
+.widget_sidebarlogin #loginform .login-submit {
+  box-sizing: border-box;
+}
+
+.widget_sidebarlogin #loginform .login-username,
+.widget_sidebarlogin #loginform .login-password {
+  width: 40%;
+  float: left;
+  display: inline-block;
+  padding-right: 20px;
+}
+
+.widget_sidebarlogin #loginform .login-username input,
+.widget_sidebarlogin #loginform .login-password input {
+  border: 1px solid #ccc !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+}
+
+.widget_sidebarlogin #loginform .login-submit {
+  float: left;
+  display: inline-block;
+  width: 20%;
+  margin-top: 20px;
+}
+
+.widget_sidebarlogin #loginform .login-submit input {
+  background: url(images/login-btn.png) no-repeat !important;
+  width: 78px !important;
+  height: 28px !important;
+  box-shadow: none !important;
+  border: 0 !important;
+  text-indent: -9999px;
+  display: block;
+}
+
+.widget_sidebarlogin #reglost {
+  clear: both;
+  text-align: right;
+  margin: 0 !important;
+}
+
+.widget_sidebarlogin #reglost a {
+  color: #585978;
+}

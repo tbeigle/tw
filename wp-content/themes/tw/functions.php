@@ -27,8 +27,8 @@ function tw_enqueue_parent_styles() {
  * Loads the theme scripts
  */
 function tw_load_scripts(){
-  wp_register_script( 
-    'tw-scripts', 
+  wp_register_script(
+    'tw-scripts',
     get_stylesheet_directory_uri() . '/js/scripts.js',
     array( 'jquery', 'icheck' )
   );
@@ -43,7 +43,17 @@ register_sidebar( array(
 	'name' => __( 'Order Now', 'tw' ),
 	'id' => 'ordernow',
 	'description' => __( 'Only used for Woocommerce Pages', 'tw' ),
-	'before_widget' => '<div id="%1$s" class="widget-container %2$s">',
+	'before_widget' => '<div id="%1$s" class="widget %2$s">',
+	'after_widget' => '</div>',
+	'before_title' => '<h3 class="widget-title">',
+	'after_title' => '</h3>',
+) );
+
+register_sidebar( array(
+	'name' => __( 'Login', 'tw' ),
+	'id' => 'login-form',
+	'description' => __( 'Login form', 'tw' ),
+	'before_widget' => '<div id="%1$s" class="widget %2$s">',
 	'after_widget' => '</div>',
 	'before_title' => '<h3 class="widget-title">',
 	'after_title' => '</h3>',
@@ -64,7 +74,7 @@ if ( ! function_exists( 'is_woocommerce_activated' ) ) {
 	}
 }
 
-/* 
+/*
  * Theme + Woocommerce integration if woocommerce is activated
  */
 if ( is_woocommerce_activated() ) {
@@ -95,7 +105,7 @@ function tw_woocommerce_support() {
 	}
 }
 
-/* 
+/*
  * tw_woocommerce_body_class
  *
  * Adds a woocommerce-active class to the body tag when Woocommerce is activated
@@ -109,7 +119,7 @@ function tw_woocommerce_body_class( $classes ) {
 	return $classes;
 }
 
-/* 
+/*
  * Remove product images from Woocommerce
  */
 remove_action( 'woocommerce_before_single_product_summary', 'woocommerce_show_product_images', 20 );
@@ -118,9 +128,9 @@ remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_
 
 /*
  * tw_remove_related_products
- * 
+ *
  * Clear the query arguments for related products so none show.
- * Add this code to your theme functions.php file.  
+ * Add this code to your theme functions.php file.
  */
 add_filter('woocommerce_related_products_args','tw_remove_related_products', 10);
 function tw_remove_related_products( $args ) {
@@ -145,9 +155,9 @@ function tw_remove_wc_breadcrumbs() {
 add_action( 'wp', 'tw_redirect_on_disabled_shop' );
 function tw_redirect_on_disabled_shop() {
   global $wp, $wc_cvo;
-  
+
   $current_uri = str_replace(get_site_url(), '', home_url(add_query_arg(array(),$wp->request)));
-  
+
   // check for urls that contain order-now, cart and checkout and redirect if the shop is disabled
   if ( $wc_cvo->setting( 'wc_cvo_prices' ) != 'enabled' || $wc_cvo->setting( 'wc_cvo_atc' ) != 'enabled' ) {
     if ( preg_match('/order-now/', $current_uri) || preg_match('/cart/', $current_uri) || preg_match('/checkout/', $current_uri) ) {
@@ -165,7 +175,7 @@ function tw_redirect_on_disabled_shop() {
 add_filter( 'woocommerce_variable_sale_price_html', 'tw_remove_prices', 10, 2 );
 add_filter( 'woocommerce_variable_price_html', 'tw_remove_prices', 10, 2 );
 add_filter( 'woocommerce_get_price_html', 'tw_remove_prices', 10, 2 );
- 
+
 function tw_remove_prices( $price ) {
  // do nothing
 }
@@ -178,7 +188,7 @@ function tw_remove_prices( $price ) {
 add_action( 'tw_woocommerce_price_after_description', 'tw_show_price_and_stock_after_description', 10 );
 function tw_show_price_and_stock_after_description() {
   global $product, $wc_cvo;
-  
+
   if ($product->product_type == 'simple') {
 		if ( ($wc_cvo->setting( 'wc_cvo_prices' ) == 'secured' && !catalog_visibility_user_has_access()) || $wc_cvo->setting( 'wc_cvo_prices' ) == 'disabled' ) {
 			echo '<span class="price"></span>'; // hide the price when the shop is disabled
@@ -187,7 +197,7 @@ function tw_show_price_and_stock_after_description() {
   		echo '<span class="price">' . woocommerce_price($product->price) . '</span>';
 		}
   }
-  
+
   if ($product->stock_status == 'instock') {
     echo '<span class="stock">' . number_format($product->stock, 0) . ' in stock</span>';
   }
@@ -251,9 +261,9 @@ function tw_remove_wc_archive_title( $page_title ) {
  * Loads the iCheck library to customize and theme the radio boxes in the product archives
  */
 function tw_load_icheck(){
-  wp_register_script( 
-    'icheck', 
-    get_stylesheet_directory_uri() . '/js/icheck/icheck.min.js', 
+  wp_register_script(
+    'icheck',
+    get_stylesheet_directory_uri() . '/js/icheck/icheck.min.js',
     array( 'jquery' )
   );
   wp_enqueue_script( 'icheck' );
@@ -276,16 +286,16 @@ function tw_enqueue_icheck_styles() {
  * Loads the jQuery Validate library
  */
 function tw_load_jqueryvalidate(){
-  wp_register_script( 
-    'validate', 
-    get_stylesheet_directory_uri() . '/js/validate/jquery.validate.min.js', 
+  wp_register_script(
+    'validate',
+    get_stylesheet_directory_uri() . '/js/validate/jquery.validate.min.js',
     array( 'jquery' )
   );
   wp_enqueue_script( 'validate' );
 
-  wp_register_script( 
-    'additional-methods', 
-    get_stylesheet_directory_uri() . '/js/validate/additional-methods.min.js', 
+  wp_register_script(
+    'additional-methods',
+    get_stylesheet_directory_uri() . '/js/validate/additional-methods.min.js',
     array( 'jquery', 'validate' )
   );
   wp_enqueue_script( 'additional-methods' );
@@ -298,9 +308,9 @@ add_action('wp_enqueue_scripts', 'tw_load_jqueryvalidate');
  * Loads the Steps library to customize checkout page
  */
 function tw_load_steps(){
-  wp_register_script( 
-    'steps', 
-    get_stylesheet_directory_uri() . '/js/steps/jquery.steps.min.js', 
+  wp_register_script(
+    'steps',
+    get_stylesheet_directory_uri() . '/js/steps/jquery.steps.min.js',
     array( 'jquery' )
   );
   wp_enqueue_script( 'steps' );
@@ -347,7 +357,7 @@ function tw_show_product_categories() {
  * Redirects the Order Now page to the Main category
  */
 add_action( 'wp', 'tw_redirect_ordernow_page' );
-function tw_redirect_ordernow_page() {    
+function tw_redirect_ordernow_page() {
   global $wp;
   $current_uri = str_replace(get_site_url(), '', home_url(add_query_arg(array(),$wp->request)));
 
@@ -366,3 +376,37 @@ add_filter( 'woocommerce_checkout_coupon_message', 'tw_coupon_code_message' );
 function tw_coupon_code_message() {
   return __( 'Have a gift card code?', 'woocommerce' ) . ' <a href="#" class="showcoupon">' . __( 'Click here to enter your gift card code', 'woocommerce' ) . '</a>';
 }
+
+/*
+ * tw_login_logo
+ *
+ * Replaces the default WP logo in the login page for our own
+ */
+function tw_login_logo() { ?>
+  <style type="text/css">
+      .login h1 a {
+        background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/images/login-logo.png);
+      }
+  </style>
+<?php }
+add_action( 'login_enqueue_scripts', 'tw_login_logo' );
+
+/*
+ * tw_login_logo_url
+ *
+ * Replaces the default WP link in the login pages for a link to our homepage
+ */
+function tw_login_logo_url() {
+  return home_url();
+}
+add_filter( 'login_headerurl', 'tw_login_logo_url' );
+
+/*
+ * tw_login_logo_url
+ *
+ * Replaces the default WP logo title in the login pages
+ */
+function tw_login_logo_url_title() {
+  return 'Tin Wings';
+}
+add_filter( 'login_headertitle', 'tw_login_logo_url_title' );

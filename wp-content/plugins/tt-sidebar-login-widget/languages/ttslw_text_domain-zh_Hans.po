@@ -1,0 +1,108 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Sidebar Login Widget\n"
+"POT-Creation-Date: 2014-08-29 19:14+1000\n"
+"PO-Revision-Date: 2014-08-29 19:23+1000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.5\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"Language: zh_Hans\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../tt-sidebar-login.php:68
+msgid "Title"
+msgstr "标题"
+
+#: ../tt-sidebar-login.php:86
+msgid "Show Avatar"
+msgstr "显示头像 "
+
+#: ../tt-sidebar-login.php:99
+msgid "Show Dashboard Link"
+msgstr "显示仪表板链接"
+
+#: ../tt-sidebar-login.php:112
+msgid "Show Profile Link"
+msgstr "显示个人资料链接"
+
+#: ../tt-sidebar-login.php:125
+msgid "Show Remember me"
+msgstr " 展会记住我 "
+
+#: ../tt-sidebar-login.php:138
+msgid "Show Register Link"
+msgstr "显示注册链接"
+
+#: ../tt-sidebar-login.php:151
+msgid "Show Forgotten Password Link"
+msgstr "展会忘记密码链接 "
+
+#: ../tt-sidebar-login.php:164
+msgid "Show Post Count"
+msgstr "显示帖子数量 "
+
+#: ../tt-sidebar-login.php:182
+msgid "Member's Login"
+msgstr "会员登入 "
+
+#: ../tt-sidebar-login.php:192
+msgid "Welcome"
+msgstr "欢迎 "
+
+#: ../tt-sidebar-login.php:209
+msgid "Enter both Username and Password"
+msgstr "同时输入用户名和密码 "
+
+#: ../tt-sidebar-login.php:212
+msgid "Username is not registered"
+msgstr "用户名未注册 "
+
+#: ../tt-sidebar-login.php:215
+msgid "Incorrect Password"
+msgstr "密码不正确 "
+
+#: ../tt-sidebar-login.php:236
+msgid "Logged in as "
+msgstr "登录为 "
+
+#: ../tt-sidebar-login.php:239
+msgid "Posts by you"
+msgstr "本帖最后由你 "
+
+#: ../tt-sidebar-login.php:248
+msgid "Dashboard"
+msgstr "仪表板 "
+
+#: ../tt-sidebar-login.php:251
+msgid "Profile"
+msgstr "简介 "
+
+#: ../tt-sidebar-login.php:253
+msgid "Logout"
+msgstr "注销 "
+
+#: ../tt-sidebar-login.php:265
+msgid "Username"
+msgstr "用户名 "
+
+#: ../tt-sidebar-login.php:266
+msgid "Password"
+msgstr "密码 "
+
+#: ../tt-sidebar-login.php:272
+msgid "Register"
+msgstr "注册 "
+
+#: ../tt-sidebar-login.php:274
+msgid "Forgot Password?"
+msgstr "忘记密码？ "
+
+#: ../tt-sidebar-login.php:317
+msgid "<strong>ERROR</strong>: Invalid username or incorrect password."
+msgstr "<strong>错误</strong>: 无效的用户名或密码不正确。"

@@ -1,0 +1,113 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Sidebar Login Widget\n"
+"POT-Creation-Date: 2014-09-20 12:29+1000\n"
+"PO-Revision-Date: 2014-09-20 12:29+1000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ms\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.4\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../tt-sidebar-login.php:70
+msgid "Title"
+msgstr "Tajuk"
+
+#: ../tt-sidebar-login.php:88
+msgid "Show Avatar"
+msgstr "Tunjuk Avatar "
+
+#: ../tt-sidebar-login.php:101
+msgid "Show Logged in User name"
+msgstr "Tunjuk Logged nama pengguna"
+
+#: ../tt-sidebar-login.php:114
+msgid "Show Dashboard Link"
+msgstr "Tunjuk Dashboard Link "
+
+#: ../tt-sidebar-login.php:127
+msgid "Show Profile Link"
+msgstr "Tunjukkan Link Profile "
+
+#: ../tt-sidebar-login.php:140
+msgid "Show Remember me"
+msgstr "Tunjuk Ingat saya "
+
+#: ../tt-sidebar-login.php:153
+msgid "Show Register Link"
+msgstr "Tunjuk Daftar Link "
+
+#: ../tt-sidebar-login.php:166
+msgid "Show Forgotten Password Link"
+msgstr "Tunjuk Lupa Kata Laluan Link "
+
+#: ../tt-sidebar-login.php:179
+msgid "Show Post Count"
+msgstr "Tunjuk Post Count "
+
+#: ../tt-sidebar-login.php:197
+msgid "Member's Login"
+msgstr "Log masuk ahli "
+
+#: ../tt-sidebar-login.php:207
+msgid "Welcome"
+msgstr "Selamat Datang "
+
+#: ../tt-sidebar-login.php:224
+msgid "Enter both Username and Password"
+msgstr "ID Pengguna dan Kata Laluan "
+
+#: ../tt-sidebar-login.php:227
+msgid "Username is not registered"
+msgstr "Nama pengguna tidak berdaftar "
+
+#: ../tt-sidebar-login.php:230
+msgid "Incorrect Password"
+msgstr "Kata laluan tidak betul "
+
+#: ../tt-sidebar-login.php:252
+msgid "Logged in as "
+msgstr "Sudah log masuk sebagai "
+
+#: ../tt-sidebar-login.php:256
+msgid "Posts by you"
+msgstr "Pos oleh anda "
+
+#: ../tt-sidebar-login.php:265
+msgid "Dashboard"
+msgstr "Dashboard "
+
+#: ../tt-sidebar-login.php:268
+msgid "Profile"
+msgstr "Profil "
+
+#: ../tt-sidebar-login.php:270
+msgid "Logout"
+msgstr "Log Keluar "
+
+#: ../tt-sidebar-login.php:282
+msgid "Username"
+msgstr "Nama pengguna "
+
+#: ../tt-sidebar-login.php:283
+msgid "Password"
+msgstr "kata laluan "
+
+#: ../tt-sidebar-login.php:289
+msgid "Register"
+msgstr "Daftar "
+
+#: ../tt-sidebar-login.php:291
+msgid "Forgot Password?"
+msgstr "Lupa Kata Laluan?"
+
+#: ../tt-sidebar-login.php:334
+msgid "<strong>ERROR</strong>: Invalid username or incorrect password."
+msgstr ""
+"<strong>RALAT</strong>: Nama pengguna tidak sah atau kata laluan salah."
