@@ -10,18 +10,21 @@
  Text Domain:  tw
 */
 
-.woocommerce #left {
+.woocommerce #left,
+.woocommerce-account #left {
   width: 65% !important;
   box-sizing: border-box;
 }
 
-.woocommerce #right {
+.woocommerce #right,
+.woocommerce-account #right {
   width: 35% !important;
   box-sizing: border-box;
 }
 
 @media screen and (min-width: 768px) {
-  .woocommerce #right {
+  .woocommerce #right,
+  .woocommerce-account #right {
     padding-left: 75px;
   }
 }
