@@ -154,15 +154,17 @@ function tw_remove_wc_breadcrumbs() {
  */
 add_action( 'wp', 'tw_redirect_on_disabled_shop' );
 function tw_redirect_on_disabled_shop() {
-  global $wp, $wc_cvo;
+  if(class_exists('WC_Catalog_Visibility_Options')) {
+    global $wp, $wc_cvo;
 
-  $current_uri = str_replace(get_site_url(), '', home_url(add_query_arg(array(),$wp->request)));
+    $current_uri = str_replace(get_site_url(), '', home_url(add_query_arg(array(),$wp->request)));
 
-  // check for urls that contain order-now, cart and checkout and redirect if the shop is disabled
-  if ( $wc_cvo->setting( 'wc_cvo_prices' ) != 'enabled' || $wc_cvo->setting( 'wc_cvo_atc' ) != 'enabled' ) {
-    if ( preg_match('/order-now/', $current_uri) || preg_match('/cart/', $current_uri) || preg_match('/checkout/', $current_uri) ) {
-      wp_redirect( '/shop-disabled' );
-      exit;
+    // check for urls that contain order-now, cart and checkout and redirect if the shop is disabled
+    if ( $wc_cvo->setting( 'wc_cvo_prices' ) != 'enabled' || $wc_cvo->setting( 'wc_cvo_atc' ) != 'enabled' ) {
+      if ( preg_match('/order-now/', $current_uri) || preg_match('/cart/', $current_uri) || preg_match('/checkout/', $current_uri) ) {
+        wp_redirect( '/shop-disabled' );
+        exit;
+      }
     }
   }
 }
