@@ -201,9 +201,6 @@ function tw_show_price_and_stock_after_description() {
   		}
     }
   }
-  else {
-    echo '<span class="price">' . woocommerce_price($product->price) . '</span>';
-  }
 
   if ($product->stock_status == 'instock') {
     echo '<span class="stock">' . number_format($product->stock, 0) . ' in stock</span>';
