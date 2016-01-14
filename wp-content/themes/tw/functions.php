@@ -191,13 +191,18 @@ add_action( 'tw_woocommerce_price_after_description', 'tw_show_price_and_stock_a
 function tw_show_price_and_stock_after_description() {
   global $product, $wc_cvo;
 
-  if ($product->product_type == 'simple') {
-		if ( ($wc_cvo->setting( 'wc_cvo_prices' ) == 'secured' && !catalog_visibility_user_has_access()) || $wc_cvo->setting( 'wc_cvo_prices' ) == 'disabled' ) {
-			echo '<span class="price"></span>'; // hide the price when the shop is disabled
-		}
-		else {
-  		echo '<span class="price">' . woocommerce_price($product->price) . '</span>';
-		}
+  if(class_exists('WC_Catalog_Visibility_Options')) {
+    if ($product->product_type == 'simple') {
+  		if ( ($wc_cvo->setting( 'wc_cvo_prices' ) == 'secured' && !catalog_visibility_user_has_access()) || $wc_cvo->setting( 'wc_cvo_prices' ) == 'disabled' ) {
+  			echo '<span class="price"></span>'; // hide the price when the shop is disabled
+  		}
+  		else {
+    		echo '<span class="price">' . woocommerce_price($product->price) . '</span>';
+  		}
+    }
+  }
+  else {
+    echo '<span class="price">' . woocommerce_price($product->price) . '</span>';
   }
 
   if ($product->stock_status == 'instock') {
