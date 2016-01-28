@@ -3,9 +3,9 @@
 
 <head>
 	<meta charset="<?php bloginfo('charset'); ?>" />
-	
+
 	<?php if (is_search()) { ?>
-	   <meta name="robots" content="noindex, nofollow" /> 
+	   <meta name="robots" content="noindex, nofollow" />
 	<?php } ?>
 
 	<title>
@@ -28,11 +28,11 @@
 		         echo ' - page '. $paged; }
 		   ?>
 	</title>
-	
+
 	<link rel="shortcut icon" href="/favicon.ico">
-	
+
 	<link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>">
-	
+
 	<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>">
 
 	<?php if ( is_singular() ) wp_enqueue_script('comment-reply'); ?>
@@ -52,13 +52,22 @@
 <div class="clear"></div>
 </div>
 <!--end top-->
-	
-	
+
+
 
 <div id="header">
-<?php 
-    echo do_shortcode("[metaslider id=84]"); 
-?>
+  <?php
+      echo do_shortcode("[metaslider id=84]");
+  ?>
+</div>
+<?php if ( is_user_logged_in() ) : ?>
+  <div class="login-widget loggedin">
+<?php else: ?>
+  <div class="login-widget not-loggedin">
+<?php endif; ?>
+  <?php if ( is_active_sidebar( 'login-form' ) ) : ?>
+    <?php dynamic_sidebar( 'login-form' ); ?>
+  <?php endif; ?>
 </div>
 
 <!--end header-->
@@ -67,7 +76,7 @@
 <div id="full-width">
 
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-			
+
 		<div class="post" id="post-<?php the_ID(); ?>">
 
 			<div class="entry">
@@ -79,11 +88,11 @@
 			</div>
 
 		</div>
-		
+
 		<?php // comments_template(); ?>
 
 		<?php endwhile; endif; ?>
-        
+
         </div>
 <!--end content-->
 </div>
@@ -95,7 +104,7 @@
 
 		</div>
 <!--end wrapper-->
-        
+
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://arrow.scrolltotop.com/arrow5.js"></script>
 <noscript>Not seeing a <a href="http://www.scrolltotop.com/">Scroll to Top Button</a>? Go to our FAQ page for more info.</noscript>
