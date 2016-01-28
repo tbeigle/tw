@@ -349,7 +349,7 @@ function tw_show_product_categories_hero() {
 add_action( 'woocommerce_before_shop_loop', 'tw_show_product_categories', 30 );
 function tw_show_product_categories() {
   echo '<div class="category-tabs">';
-  echo '<a href="/order-now/main"><img src="' . get_stylesheet_directory_uri() . '/images/cat_mains.png" class="product-cat"></a>';
+  echo '<a href="/order-now/mains"><img src="' . get_stylesheet_directory_uri() . '/images/cat_mains.png" class="product-cat"></a>';
   echo '<a href="/order-now/sides"><img src="' . get_stylesheet_directory_uri() . '/images/cat_sides.png" class="product-cat"></a>';
   echo '<a href="/order-now/extra"><img src="' . get_stylesheet_directory_uri() . '/images/cat_extras.png" class="product-cat"></a>';
   echo '</div>';
@@ -366,7 +366,7 @@ function tw_redirect_ordernow_page() {
   $current_uri = str_replace(get_site_url(), '', home_url(add_query_arg(array(),$wp->request)));
 
   if ( $current_uri == '/order-now' ) {
-    wp_redirect( '/order-now/main', 301 );
+    wp_redirect( '/order-now/mains', 301 );
     exit;
   }
 }
