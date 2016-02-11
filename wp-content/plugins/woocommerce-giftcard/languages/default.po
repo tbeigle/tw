@@ -1,0 +1,462 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2015-06-24 13:28+0800\n"
+"PO-Revision-Date: 2015-06-24 13:43+0800\n"
+"Last-Translator: Luu Thanh Thuy <luuthuy205@gmail.com>\n"
+"Language-Team: \n"
+"Language: French\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-Basepath: /var/www/html/wordpress/wp-content/plugins/woocommerce-"
+"giftcard\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: /var/www/html/wordpress/wp-content/plugins/"
+"woocommerce-giftcard\n"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/woocommerce-giftcard.php:103
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/woocommerce-giftcard.php:104
+msgid "Giftcard"
+msgstr "carte cadeau"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/woocommerce-giftcard.php:106
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/woocommerce-giftcard.php:107
+msgid "Add Giftcard"
+msgstr "Ajouter carte-cadeau"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/woocommerce-giftcard.php:108
+msgid "Edit"
+msgstr "éditer"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/woocommerce-giftcard.php:109
+msgid "Edit Giftcard"
+msgstr "Modifier la carte cadeau"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/woocommerce-giftcard.php:110
+msgid "New Giftcard"
+msgstr "Nouvelle carte-cadeau"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/woocommerce-giftcard.php:111
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/woocommerce-giftcard.php:112
+msgid "View Giftcard"
+msgstr "Voir carte cadeau"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/woocommerce-giftcard.php:113
+msgid "Search Giftcard"
+msgstr "Rechercher Carte-cadeau"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/woocommerce-giftcard.php:114
+msgid "No Giftcard found"
+msgstr "Pas de carte-cadeau trouvé"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/woocommerce-giftcard.php:115
+msgid "No Giftcard found in trash"
+msgstr "Pas de carte de cadeau trouvé dans une poubelle"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/woocommerce-giftcard.php:116
+msgid "Parent Giftcard"
+msgstr "Carte cadeau Parent"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/woocommerce-giftcard.php:131
+msgid "In active"
+msgstr "dans actif"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-columns.php:18
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-metabox.php:31
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:203
+msgid "Balance"
+msgstr "balance"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-columns.php:19
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-metabox.php:37
+msgid "Status"
+msgstr "statut"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-columns.php:20
+msgid "To email"
+msgstr "pour envoyer un courriel"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-columns.php:21
+msgid "Product"
+msgstr "produit"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-columns.php:54
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-metabox.php:40
+msgid "Inactive"
+msgstr "inactif"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-columns.php:56
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-metabox.php:39
+msgid "Active"
+msgstr "actif"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-metabox.php:14
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/giftcard-applied-form-handler.php:77
+msgid "Gift card"
+msgstr "La carte-cadeau"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-metabox.php:15
+msgid "Purchase Information"
+msgstr "Informations d'achat"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-metabox.php:17
+msgid "Send friend"
+msgstr "Envoyer un ami"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-metabox.php:46
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:245
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/view/view-giftcard-price.php:31
+msgid "Expiry date"
+msgstr "date d'expiration"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-metabox.php:52
+msgid "Comment"
+msgstr "commentaire"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-metabox.php:60
+msgid "Product name"
+msgstr "Nom du produit"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-metabox.php:70
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/observer/buy-giftcard.php:49
+msgid "To Email"
+msgstr "pour Envoyer"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-metabox.php:77
+msgid "To name"
+msgstr "appeler"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/giftcard-metabox.php:83
+msgid "To message"
+msgstr "pour un message"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:22
+msgid "Gift Cards"
+msgstr "Cartes-cadeaux"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:39
+msgid "Processing Gift card"
+msgstr "La carte-cadeau de traitement"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:42
+msgid "Apply gift card for shipping free"
+msgstr "Appliquer carte-cadeau pour la livraison gratuite"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:43
+msgid "Allow customers to pay shipping fee with  gift card."
+msgstr ""
+"Permettre aux clients de payer une taxe d'expédition avec la carte cadeau."
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:50
+msgid "Apply gift card for tax"
+msgstr "Appliquer carte-cadeau de l'impôt"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:51
+msgid "Allow customers to pay for tax with their gift card."
+msgstr "Permettre aux clients de payer de l'impôt avec leur carte-cadeau."
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:59
+msgid "Apply gift card for fee"
+msgstr "Appliquer carte-cadeau pour les frais"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:60
+msgid "Allow customers to pay for fees with their gift card."
+msgstr "Permettre aux clients de payer les frais avec leur carte-cadeau."
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:67
+msgid "Enable use gift card to buy other gift card"
+msgstr "Activer l'utilisation carte-cadeau à acheter d'autres cartes-cadeaux"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:74
+msgid "Active giftcard and send notification email when status of order"
+msgstr ""
+"Giftcard actif et envoyer des email de notification lorsque l'état de l'ordre"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:78
+msgid "Completed"
+msgstr "terminé"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:79
+msgid "Processing"
+msgstr "traitement"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:80
+msgid "On hold"
+msgstr "en attente"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:81
+msgid "Pending"
+msgstr "en attendant"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:89
+msgid "Gift card "
+msgstr "La carte-cadeau"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:92
+msgid "Default expire time span"
+msgstr "Par défaut expire laps de temps"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:93
+msgid ""
+"If you set this to 30 , the gift card will expire after 30 day from created "
+"time. Leave blank or 0 if you do not want to use it"
+msgstr ""
+"Si vous définissez ce à 30, la carte-cadeau expire après 30 jours de temps "
+"créé. Laissez ce champ vide ou 0 si vous ne voulez pas l'utiliser"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:100
+msgid "Gift card code pattern"
+msgstr "Cadeau modèle de code de carte"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:101
+msgid ""
+"You can use [A4] for 4 random characters, use [N5] for 5 random digit and so "
+"on"
+msgstr ""
+"Vous pouvez utiliser [A4] pendant 4 caractères aléatoires, utilisez [N5] "
+"pendant 5 aléatoire et ainsi de suite"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:109
+msgid "Gift card send friend option"
+msgstr "Carte cadeau envoyer option ami"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:112
+msgid "Email subject"
+msgstr "email sujet"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:119
+msgid "Email content"
+msgstr "Contenu du courrier électronique"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:126
+msgid "Attach pdf gift card"
+msgstr "Fixez pdf carte-cadeau"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:133
+msgid "PDF Setting "
+msgstr "Réglage PDF"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:136
+msgid "File name  of pdf background ( jpg,png file)"
+msgstr "Nom du fichier pdf de fond (jpg, png)"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:145
+msgid "PDF width"
+msgstr "Largeur de PDF"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:146
+msgid "Enter PDF width in point unit"
+msgstr "Entrer la largeur de PDF en unité de virgule"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:153
+msgid "PDF height"
+msgstr "Hauteur de PDF"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:154
+msgid "Enter PDF height in point unit"
+msgstr "Entrez hauteur de PDF en unité de virgule"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:161
+msgid "send from"
+msgstr "envoyer à partir"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:168
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:175
+msgid "send from x"
+msgstr "envoyer depuis x"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:182
+msgid "send to"
+msgstr "envoyer à"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:189
+msgid "send to x"
+msgstr "envoyer à x"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:196
+msgid "send to y"
+msgstr "envoyer à y"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:210
+msgid "Balance  x"
+msgstr "solde x"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:217
+msgid "Balance y"
+msgstr "solde y"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:224
+msgid "Gift card code"
+msgstr "Code de la carte-cadeau"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:231
+msgid "Gift card  Code  x"
+msgstr "Cadeau code de carte x"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:238
+msgid "Gift card  Code y"
+msgstr "Carte cadeau code Y"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:252
+msgid "Expiry date  x"
+msgstr "Date d'expiration x"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:259
+msgid "Expiry date y"
+msgstr "Date d'expiration y"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:266
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/template/add_giftcart_fields.php:63
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/observer/buy-giftcard.php:53
+msgid "Message"
+msgstr "message"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:273
+msgid "Message  x"
+msgstr "message x"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:280
+msgid "Message y"
+msgstr "message y"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:287
+msgid "Number of character in a line"
+msgstr "Nombre de caractère dans une ligne"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:289
+msgid ""
+"If the message is too long, you may want to limit 40 character in a line for "
+"example"
+msgstr ""
+"Si le message est trop long, vous voudrez peut-être à limiter de 40 "
+"caractères sur une ligne par exemple"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:295
+msgid "Barcode  x"
+msgstr "Barcode x"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/magenest-giftcard-setting.php:302
+msgid "Barcode y"
+msgstr "Barcode y"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/view/view-giftcard-price.php:13
+msgid "Price model"
+msgstr "Modèle de prix"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/view/view-giftcard-price.php:14
+msgid "Fixed price"
+msgstr "prix fixé"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/view/view-giftcard-price.php:15
+msgid "Selected price"
+msgstr "prix sélectionné"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/view/view-giftcard-price.php:16
+msgid "Custom price"
+msgstr "Prix personnalisée"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/view/view-giftcard-price.php:20
+msgid "Gift card pre-set"
+msgstr "Carte cadeau pré-set"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/admin/view/view-giftcard-price.php:25
+msgid "Price range"
+msgstr "Gamme de prix"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/template/add_giftcart_fields.php:16
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/observer/product.php:87
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/observer/product.php:100
+msgid "From"
+msgstr "à partir de"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/template/add_giftcart_fields.php:27
+msgid "Select value"
+msgstr "Sélectionner la valeur"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/template/add_giftcart_fields.php:53
+msgid "Enter a value"
+msgstr "Entrez une valeur"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/template/add_giftcart_fields.php:54
+msgid "Please enter a valid amout of gift card value which is in range "
+msgstr ""
+"S'il vous plaît entrer un amout valide de la valeur de la carte cadeau qui "
+"est dans la gamme"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/template/add_giftcart_fields.php:57
+msgid "Send to friend"
+msgstr "Envoyer à un ami"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/template/add_giftcart_fields.php:61
+msgid "Send to"
+msgstr "envoyer à"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/template/add_giftcart_fields.php:62
+msgid "Please enter a valid email address"
+msgstr "S'il vous plaît entrer une adresse email valide"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/template/add_giftcart_fields.php:62
+msgid "Recipient email"
+msgstr "Email du destinataire"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/giftcard.php:167
+msgid "Gift card code is not existed"
+msgstr "Code de la carte-cadeau est pas existé"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/giftcard.php:172
+msgid "Gift card code is  not active"
+msgstr "Code de la carte-cadeau est pas actif"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/giftcard.php:179
+msgid "Gift card code is expired"
+msgstr "Code de la carte-cadeau est expirée"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/giftcard.php:183
+msgid "Gift card balance is zero"
+msgstr "Solde de la carte-cadeau est nulle"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/giftcard-applied-form-handler.php:45
+msgid "Gift Card Payment"
+msgstr "Carte cadeau Paiement"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/giftcard-applied-form-handler.php:163
+msgid "A gift card can not be used to buy other gift card"
+msgstr ""
+"Une carte-cadeau ne peut pas être utilisé pour acheter d'autres cartes-"
+"cadeaux"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/giftcard-applied-form-handler.php:209
+msgid "Gift card applied successfully."
+msgstr "Carte cadeau appliqué avec succès."
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/giftcard-applied-form-handler.php:211
+#, fuzzy
+msgid "Gift card is not valid."
+msgstr "Code de la carte-cadeau est pas existé"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/observer/product.php:40
+msgid "Select Options"
+msgstr "Sélectionnez Options"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/observer/product.php:99
+msgid "Enter an amount between "
+msgstr "Entrez un montant entre"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/observer/product.php:99
+msgid " and "
+msgstr "et"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/observer/product.php:142
+msgid "Gift Card"
+msgstr "Carte Cadeau"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/observer/product.php:143
+msgid "Gift card is virtual product"
+msgstr "La carte-cadeau est produit virtuel"
+
+#: /var/www/html/wordpress/wp-content/plugins/woocommerce-giftcard/model/observer/buy-giftcard.php:45
+msgid "To Name"
+msgstr "Appeler"

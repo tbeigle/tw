@@ -538,10 +538,17 @@ textarea#rpgc_note {
   display: none !important;
 }
 
+form#giftcard-apply-form {
+  display: table;
+  width: 100%;
+}
+
 .giftcard {
-  max-width: 40%;
-  width: 40%;
+  max-width: 100%;
+  width: 100%;
   text-align: left;
+  display: table;
+  margin-bottom: 5px;
 }
 
 .giftcard .button {
@@ -555,4 +562,6 @@ input#giftcard_code {
   display: inline-block;
   float: left;
   margin-right: 5px;
+  width: 71.3%;
+  padding: 10px 10px 9px !important;
 }
