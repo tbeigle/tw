@@ -520,3 +520,39 @@ ul#sidebar-login-links-left {
 .widget_sidebarlogin #reglost a {
   color: #585978;
 }
+
+input#rpgc_to, input#rpgc_to_email {
+  width: 42.9% !important;
+  display: inline-block;
+  float: left !important;
+  clear: none !important;
+  margin-right: 10px !important;
+}
+
+textarea#rpgc_note {
+  height: 80px !important;
+  margin: 5px 0 0 0 !important;
+}
+
+.product_cat-gift-cards .stock {
+  display: none !important;
+}
+
+.giftcard {
+  max-width: 40%;
+  width: 40%;
+  text-align: left;
+}
+
+.giftcard .button {
+  float: left !important;
+  display: inline-block !important;
+  clear: none;
+}
+
+input#giftcard_code {
+  clear: none;
+  display: inline-block;
+  float: left;
+  margin-right: 5px;
+}
