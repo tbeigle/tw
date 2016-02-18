@@ -129,7 +129,7 @@ function tinwings_reports() {
           $date = new \DateTime($order->order_date);
           echo '<td><a href="post.php?post=' . $order->get_order_number() . '&action=edit">' . $date->format('m/d/Y @ H:i:s') . '</a></td>';
           echo '<td><a href="user-edit.php?user_id=' . $order->get_user_id() . '">' . $order->billing_email . '</a></td>';
-          echo '<td>' . $order->get_item_count() . ' Items</td>';
+          echo '<td>' . $order->get_item_count() . ' Item(s)</td>';
           echo '<td>' . $order->get_subtotal_to_display() . '</td>';
           echo '<td>' . $order->get_shipping_method() . '</td>';
           echo '<td>' . $order->payment_method_title . '</td>';
@@ -168,7 +168,7 @@ function tinwings_reports() {
           $date = new \DateTime($order->order_date);
           echo '<td><a href="post.php?post=' . $order->get_order_number() . '&action=edit">' . $date->format('m/d/Y @ H:i:s') . '</a></td>';
           echo '<td><a href="user-edit.php?user_id=' . $order->get_user_id() . '">' . $order->billing_email . '</a></td>';
-          echo '<td>' . $order->get_item_count() . ' Items</td>';
+          echo '<td>' . $order->get_item_count() . ' Item(s)</td>';
           echo '<td>' . $order->get_subtotal_to_display() . '</td>';
           echo '<td>' . $order->get_shipping_method() . '</td>';
           echo '<td>' . $order->payment_method_title . '</td>';
@@ -217,7 +217,7 @@ function tinwings_reports() {
         $date = new \DateTime($order->order_date);
         echo '<td><a href="post.php?post=' . $order->get_order_number() . '&action=edit">' . $date->format('m/d/Y @ H:i:s') . '</a></td>';
         echo '<td><a href="user-edit.php?user_id=' . $order->get_user_id() . '">' . $order->billing_email . '</a></td>';
-        echo '<td>' . $order->get_item_count() . ' Items</td>';
+        echo '<td>' . $order->get_item_count() . ' Item(s)</td>';
         echo '<td>' . $order->get_subtotal_to_display() . '</td>';
         echo '<td>' . $order->get_shipping_method() . '</td>';
         echo '<td>' . $order->payment_method_title . '</td>';
@@ -265,7 +265,7 @@ function tinwings_reports() {
         $date = new \DateTime($order->order_date);
         echo '<td><a href="post.php?post=' . $order->get_order_number() . '&action=edit">' . $date->format('m/d/Y @ H:i:s') . '</a></td>';
         echo '<td><a href="user-edit.php?user_id=' . $order->get_user_id() . '">' . $order->billing_email . '</a></td>';
-        echo '<td>' . $order->get_item_count() . ' Items</td>';
+        echo '<td>' . $order->get_item_count() . ' Item(s)</td>';
         echo '<td>' . $order->get_subtotal_to_display() . '</td>';
         echo '<td>' . $order->get_shipping_method() . '</td>';
         echo '<td>' . $order->payment_method_title . '</td>';
@@ -314,7 +314,7 @@ function tinwings_reports() {
         $date = new \DateTime($order->order_date);
         echo '<td><a href="post.php?post=' . $order->get_order_number() . '&action=edit">' . $date->format('m/d/Y @ H:i:s') . '</a></td>';
         echo '<td><a href="user-edit.php?user_id=' . $order->get_user_id() . '">' . $order->billing_email . '</a></td>';
-        echo '<td>' . $order->get_item_count() . ' Items</td>';
+        echo '<td>' . $order->get_item_count() . ' Item(s)</td>';
         echo '<td>' . $order->get_subtotal_to_display() . '</td>';
         echo '<td>' . $order->get_shipping_method() . '</td>';
         echo '<td>' . $order->payment_method_title . '</td>';
@@ -363,7 +363,7 @@ function tinwings_reports() {
         $date = new \DateTime($order->order_date);
         echo '<td><a href="post.php?post=' . $order->get_order_number() . '&action=edit">' . $date->format('m/d/Y @ H:i:s') . '</a></td>';
         echo '<td><a href="user-edit.php?user_id=' . $order->get_user_id() . '">' . $order->billing_email . '</a></td>';
-        echo '<td>' . $order->get_item_count() . ' Items</td>';
+        echo '<td>' . $order->get_item_count() . ' Item(s)</td>';
         echo '<td>' . $order->get_subtotal_to_display() . '</td>';
         echo '<td>' . $order->get_shipping_method() . '</td>';
         echo '<td>' . $order->payment_method_title . '</td>';
@@ -413,7 +413,7 @@ function tinwings_reports() {
         $date = new \DateTime($order->order_date);
         echo '<td><a href="post.php?post=' . $order->get_order_number() . '&action=edit">' . $date->format('m/d/Y @ H:i:s') . '</a></td>';
         echo '<td><a href="user-edit.php?user_id=' . $order->get_user_id() . '">' . $order->billing_email . '</a></td>';
-        echo '<td>' . $order->get_item_count() . ' Items</td>';
+        echo '<td>' . $order->get_item_count() . ' Item(s)</td>';
         echo '<td>' . $order->get_subtotal_to_display() . '</td>';
         echo '<td>' . $order->get_shipping_method() . '</td>';
         echo '<td>' . $order->payment_method_title . '</td>';
@@ -463,7 +463,7 @@ function tinwings_reports() {
         $date = new \DateTime($order->order_date);
         echo '<td><a href="post.php?post=' . $order->get_order_number() . '&action=edit">' . $date->format('m/d/Y @ H:i:s') . '</a></td>';
         echo '<td><a href="user-edit.php?user_id=' . $order->get_user_id() . '">' . $order->billing_email . '</a></td>';
-        echo '<td>' . $order->get_item_count() . ' Items</td>';
+        echo '<td>' . $order->get_item_count() . ' Item(s)</td>';
         echo '<td>' . $order->get_subtotal_to_display() . '</td>';
         echo '<td>' . $order->get_shipping_method() . '</td>';
         echo '<td>' . $order->payment_method_title . '</td>';
