@@ -104,31 +104,36 @@ function tinwings_reports() {
       echo '<h3>Local Pickup</h3>';
       echo '<table class="tinwings-reports-table">';
       echo '<thead>';
-      echo '<td>Product</td>
-            <td>Order</td>
-            <td>Qty</td>
+      echo '<td>Product(s)</td>
+            <td>Order Date</td>
+            <td>Email</td>
+            <td>Purchased</td>
             <td>Subtotal</td>
-            <td>Delivery Method</td>';
+            <td>Delivery Method</td>
+            <td>Payment Method</td>';
       echo '</thead>';
       echo '<tbody>';
 
       foreach ($query->posts as $customer_order) {
         $order = new WC_Order($customer_order->ID);
 
-        $shipping_methods = $order->get_items( 'shipping' );
-
-        foreach ($order->get_items( 'shipping' ) as $shipping) {
-          if (!empty($shipping['item_meta']['method_id'][0]) && $shipping['item_meta']['method_id'][0] == 'local_pickup') {
-            foreach ($order->get_items() as $item) {
-              echo '<tr>';
-              echo '<td><a href="post.php?post=' . $item['product_id'] . '&action=edit">' . $item['name'] . '</a></td>';
-              echo '<td>' . $customer_order->post_title . '</td>';
-              echo '<td>&times;' . $item['qty'] . '</td>';
-              echo '<td>$' . number_format($item['line_subtotal'], 2) . ' USD</td>';
-              echo '<td>' . $shipping['name'] . '</td>';
-              echo '</tr>';
+        if($order->has_shipping_method('local_pickup')) {
+          echo '<tr>';
+          echo '<td>';
+          echo '<ul>';
+            foreach($order->get_items() as $item) {
+              echo '<li>' . $item['qty'] . ' &times; ' . $item['name'] . ' ($' . $order->get_item_total($item) . ')</li>';
             }
-          }
+          echo '</ul>';
+          echo '</td>';
+          $date = new \DateTime($order->order_date);
+          echo '<td><a href="post.php?post=' . $order->get_order_number() . '&action=edit">' . $date->format('m/d/Y @ H:i:s') . '</a></td>';
+          echo '<td><a href="user-edit.php?user_id=' . $order->get_user_id() . '">' . $order->billing_email . '</a></td>';
+          echo '<td>' . $order->get_item_count() . ' Items</td>';
+          echo '<td>' . $order->get_subtotal_to_display() . '</td>';
+          echo '<td>' . $order->get_shipping_method() . '</td>';
+          echo '<td>' . $order->payment_method_title . '</td>';
+          echo '</tr>';
         }
       }
 
@@ -138,29 +143,36 @@ function tinwings_reports() {
       echo '<h3>Local Delivery</h3>';
       echo '<table class="tinwings-reports-table">';
       echo '<thead>';
-      echo '<td>Product</td>
-            <td>Order</td>
-            <td>Qty</td>
+      echo '<td>Product(s)</td>
+            <td>Order Date</td>
+            <td>Email</td>
+            <td>Purchased</td>
             <td>Subtotal</td>
-            <td>Delivery Method</td>';
+            <td>Delivery Method</td>
+            <td>Payment Method</td>';
       echo '</thead>';
       echo '<tbody>';
 
       foreach ($query->posts as $customer_order) {
         $order = new WC_Order($customer_order->ID);
 
-        foreach ($order->get_items( 'shipping' ) as $shipping) {
-          if (!empty($shipping['item_meta']['method_id'][0]) && $shipping['item_meta']['method_id'][0] == 'local_delivery') {
-            foreach ($order->get_items() as $item) {
-              echo '<tr>';
-              echo '<td><a href="post.php?post=' . $item['product_id'] . '&action=edit">' . $item['name'] . '</a></td>';
-              echo '<td>' . $customer_order->post_title . '</td>';
-              echo '<td>&times;' . $item['qty'] . '</td>';
-              echo '<td>$' . number_format($item['line_subtotal'], 2) . ' USD</td>';
-              echo '<td>' . $shipping['name'] . '</td>';
-              echo '</tr>';
+        if($order->has_shipping_method('local_delivery')) {
+          echo '<tr>';
+          echo '<td>';
+          echo '<ul>';
+            foreach($order->get_items() as $item) {
+              echo '<li>' . $item['qty'] . ' &times; ' . $item['name'] . ' ($' . $order->get_item_total($item) . ')</li>';
             }
-          }
+          echo '</ul>';
+          echo '</td>';
+          $date = new \DateTime($order->order_date);
+          echo '<td><a href="post.php?post=' . $order->get_order_number() . '&action=edit">' . $date->format('m/d/Y @ H:i:s') . '</a></td>';
+          echo '<td><a href="user-edit.php?user_id=' . $order->get_user_id() . '">' . $order->billing_email . '</a></td>';
+          echo '<td>' . $order->get_item_count() . ' Items</td>';
+          echo '<td>' . $order->get_subtotal_to_display() . '</td>';
+          echo '<td>' . $order->get_shipping_method() . '</td>';
+          echo '<td>' . $order->payment_method_title . '</td>';
+          echo '</tr>';
         }
       }
 
@@ -181,30 +193,35 @@ function tinwings_reports() {
       echo '<h3>Orders this Year</h3>';
       echo '<table class="tinwings-reports-table">';
       echo '<thead>';
-      echo '<td>Product</td>
-            <td>Order</td>
-            <td>Qty</td>
+      echo '<td>Product(s)</td>
+            <td>Order Date</td>
+            <td>Email</td>
+            <td>Purchased</td>
             <td>Subtotal</td>
-            <td>Delivery Method</td>';
+            <td>Delivery Method</td>
+            <td>Payment Method</td>';
       echo '</thead>';
       echo '<tbody>';
 
       foreach ($query->posts as $customer_order) {
         $order = new WC_Order($customer_order->ID);
 
-        foreach ($order->get_items( 'shipping' ) as $shipping) {
-          if (!empty($shipping['item_meta']['method_id'][0])) {
-            foreach ($order->get_items() as $item) {
-              echo '<tr>';
-              echo '<td><a href="post.php?post=' . $item['product_id'] . '&action=edit">' . $item['name'] . '</a></td>';
-              echo '<td>' . $customer_order->post_title . '</td>';
-              echo '<td>&times;' . $item['qty'] . '</td>';
-              echo '<td>$' . number_format($item['line_subtotal'], 2) . ' USD</td>';
-              echo '<td>' . $shipping['name'] . '</td>';
-              echo '</tr>';
-            }
+        echo '<tr>';
+        echo '<td>';
+        echo '<ul>';
+          foreach($order->get_items() as $item) {
+            echo '<li>' . $item['qty'] . ' &times; ' . $item['name'] . ' ($' . $order->get_item_total($item) . ')</li>';
           }
-        }
+        echo '</ul>';
+        echo '</td>';
+        $date = new \DateTime($order->order_date);
+        echo '<td><a href="post.php?post=' . $order->get_order_number() . '&action=edit">' . $date->format('m/d/Y @ H:i:s') . '</a></td>';
+        echo '<td><a href="user-edit.php?user_id=' . $order->get_user_id() . '">' . $order->billing_email . '</a></td>';
+        echo '<td>' . $order->get_item_count() . ' Items</td>';
+        echo '<td>' . $order->get_subtotal_to_display() . '</td>';
+        echo '<td>' . $order->get_shipping_method() . '</td>';
+        echo '<td>' . $order->payment_method_title . '</td>';
+        echo '</tr>';
       }
 
       echo '</tbody>';
@@ -224,30 +241,35 @@ function tinwings_reports() {
       echo '<h3>Orders Last Year</h3>';
       echo '<table class="tinwings-reports-table">';
       echo '<thead>';
-      echo '<td>Product</td>
-            <td>Order</td>
-            <td>Qty</td>
+      echo '<td>Product(s)</td>
+            <td>Order Date</td>
+            <td>Email</td>
+            <td>Purchased</td>
             <td>Subtotal</td>
-            <td>Delivery Method</td>';
+            <td>Delivery Method</td>
+            <td>Payment Method</td>';
       echo '</thead>';
       echo '<tbody>';
 
       foreach ($query->posts as $customer_order) {
         $order = new WC_Order($customer_order->ID);
 
-        foreach ($order->get_items( 'shipping' ) as $shipping) {
-          if (!empty($shipping['item_meta']['method_id'][0])) {
-            foreach ($order->get_items() as $item) {
-              echo '<tr>';
-              echo '<td><a href="post.php?post=' . $item['product_id'] . '&action=edit">' . $item['name'] . '</a></td>';
-              echo '<td>' . $customer_order->post_title . '</td>';
-              echo '<td>&times;' . $item['qty'] . '</td>';
-              echo '<td>$' . number_format($item['line_subtotal'], 2) . ' USD</td>';
-              echo '<td>' . $shipping['name'] . '</td>';
-              echo '</tr>';
-            }
+        echo '<tr>';
+        echo '<td>';
+        echo '<ul>';
+          foreach($order->get_items() as $item) {
+            echo '<li>' . $item['qty'] . ' &times; ' . $item['name'] . ' ($' . $order->get_item_total($item) . ')</li>';
           }
-        }
+        echo '</ul>';
+        echo '</td>';
+        $date = new \DateTime($order->order_date);
+        echo '<td><a href="post.php?post=' . $order->get_order_number() . '&action=edit">' . $date->format('m/d/Y @ H:i:s') . '</a></td>';
+        echo '<td><a href="user-edit.php?user_id=' . $order->get_user_id() . '">' . $order->billing_email . '</a></td>';
+        echo '<td>' . $order->get_item_count() . ' Items</td>';
+        echo '<td>' . $order->get_subtotal_to_display() . '</td>';
+        echo '<td>' . $order->get_shipping_method() . '</td>';
+        echo '<td>' . $order->payment_method_title . '</td>';
+        echo '</tr>';
       }
 
       echo '</tbody>';
@@ -268,30 +290,35 @@ function tinwings_reports() {
       echo '<h3>Orders this Month</h3>';
       echo '<table class="tinwings-reports-table">';
       echo '<thead>';
-      echo '<td>Product</td>
-            <td>Order</td>
-            <td>Qty</td>
+      echo '<td>Product(s)</td>
+            <td>Order Date</td>
+            <td>Email</td>
+            <td>Purchased</td>
             <td>Subtotal</td>
-            <td>Delivery Method</td>';
+            <td>Delivery Method</td>
+            <td>Payment Method</td>';
       echo '</thead>';
       echo '<tbody>';
 
       foreach ($query->posts as $customer_order) {
         $order = new WC_Order($customer_order->ID);
 
-        foreach ($order->get_items( 'shipping' ) as $shipping) {
-          if (!empty($shipping['item_meta']['method_id'][0])) {
-            foreach ($order->get_items() as $item) {
-              echo '<tr>';
-              echo '<td><a href="post.php?post=' . $item['product_id'] . '&action=edit">' . $item['name'] . '</a></td>';
-              echo '<td>' . $customer_order->post_title . '</td>';
-              echo '<td>&times;' . $item['qty'] . '</td>';
-              echo '<td>$' . number_format($item['line_subtotal'], 2) . ' USD</td>';
-              echo '<td>' . $shipping['name'] . '</td>';
-              echo '</tr>';
-            }
+        echo '<tr>';
+        echo '<td>';
+        echo '<ul>';
+          foreach($order->get_items() as $item) {
+            echo '<li>' . $item['qty'] . ' &times; ' . $item['name'] . ' ($' . $order->get_item_total($item) . ')</li>';
           }
-        }
+        echo '</ul>';
+        echo '</td>';
+        $date = new \DateTime($order->order_date);
+        echo '<td><a href="post.php?post=' . $order->get_order_number() . '&action=edit">' . $date->format('m/d/Y @ H:i:s') . '</a></td>';
+        echo '<td><a href="user-edit.php?user_id=' . $order->get_user_id() . '">' . $order->billing_email . '</a></td>';
+        echo '<td>' . $order->get_item_count() . ' Items</td>';
+        echo '<td>' . $order->get_subtotal_to_display() . '</td>';
+        echo '<td>' . $order->get_shipping_method() . '</td>';
+        echo '<td>' . $order->payment_method_title . '</td>';
+        echo '</tr>';
       }
 
       echo '</tbody>';
@@ -312,30 +339,35 @@ function tinwings_reports() {
       echo '<h3>Orders last Month</h3>';
       echo '<table class="tinwings-reports-table">';
       echo '<thead>';
-      echo '<td>Product</td>
-            <td>Order</td>
-            <td>Qty</td>
+      echo '<td>Product(s)</td>
+            <td>Order Date</td>
+            <td>Email</td>
+            <td>Purchased</td>
             <td>Subtotal</td>
-            <td>Delivery Method</td>';
+            <td>Delivery Method</td>
+            <td>Payment Method</td>';
       echo '</thead>';
       echo '<tbody>';
 
       foreach ($query->posts as $customer_order) {
         $order = new WC_Order($customer_order->ID);
 
-        foreach ($order->get_items( 'shipping' ) as $shipping) {
-          if (!empty($shipping['item_meta']['method_id'][0])) {
-            foreach ($order->get_items() as $item) {
-              echo '<tr>';
-              echo '<td><a href="post.php?post=' . $item['product_id'] . '&action=edit">' . $item['name'] . '</a></td>';
-              echo '<td>' . $customer_order->post_title . '</td>';
-              echo '<td>&times;' . $item['qty'] . '</td>';
-              echo '<td>$' . number_format($item['line_subtotal'], 2) . ' USD</td>';
-              echo '<td>' . $shipping['name'] . '</td>';
-              echo '</tr>';
-            }
+        echo '<tr>';
+        echo '<td>';
+        echo '<ul>';
+          foreach($order->get_items() as $item) {
+            echo '<li>' . $item['qty'] . ' &times; ' . $item['name'] . ' ($' . $order->get_item_total($item) . ')</li>';
           }
-        }
+        echo '</ul>';
+        echo '</td>';
+        $date = new \DateTime($order->order_date);
+        echo '<td><a href="post.php?post=' . $order->get_order_number() . '&action=edit">' . $date->format('m/d/Y @ H:i:s') . '</a></td>';
+        echo '<td><a href="user-edit.php?user_id=' . $order->get_user_id() . '">' . $order->billing_email . '</a></td>';
+        echo '<td>' . $order->get_item_count() . ' Items</td>';
+        echo '<td>' . $order->get_subtotal_to_display() . '</td>';
+        echo '<td>' . $order->get_shipping_method() . '</td>';
+        echo '<td>' . $order->payment_method_title . '</td>';
+        echo '</tr>';
       }
 
       echo '</tbody>';
@@ -357,30 +389,35 @@ function tinwings_reports() {
       echo '<h3>Orders this Week</h3>';
       echo '<table class="tinwings-reports-table">';
       echo '<thead>';
-      echo '<td>Product</td>
-            <td>Order</td>
-            <td>Qty</td>
+      echo '<td>Product(s)</td>
+            <td>Order Date</td>
+            <td>Email</td>
+            <td>Purchased</td>
             <td>Subtotal</td>
-            <td>Delivery Method</td>';
+            <td>Delivery Method</td>
+            <td>Payment Method</td>';
       echo '</thead>';
       echo '<tbody>';
 
       foreach ($query->posts as $customer_order) {
         $order = new WC_Order($customer_order->ID);
 
-        foreach ($order->get_items( 'shipping' ) as $shipping) {
-          if (!empty($shipping['item_meta']['method_id'][0])) {
-            foreach ($order->get_items() as $item) {
-              echo '<tr>';
-              echo '<td><a href="post.php?post=' . $item['product_id'] . '&action=edit">' . $item['name'] . '</a></td>';
-              echo '<td>' . $customer_order->post_title . '</td>';
-              echo '<td>&times;' . $item['qty'] . '</td>';
-              echo '<td>$' . number_format($item['line_subtotal'], 2) . ' USD</td>';
-              echo '<td>' . $shipping['name'] . '</td>';
-              echo '</tr>';
-            }
+        echo '<tr>';
+        echo '<td>';
+        echo '<ul>';
+          foreach($order->get_items() as $item) {
+            echo '<li>' . $item['qty'] . ' &times; ' . $item['name'] . ' ($' . $order->get_item_total($item) . ')</li>';
           }
-        }
+        echo '</ul>';
+        echo '</td>';
+        $date = new \DateTime($order->order_date);
+        echo '<td><a href="post.php?post=' . $order->get_order_number() . '&action=edit">' . $date->format('m/d/Y @ H:i:s') . '</a></td>';
+        echo '<td><a href="user-edit.php?user_id=' . $order->get_user_id() . '">' . $order->billing_email . '</a></td>';
+        echo '<td>' . $order->get_item_count() . ' Items</td>';
+        echo '<td>' . $order->get_subtotal_to_display() . '</td>';
+        echo '<td>' . $order->get_shipping_method() . '</td>';
+        echo '<td>' . $order->payment_method_title . '</td>';
+        echo '</tr>';
       }
 
       echo '</tbody>';
@@ -402,30 +439,35 @@ function tinwings_reports() {
       echo '<h3>Orders Last Week</h3>';
       echo '<table class="tinwings-reports-table">';
       echo '<thead>';
-      echo '<td>Product</td>
-            <td>Order</td>
-            <td>Qty</td>
+      echo '<td>Product(s)</td>
+            <td>Order Date</td>
+            <td>Email</td>
+            <td>Purchased</td>
             <td>Subtotal</td>
-            <td>Delivery Method</td>';
+            <td>Delivery Method</td>
+            <td>Payment Method</td>';
       echo '</thead>';
       echo '<tbody>';
 
       foreach ($query->posts as $customer_order) {
         $order = new WC_Order($customer_order->ID);
 
-        foreach ($order->get_items( 'shipping' ) as $shipping) {
-          if (!empty($shipping['item_meta']['method_id'][0])) {
-            foreach ($order->get_items() as $item) {
-              echo '<tr>';
-              echo '<td><a href="post.php?post=' . $item['product_id'] . '&action=edit">' . $item['name'] . '</a></td>';
-              echo '<td>' . $customer_order->post_title . '</td>';
-              echo '<td>&times;' . $item['qty'] . '</td>';
-              echo '<td>$' . number_format($item['line_subtotal'], 2) . ' USD</td>';
-              echo '<td>' . $shipping['name'] . '</td>';
-              echo '</tr>';
-            }
+        echo '<tr>';
+        echo '<td>';
+        echo '<ul>';
+          foreach($order->get_items() as $item) {
+            echo '<li>' . $item['qty'] . ' &times; ' . $item['name'] . ' ($' . $order->get_item_total($item) . ')</li>';
           }
-        }
+        echo '</ul>';
+        echo '</td>';
+        $date = new \DateTime($order->order_date);
+        echo '<td><a href="post.php?post=' . $order->get_order_number() . '&action=edit">' . $date->format('m/d/Y @ H:i:s') . '</a></td>';
+        echo '<td><a href="user-edit.php?user_id=' . $order->get_user_id() . '">' . $order->billing_email . '</a></td>';
+        echo '<td>' . $order->get_item_count() . ' Items</td>';
+        echo '<td>' . $order->get_subtotal_to_display() . '</td>';
+        echo '<td>' . $order->get_shipping_method() . '</td>';
+        echo '<td>' . $order->payment_method_title . '</td>';
+        echo '</tr>';
       }
 
       echo '</tbody>';
