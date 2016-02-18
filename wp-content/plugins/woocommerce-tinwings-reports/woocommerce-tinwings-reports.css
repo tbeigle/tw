@@ -1,0 +1,30 @@
+.tinwings-reports-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.tinwings-reports-table a {
+  text-decoration: none;
+}
+
+.tinwings-reports-table thead {
+  background-color: #fff;
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+}
+
+.tinwings-reports-table thead td {
+  padding: 8px 10px;
+}
+
+.tinwings-reports-table tbody td {
+  padding: 8px 10px;
+}
+
+.tinwings-reports-table tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
