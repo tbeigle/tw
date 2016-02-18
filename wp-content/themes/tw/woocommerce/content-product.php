@@ -35,10 +35,10 @@ $woocommerce_loop['loop']++;
 
 // Extra post classes
 $classes = array();
-if ( 0 == ( $woocommerce_loop['loop'] - 1 ) % $woocommerce_loop['columns'] || 1 == $woocommerce_loop['columns'] ) {
+if ( 0 === ( $woocommerce_loop['loop'] - 1 ) % $woocommerce_loop['columns'] || 1 === $woocommerce_loop['columns'] ) {
 	$classes[] = 'first';
 }
-if ( 0 == $woocommerce_loop['loop'] % $woocommerce_loop['columns'] ) {
+if ( 0 === $woocommerce_loop['loop'] % $woocommerce_loop['columns'] ) {
 	$classes[] = 'last';
 }
 
@@ -78,7 +78,7 @@ else {
 		do_action( 'woocommerce_after_shop_loop_item_title' );
 		remove_action('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price');
 	?>
-	
+
 	<br />
 	<?php echo apply_filters( 'woocommerce_short_description', $post->post_excerpt ); ?>
 
@@ -92,7 +92,7 @@ else {
 		add_action('woocommerce_after_shop_loop_item','woocommerce_template_single_add_to_cart');
 		remove_action('woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
     add_action('woocommerce_after_shop_loop_item', 'tw_show_price_and_stock_after_description');
-    
+
 		do_action( 'woocommerce_after_shop_loop_item' );
 
 	?>

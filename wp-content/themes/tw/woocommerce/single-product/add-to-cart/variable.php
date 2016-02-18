@@ -4,7 +4,7 @@
  *
  * @author  WooThemes
  * @package WooCommerce/Templates
- * @version 2.4.0
+ * @version 2.5.0
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -13,7 +13,7 @@ global $product;
 $attribute_keys = array_keys( $attributes );
 do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 
-<form class="variations_form cart" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint( $product->id ); ?>" data-product_variations="<?php echo esc_attr( json_encode( $available_variations ) ) ?>">
+<form class="variations_form cart" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint( $product->id ); ?>" data-product_variations="<?php echo htmlspecialchars( json_encode( $available_variations ) ) ?>">
 	<?php do_action( 'woocommerce_before_variations_form' ); ?>
 
 	<?php if ( empty( $available_variations ) && false !== $available_variations ) : ?>
@@ -56,7 +56,7 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 
 								// Use attribute key to get the variation id from the $available_variations array
 								$var_id = $available_variations[$key]['variation_id'];
-											
+
 								// Then use the variation_id to get the value from _isa_woo_variation_desc
 								$var_description = get_post_meta( $var_id, '_isa_woo_variation_desc', true);
 
@@ -77,7 +77,7 @@ do_action( 'woocommerce_before_add_to_cart_form' ); ?>
 		<div class="single_variation_wrap" style="display:none;">
 			<?php do_action( 'woocommerce_before_single_variation' ); ?>
 
-			<?php 
+			<?php
 			/**
 			 * woocommerce_single_variation hook. Used to output the cart button and placeholder or variation data.
 			 * @since 2.4.0
