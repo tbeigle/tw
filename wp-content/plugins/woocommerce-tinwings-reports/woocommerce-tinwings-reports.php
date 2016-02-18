@@ -84,6 +84,7 @@ function tinwings_reports() {
   <ol>
     <li>Delivery vs. Pickup</li>
     <li>This Year</li>
+    <li>Last Year</li>
     <li>This Month</li>
     <li>Last Month</li>
     <li>This Week</li>
