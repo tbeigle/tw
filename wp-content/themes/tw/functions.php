@@ -455,3 +455,26 @@ function tw_login_logo_url_title() {
   return 'Tin Wings';
 }
 add_filter( 'login_headertitle', 'tw_login_logo_url_title' );
+
+/*
+ *
+ * Adds a print button to the orders table in the admin panel
+ */
+add_action('admin_print_footer_scripts', function() {
+  $screen = get_current_screen();
+
+  if( $screen->id == 'edit-shop_order' && $screen->post_type == 'shop_order' ){
+    ?>
+      <script>
+      function print_report(el) {
+        window.document.body.innerHTML = document.getElementById(el).innerHTML;
+        window.focus();
+        window.print();
+        location.reload();
+      }
+
+      jQuery('.wrap h1 .page-title-action').after('<a href="javascript:print_report(\'posts-filter\');" class="page-title-action">Print Page</a>');
+      </script>
+    <?php
+  }
+});
