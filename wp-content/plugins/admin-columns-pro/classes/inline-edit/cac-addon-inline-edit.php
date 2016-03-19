@@ -49,10 +49,10 @@ class CACIE_Addon_InlineEdit {
 		add_filter( 'cac/column/default_options', array( $this, 'set_column_default_options' ) );
 
 		// add setting field to column editing box
-		add_action( 'cac/column/settings_after', array( $this, 'add_settings_field' ), 10 );
+		add_action( 'cac/column/settings_after', array( $this, 'add_settings_field' ), 8 );
 
 		// add setting editing indicator
-		add_action( 'cac/column/settings_meta', array( $this, 'add_label_edit_indicator' ), 10 );
+		add_action( 'cac/column/settings_meta', array( $this, 'add_label_edit_indicator' ), 8 );
 
 		// add general settings
 		add_action( 'cac/settings/general', array( $this, 'add_settings' ) );
@@ -65,16 +65,55 @@ class CACIE_Addon_InlineEdit {
 	 */
 	public function init( $cpac ) {
 
+		if ( ! $cpac->is_cac_screen() ) {
+			return;
+		}
+
 		$this->cpac = $cpac;
 
 		// load files
-		require_once 'inc/roles.php';
-		require_once 'inc/arrays.php';
-		require_once 'inc/acf-fieldoptions.php';
-		require_once 'inc/woocommerce.php';
+		require_once CAC_INLINEEDIT_DIR . 'inc/roles.php';
+		require_once CAC_INLINEEDIT_DIR . 'inc/arrays.php';
+		require_once CAC_INLINEEDIT_DIR . 'inc/acf-fieldoptions.php';
+		require_once CAC_INLINEEDIT_DIR . 'inc/woocommerce.php';
 
-		// init addon
-		$this->init_addon();
+		// models
+		include_once CAC_INLINEEDIT_DIR . 'classes/model.php';
+
+		foreach ( cpac()->get_storage_models() as $storage_model ) {
+
+			if ( $storage_model->subpage ) {
+				continue;
+			}
+
+			switch ( $storage_model->get_type() ) {
+
+				case 'post' :
+					include_once CAC_INLINEEDIT_DIR . 'classes/post.php';
+					new CACIE_Editable_Model_Post( $storage_model );
+					break;
+
+				case 'user' :
+					include_once CAC_INLINEEDIT_DIR . 'classes/user.php';
+					new CACIE_Editable_Model_User( $storage_model );
+					break;
+
+				case 'media' :
+					include_once CAC_INLINEEDIT_DIR . 'classes/media.php';
+					new CACIE_Editable_Model_Media( $storage_model );
+					break;
+
+				case 'comment' :
+					include_once CAC_INLINEEDIT_DIR . 'classes/comment.php';
+					new CACIE_Editable_Model_Comment( $storage_model );
+					break;
+
+				case 'taxonomy' :
+					include_once CAC_INLINEEDIT_DIR . 'classes/taxonomy.php';
+					new CACIE_Editable_Model_Taxonomy( $storage_model );
+					break;
+			}
+		}
 
 		// scripts and styles
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
@@ -87,25 +126,25 @@ class CACIE_Addon_InlineEdit {
 
 		$is_custom_field_editable = isset( $options['custom_field_editable'] ) ? $options['custom_field_editable'] : '';
 		?>
+		<p>
+			<label for="custom_field_editable">
+				<input name="cpac_general_options[custom_field_editable]" id="custom_field_editable" type="checkbox" value="1" <?php checked( $is_custom_field_editable, '1' ); ?>>
+				<?php _e( 'Enable inline editing for Custom Fields. Default is <code>off</code>', 'codepress-admin-columns' ); ?>
+			</label>
+			<a href="javascript:;" class="cpac-pointer" rel="acp-custom_field_editable" data-pos="right"><?php _e( 'Instructions', 'codepress-admin-columns' ); ?></a>
+		</p>
+		<div id="acp-custom_field_editable" style="display:none;">
+			<h3><?php _e( 'Notice', 'codepress-admin-columns' ); ?></h3>
 			<p>
-				<label for="custom_field_editable">
-					<input name="cpac_general_options[custom_field_editable]" id="custom_field_editable" type="checkbox" value="1" <?php checked( $is_custom_field_editable, '1' ); ?>>
-					<?php _e( 'Enable inline editing for Custom Fields. Default is <code>off</code>', 'codepress-admin-columns' ); ?>
-				</label>
-				<a href="javascript:;" class="cpac-pointer" rel="acp-custom_field_editable" data-pos="right"><?php _e( 'Instructions', 'codepress-admin-columns' ); ?></a>
+				<?php _e( 'Inline edit will display all the raw values in an editable text field.', 'codepress-admin-columns' ); ?>
 			</p>
-			<div id="acp-custom_field_editable" style="display:none;">
-				<h3><?php _e( 'Notice', 'codepress-admin-columns' ); ?></h3>
-				<p>
-					<?php _e( 'Inline edit will display all the raw values in an editable text field.', 'codepress-admin-columns' ); ?>
-				</p>
-				<p>
-					<?php _e( 'Except for Checkmark, Media Library, Post Title and Username.', 'codepress-admin-columns' ); ?>
-				</p>
-				<p>
-					<?php printf( __( "Please read <a href='%s'>our documentation</a> if you plan to use these fields.", 'codepress-admin-columns' ), $this->cpac->settings()->get_url( 'documentation') . 'faq/enable-inline-editing-custom-fields/' ); ?>
-				</p>
-			</div>
+			<p>
+				<?php _e( 'Except for Checkmark, Media Library, Post Title and Username.', 'codepress-admin-columns' ); ?>
+			</p>
+			<p>
+				<?php printf( __( "Please read <a href='%s'>our documentation</a> if you plan to use these fields.", 'codepress-admin-columns' ), $this->cpac->settings()->get_url( 'documentation' ) . 'faq/enable-inline-editing-custom-fields/' ); ?>
+			</p>
+		</div>
 		<?php
 	}
 
@@ -119,7 +158,7 @@ class CACIE_Addon_InlineEdit {
 
 		// Select 2 translations
 		if ( file_exists( CAC_INLINEEDIT_DIR . 'library/select2/select2_locale_' . $locale . '.js' ) ) {
-			wp_register_script( 'select2-locale' , CAC_INLINEEDIT_URL . 'library/select2/select2_locale_' . $locale . '.js', array( 'jquery' ), CAC_PRO_VERSION );
+			wp_register_script( 'select2-locale', CAC_INLINEEDIT_URL . 'library/select2/select2_locale_' . $locale . '.js', array( 'jquery' ), CAC_PRO_VERSION );
 			wp_enqueue_script( 'select2-locale' );
 		}
 	}
@@ -166,18 +205,18 @@ class CACIE_Addon_InlineEdit {
 
 			// Translations
 			wp_localize_script( 'cacie-admin-edit', 'qie_i18n', array(
-				'select_author'	=> __( 'Select author', 'codepress-admin-columns' ),
-				'edit'			=> __( 'Edit' ),
-				'redo'			=> __( 'Redo', 'codepress-admin-columns' ),
-				'undo'			=> __( 'Undo', 'codepress-admin-columns' ),
-				'delete'		=> __( 'Delete', 'codepress-admin-columns' ),
-				'download'		=> __( 'Download', 'codepress-admin-columns' ),
-				'errors'	 	=> array(
+				'select_author' => __( 'Select author', 'codepress-admin-columns' ),
+				'edit'          => __( 'Edit' ),
+				'redo'          => __( 'Redo', 'codepress-admin-columns' ),
+				'undo'          => __( 'Undo', 'codepress-admin-columns' ),
+				'delete'        => __( 'Delete', 'codepress-admin-columns' ),
+				'download'      => __( 'Download', 'codepress-admin-columns' ),
+				'errors'        => array(
 					'field_required' => __( 'This field is required.', 'codepress-admin-columns' ),
-					'invalid_float' => __( 'Please enter a valid float value.', 'codepress-admin-columns' ),
+					'invalid_float'  => __( 'Please enter a valid float value.', 'codepress-admin-columns' ),
 					'invalid_floats' => __( 'Please enter valid float values.', 'codepress-admin-columns' )
 				),
-				'inline_edit' => __( 'Inline Edit', 'codepress-admin-columns' ),
+				'inline_edit'   => __( 'Inline Edit', 'codepress-admin-columns' ),
 			) );
 
 			// WP Mediapicker
@@ -192,59 +231,10 @@ class CACIE_Addon_InlineEdit {
 		}
 
 		// Column settings
-		if ( $this->cpac->is_settings_screen() ) {
+		else if ( $this->cpac->is_settings_screen() ) {
 			wp_enqueue_script( 'jquery' );
 			wp_enqueue_script( 'cacie-admin-options-admincolumns' );
 			wp_enqueue_style( 'cacie-admin-options-admincolumns' );
-		}
-	}
-
-	/**
-	 * Basic setup for this add-on
-	 *
-	 * @since 1.0
-	 */
-	public function init_addon() {
-
-		// Abstract
-		include_once 'classes/model.php';
-
-		// Posts
-		include_once 'classes/post.php';
-		if ( $post_types = $this->cpac->get_post_types() ) {
-			foreach ( $post_types as $post_type ) {
-				if ( $storage_model = $this->cpac->get_storage_model( $post_type ) ) {
-					new CACIE_Editable_Model_Post( $storage_model );
-				}
-			}
-		}
-
-		// Users
-		include_once 'classes/user.php';
-		if ( $storage_model = $this->cpac->get_storage_model( 'wp-users' ) ) {
-			new CACIE_Editable_Model_User( $storage_model );
-		}
-
-		// Media
-		include_once 'classes/media.php';
-		if ( $storage_model = $this->cpac->get_storage_model( 'wp-media' ) ) {
-			new CACIE_Editable_Model_Media( $storage_model );
-		}
-
-		// Taxonomy
-		include_once 'classes/taxonomy.php';
-		if ( $taxonomies = $this->cpac->get_taxonomies() ) {
-			foreach ( $taxonomies as $taxonomy ) {
-				if ( $storage_model = $this->cpac->get_storage_model( 'wp-taxonomy_' . $taxonomy ) ) {
-					new CACIE_Editable_Model_Taxonomy( $storage_model );
-				}
-			}
-		}
-
-		// Comment
-		include_once 'classes/comment.php';
-		if ( $storage_model = $this->cpac->get_storage_model( 'wp-comments' ) ) {
-			new CACIE_Editable_Model_Comment( $storage_model );
 		}
 	}
 
@@ -254,7 +244,6 @@ class CACIE_Addon_InlineEdit {
 	 * @since 1.0
 	 */
 	public function set_column_default_properties( $properties ) {
-
 		if ( ! isset( $properties['is_editable'] ) ) {
 			$properties['is_editable'] = false;
 		}
@@ -283,7 +272,7 @@ class CACIE_Addon_InlineEdit {
 
 		if ( ! $column->properties->is_editable ) {
 			return false;
-        }
+		}
 
 		?>
 		<tr class="column_editing">
@@ -291,11 +280,11 @@ class CACIE_Addon_InlineEdit {
 			<td class="input" data-toggle-id="<?php $column->attr_id( 'edit' ); ?>">
 				<label for="<?php $column->attr_id( 'edit' ); ?>-on">
 					<input type="radio" value="on" name="<?php $column->attr_name( 'edit' ); ?>" id="<?php $column->attr_id( 'edit' ); ?>-on"<?php checked( $column->options->edit, 'on' ); ?> />
-					<?php _e( 'Yes'); ?>
+					<?php _e( 'Yes' ); ?>
 				</label>
 				<label for="<?php $column->attr_id( 'edit' ); ?>-off">
 					<input type="radio" value="off" name="<?php $column->attr_name( 'edit' ); ?>" id="<?php $column->attr_id( 'edit' ); ?>-off"<?php checked( $column->options->edit, '' ); ?><?php checked( $column->options->edit, 'off' ); ?> />
-					<?php _e( 'No'); ?>
+					<?php _e( 'No' ); ?>
 				</label>
 			</td>
 		</tr>
@@ -310,7 +299,7 @@ class CACIE_Addon_InlineEdit {
 					'enable_term_creation',
 					__( 'Allow creating new terms', 'codepress-admin-columns' ),
 					array(
-						'on' => __( 'Yes' ),
+						'on'  => __( 'Yes' ),
 						'off' => __( 'No' )
 					),
 					'', // description
@@ -327,7 +316,7 @@ class CACIE_Addon_InlineEdit {
 	 */
 	public function add_label_edit_indicator( $column ) {
 		if ( $column->properties->is_editable ) : ?>
-		<span class="editing <?php echo $column->options->edit; ?>" data-indicator-id="<?php $column->attr_id( 'edit' ); ?>"></span>
+			<span class="editing <?php echo $column->options->edit; ?>" data-indicator-id="<?php $column->attr_id( 'edit' ); ?>" title="<?php echo esc_attr( __( 'Enable editing?' , 'codepress-admin-columns' ) ); ?>"></span>
 		<?php endif;
 	}
 
@@ -339,7 +328,6 @@ class CACIE_Addon_InlineEdit {
 	 * @return bool Returns true if the main Admin Columns is enabled, false otherwise
 	 */
 	public function is_cpac_enabled() {
-
 		return class_exists( 'CPAC', false );
 	}
 }

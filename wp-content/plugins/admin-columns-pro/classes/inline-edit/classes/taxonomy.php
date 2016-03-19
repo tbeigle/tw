@@ -28,6 +28,10 @@ class CACIE_Editable_Model_Taxonomy extends CACIE_Editable_Model {
 			case 'column-term_parent' :
 				$is_editable = true;
 				break;
+
+			case 'column-meta' :
+				$is_editable = false;
+				break;
 		}
 
 		/**
@@ -88,11 +92,12 @@ class CACIE_Editable_Model_Taxonomy extends CACIE_Editable_Model {
 			 *
 			 */
 			'column-term_parent' => array(
-				'type'          => 'select2_dropdown',
-				'property'      => 'parent',
-				'ajax_populate' => true,
-				'multiple'      => false,
-				'clear_button'  => true
+				'type'            => 'select2_dropdown',
+				'property'        => 'parent',
+				'ajax_populate'   => true,
+				'formatted_value' => 'term',
+				'multiple'        => false,
+				'clear_button'    => true
 			),
 			'column-excerpt'     => array(
 				'type'     => 'textarea',
@@ -145,7 +150,7 @@ class CACIE_Editable_Model_Taxonomy extends CACIE_Editable_Model {
 
 			$columndata = array();
 
-			foreach ( $this->storage_model->columns as $column_name => $column ) {
+			foreach ( $this->storage_model->get_columns() as $column_name => $column ) {
 
 				// Edit enabled for this column?
 				if ( ! $this->is_edit_enabled( $column ) ) {
@@ -206,7 +211,7 @@ class CACIE_Editable_Model_Taxonomy extends CACIE_Editable_Model {
 					'current_revision' => 0,
 					'itemdata'         => $itemdata,
 					'editable'         => array(
-						'formattedvalue' => $this->get_formatted_value( $column, $value )
+						'formattedvalue' => $this->get_formatted_value( $column->get_name(), $value )
 					)
 				);
 			}

@@ -8,8 +8,12 @@
  */
 abstract class CAC_Sortable_Model {
 
+	const SORT_PREFERENCE_KEY = 'ac_sortedby_';
+
 	protected $storage_model;
+
 	protected $default_orderby;
+
 	private $show_all_results;
 
 	abstract function get_sortables();
@@ -28,14 +32,16 @@ abstract class CAC_Sortable_Model {
 		$this->set_default_orderby();
 
 		// enable sorting per column
-		add_action( "cac/columns/registered/default/storage_key={$this->storage_model->key}", array( $this, 'enable_sorting' ) );
-		add_action( "cac/columns/registered/custom/storage_key={$this->storage_model->key}", array( $this, 'enable_sorting' ) );
+		add_action( "cac/columns/storage_key={$this->storage_model->key}", array( $this, 'enable_sorting' ) );
 
 		// handle reset request
 		add_action( 'admin_init', array( $this, 'handle_reset' ) );
+	}
 
-		// Add reset button to admin settings
-		add_action( 'cac/settings/form_actions', array( $this, 'add_general_reset_button' ) );
+	/**
+	 * @since 3.8
+	 */
+	public function get_default_sortables() {
 	}
 
 	/**
@@ -61,66 +67,24 @@ abstract class CAC_Sortable_Model {
 	 *
 	 * @since 1.0
 	 */
-	private function get_sorting_preference() {
-		$options = get_user_meta( get_current_user_id(), 'cpac_sorting_preference', true );
+	public function get_sorting_preference() {
+		return get_user_meta( get_current_user_id(), $this->get_preference_key(), true );
+	}
 
-		if ( empty( $options ) || ! is_array( $options ) || empty( $options[ $this->storage_model->key ] ) ) {
-			return false;
-		}
-
-		// when it's a WP default orderby we can skip as a preference
-		if ( $this->default_orderby == $options[ $this->storage_model->key ]['orderby'] ) {
-			return false;
-		}
-
-		return $options[ $this->storage_model->key ];
+	private function delete_sorting_preference() {
+		return delete_user_meta( get_current_user_id(), $this->get_preference_key() );
 	}
 
 	private function update_sorting_preference( $orderby, $order = '' ) {
-		$options = get_user_meta( get_current_user_id(), 'cpac_sorting_preference', true );
-
-		// in some rare case we can have a broken serialized string
-		if ( is_string( $options ) ) {
-			$options = array();
-		}
-
-		$options[ $this->storage_model->key ] = array(
+		$preference = array(
 			'orderby' => $orderby,
 			'order'   => $order ? $order : 'ASC'
 		);
-
-		update_user_meta( get_current_user_id(), 'cpac_sorting_preference', $options );
+		update_user_meta( get_current_user_id(), $this->get_preference_key(), $preference );
 	}
 
-	/**
-	 * Add general reset button
-	 *
-	 * @since 1.0
-	 */
-	public function add_general_reset_button( $storage_model ) {
-
-		if ( $storage_model->key !== $this->storage_model->key ) {
-			return;
-		}
-
-		if ( ! ( $preference = $this->get_sorting_preference() ) ) {
-			return;
-		}
-
-		$sortby = isset( $preference['orderby'] ) ? $preference['orderby'] : '';
-
-		$url = add_query_arg( array(
-			'_cpac_nonce' => wp_create_nonce( 'restore-sorting' ),
-			'cpac_key'    => $storage_model->key,
-			'cpac_action' => 'restore_sorting_type'
-		), admin_url( 'options-general.php?page=codepress-admin-columns' ) );
-
-		$sortby_label = $sortby ? ' <em style="color:#808080">' . sprintf( __( ' by %s', 'codepress-admin-columns' ), $sortby ) . '</em>' : '';
-
-		echo "
-			<div class='form-reset'>
-				<a class='reset-column-type' href='{$url}'>" . __( 'Reset sorting preference', 'codepress-admin-columns' ) . "</a>" . $sortby_label . "
-			</div>";
+	private function get_preference_key() {
+		return self::SORT_PREFERENCE_KEY . $this->storage_model->key . $this->storage_model->layout;
 	}
 
 	/**
@@ -131,15 +95,8 @@ abstract class CAC_Sortable_Model {
 	 * @since 1.0
 	 */
 	public function add_reset_button() {
-		global $post_type_object, $pagenow;
-
-		if (
-			// corrrect page?
-			( $this->storage_model->page . '.php' !== $pagenow ) ||
-			// posttype?
-			( isset( $post_type_object->name ) && $post_type_object->name !== $this->storage_model->key )
-		) {
-			return false;
+		if ( ! $this->storage_model->is_current_screen() ) {
+			return;
 		}
 
 		if ( ! ( $preference = $this->get_sorting_preference() ) ) {
@@ -150,44 +107,24 @@ abstract class CAC_Sortable_Model {
 
 		?>
 		<script type="text/javascript">
-			jQuery(document).ready(function () {
-				if (jQuery('body').data('cpac_init_reset') == true) {
+			jQuery( document ).ready( function() {
+				if ( jQuery( 'body' ).data( 'cpac_init_reset' ) == true ) {
 					return true;
 				}
-				jQuery('.tablenav.top .actions:last').append('<a title="<?php _e( 'Reset sorting', 'codepress-admin-columns' ); echo ' ' . esc_attr( $sortby ); ?>" href="javascript:;" id="cpac-reset-sorting" class="cpac-edit add-new-h2"><?php _e( 'Reset sorting', 'codepress-admin-columns' ); ?></a>');
-				jQuery('#cpac-reset-sorting').click(function () {
-					jQuery('#post-query-submit').trigger('mousedown'); // reset bulk actions
-					jQuery('<input>').attr({
-						type: 'hidden',
-						name: 'reset-sorting',
-						value: '<?php echo $this->storage_model->key; ?>'
-					}).appendTo(this);
-					jQuery(this).closest('form').submit();
-				});
-				jQuery('body').data('cpac_init_reset', true);
-			});
+				jQuery( '.tablenav.top .actions:last' ).append( '<a title="<?php _e( 'Reset sorting', 'codepress-admin-columns' ); echo ' ' . esc_attr( $sortby ); ?>" href="javascript:;" id="cpac-reset-sorting" class="cpac-edit add-new-h2"><?php _e( 'Reset sorting', 'codepress-admin-columns' ); ?></a>' );
+				jQuery( '#cpac-reset-sorting' ).click( function() {
+					jQuery( '#post-query-submit' ).trigger( 'mousedown' ); // reset bulk actions
+					jQuery( '<input>' ).attr( {
+						type : 'hidden',
+						name : 'reset-sorting',
+						value : '<?php echo $this->storage_model->key; ?>'
+					} ).appendTo( this );
+					jQuery( this ).closest( 'form' ).submit();
+				} );
+				jQuery( 'body' ).data( 'cpac_init_reset', true );
+			} );
 		</script>
 		<?php
-	}
-
-	/**
-	 * Do sorting reset
-	 *
-	 * @since 1.0.3
-	 *
-	 * @param string Storage_model Key
-	 */
-	private function do_reset( $storage_model_key ) {
-
-		$options = get_user_meta( get_current_user_id(), 'cpac_sorting_preference', true );
-
-		if ( ! isset( $options[ $storage_model_key ] ) ) {
-			return false;
-		}
-
-		unset( $options[ $storage_model_key ] );
-
-		return update_user_meta( get_current_user_id(), 'cpac_sorting_preference', $options );
 	}
 
 	/**
@@ -196,33 +133,18 @@ abstract class CAC_Sortable_Model {
 	 * @since 1.0
 	 */
 	public function handle_reset() {
-		global $pagenow;
-
-		// On Admin settings page
-		if ( isset( $_GET['cpac_action'] ) && 'restore_sorting_type' == $_GET['cpac_action'] && ! empty( $_GET['cpac_key'] ) && 'options-general.php' == $pagenow && ! empty( $_GET['page'] ) && 'codepress-admin-columns' == $_GET['page'] ) {
-
-			// security check
-			if ( wp_verify_nonce( $_GET['_cpac_nonce'], 'restore-sorting' ) ) {
-				$result = $this->do_reset( $_GET['cpac_key'] );
-
-				if ( $result ) {
-					cpac_admin_message( "<strong>{$this->storage_model->label}</strong> " . __( 'sorting preference succesfully reset.', 'codepress-admin-columns' ), 'updated' );
-				}
-			}
-		}
 
 		// On Columns page
-		if ( $this->storage_model->page . '.php' == $pagenow && ! empty( $_REQUEST['reset-sorting'] ) && $_REQUEST['reset-sorting'] == $this->storage_model->key ) {
+		if ( ! empty( $_REQUEST['reset-sorting'] ) && cpac()->is_columns_screen() && $this->storage_model->is_current_screen() ) {
 
-			// do a reset
-			$this->do_reset( $_REQUEST['reset-sorting'] );
+			$this->delete_sorting_preference();
 
 			// redirect back to admin
 			$admin_url = trailingslashit( admin_url() ) . $this->storage_model->page . '.php';
 
 			// for posts we need to add the type to the admin url
-			if ( 'post' == $this->storage_model->type ) {
-				$admin_url = $admin_url . '?post_type=' . $this->storage_model->key;
+			if ( 'post' == $this->storage_model->get_type() ) {
+				$admin_url = add_query_arg( array( 'post_type' => $this->storage_model->get_post_type() ), $admin_url );
 			}
 
 			wp_safe_redirect( $admin_url );
@@ -235,15 +157,25 @@ abstract class CAC_Sortable_Model {
 	 *
 	 * @since 1.0
 	 */
-	public function enable_sorting( $columns ) {
+	public function enable_sorting( $column_types ) {
 		$sortables = $this->get_sortables();
-		foreach ( $columns as $column ) {
-			if ( ! in_array( $column->properties->type, $sortables ) ) {
+		$default_sortables = $this->get_default_sortables();
+
+		foreach ( $column_types as $column ) {
+			if ( ! in_array( $column->get_type(), $sortables ) ) {
 				continue;
 			}
 
 			$column->set_properties( 'is_sortable', true );
-			$column->set_options( 'sort', 'on' );
+
+			if ( in_array( $column->get_type(), (array) $default_sortables ) ) {
+				$column->set_options( 'sort', 'on' );
+			}
+
+			// set default sort as on
+			if ( ! $column->is_default() ) {
+				$column->set_options( 'sort', 'on' );
+			}
 		}
 	}
 
@@ -260,10 +192,8 @@ abstract class CAC_Sortable_Model {
 	 * @return array Column
 	 */
 	public function get_column_by_orderby( $orderby ) {
-
 		$column = false;
-
-		if ( $columns = $this->storage_model->columns ) {
+		if ( $columns = $this->storage_model->get_columns() ) {
 			foreach ( $columns as $_column ) {
 				if ( $orderby == $_column->get_sanitized_label() ) {
 					$column = $_column;
@@ -286,8 +216,12 @@ abstract class CAC_Sortable_Model {
 
 		// Apply the stored sorting preference when user hasn't sorted.
 		if ( empty( $_GET['orderby'] ) && ( $preference = $this->get_sorting_preference() ) ) {
-			$vars['orderby'] = $preference['orderby'];
-			$vars['order'] = $preference['order'];
+
+			// when it's a WP default orderby we can skip as a preference
+			if ( $this->default_orderby != $preference['orderby'] ) {
+				$vars['orderby'] = $preference['orderby'];
+				$vars['order'] = $preference['order'];
+			}
 		}
 
 		// Update preference
@@ -310,11 +244,16 @@ abstract class CAC_Sortable_Model {
 	 * @return string String
 	 */
 	protected function prepare_sort_string_value( $string ) {
-		if ( is_array( $string ) && ( is_string( $string[0] ) || is_numeric( $string[0] ) ) ) {
-			$string = $string[0];
+		$value = false;
+
+		if ( is_scalar( $string ) ) {
+			$value = $string;
+		}
+		else if ( is_array( $string ) && isset( $string[0] ) && ( is_string( $string[0] ) || is_numeric( $string[0] ) ) ) {
+			$value = $string[0];
 		}
 
-		return $string ? strtolower( substr( trim( strip_tags( $string ) ), 0, 20 ) ) : false;
+		return $value ? strtolower( substr( trim( strip_tags( $value ) ), 0, 20 ) ) : false;
 	}
 
 	/**
@@ -331,7 +270,9 @@ abstract class CAC_Sortable_Model {
 	 * @return array Posts Variables
 	 */
 	protected function get_vars_post__in( $vars, $unsorted, $sort_flag = SORT_REGULAR ) {
-
+		if ( ! $unsorted ) {
+			return $vars;
+		}
 		/**
 		 * Filter the post types for which Admin Columns is active
 		 *
@@ -344,7 +285,8 @@ abstract class CAC_Sortable_Model {
 
 		if ( 'asc' == $vars['order'] ) {
 			asort( $unsorted, $sort_flag );
-		} else {
+		}
+		else {
 			arsort( $unsorted, $sort_flag );
 		}
 
@@ -430,6 +372,69 @@ abstract class CAC_Sortable_Model {
 	}
 
 	/**
+	 * If ACF column can be sorted with WP_Query return correct vars
+	 *
+	 * @param $column
+	 *
+	 * @return array|bool
+	 */
+	protected function set_acf_sorting_vars( $column, &$vars ) {
+		$field = $column->get_field();
+
+		if ( ! $field ) {
+			return false;
+		}
+
+		$are_sortable = array(
+			'color_picker'     => SORT_REGULAR,
+			'date_picker'      => SORT_NUMERIC,
+			'date_time_picker' => SORT_NUMERIC,
+			'email'            => SORT_REGULAR,
+			'number'           => SORT_NUMERIC,
+			'text'             => SORT_REGULAR,
+			'textarea'         => SORT_REGULAR,
+			'true_false'       => SORT_NUMERIC,
+			'url'              => SORT_REGULAR,
+		);
+
+		if ( ! isset( $are_sortable[ $field['type'] ] ) ) {
+			return false;
+		}
+
+		$vars['meta_query'][] = array(
+			'key'     => $field['name'],
+			'type'    => SORT_NUMERIC == $are_sortable[ $field['type'] ] ? 'NUMERIC' : 'CHAR',
+			'compare' => '!=',
+			'value'   => '',
+		);
+		$vars['orderby'] = $field['name'];
+
+		return true;
+	}
+
+	/**
+	 * Get ACF data for sorting with native PHP
+	 *
+	 * @param $column
+	 * @param $ids
+	 *
+	 * @return array
+	 */
+	protected function get_acf_sorting_data( $column, $ids ) {
+		$results = array();
+
+		foreach ( $ids as $id ) {
+			$value = $column->get_sorting_value( $id );
+
+			if ( $value || $this->get_show_all_results() ) {
+				$results[ $id ] = $this->prepare_sort_string_value( $value );
+			}
+		}
+
+		return $results;
+	}
+
+	/**
 	 * Add sortable headings
 	 *
 	 * @since 1.0
@@ -442,17 +447,15 @@ abstract class CAC_Sortable_Model {
 
 		// get columns from storage model.
 		// columns that are active and have enabled sort will be added to the sortable headings.
-		if ( $_columns = $this->storage_model->columns ) {
-
+		if ( $_columns = $this->storage_model->get_columns() ) {
 			foreach ( $_columns as $column ) {
-
 				if ( $column->properties->is_sortable ) {
 
 					if ( 'on' == $column->options->sort ) {
 						$columns[ $column->properties->name ] = $column->get_sanitized_label();
 					}
 
-					if ( 'off' == $column->options->sort ) {
+					else if ( 'off' == $column->options->sort ) {
 						unset( $columns[ $column->properties->name ] );
 					}
 				}
@@ -460,6 +463,13 @@ abstract class CAC_Sortable_Model {
 		}
 
 		return $columns;
+	}
+
+	/**
+	 * @since 3.8
+	 */
+	public function is_sortable( $column ) {
+		return $column->properties->is_sortable;
 	}
 
 	/**

@@ -15,8 +15,6 @@ abstract class CAC_Filtering_Model {
 
 	protected $has_dropdown = false;
 
-	abstract function enable_filtering( $columns );
-
 	abstract function init_hooks();
 
 	/**
@@ -31,13 +29,25 @@ abstract class CAC_Filtering_Model {
 
 		$this->storage_model = $storage_model;
 
+		// enable filtering per type
+		add_action( "cac/column_types/storage_key={$this->storage_model->key}", array( $this, 'enable_filtering' ) );
+
 		// enable filtering per column
-		add_action( "cac/columns/storage_key={$this->storage_model->key}", array( $this, 'enable_filtering' ) );
 		add_action( "cac/columns/storage_key={$this->storage_model->key}", array( $this, 'enable_filtering_custom_field' ) );
 		add_action( "cac/columns/storage_key={$this->storage_model->key}", array( $this, 'enable_filtering_acf' ) );
+		add_action( "cac/columns/storage_key={$this->storage_model->key}", array( $this, 'enable_filtering_woocommerce' ) );
 
 		// update dropdown options cache
 		add_action( "wp_ajax_cac_update_filtering_cache_{$this->storage_model->key}", array( $this, 'ajax_update_dropdown_cache' ) );
+	}
+
+	public function get_filterables() {
+	}
+
+	public function get_default_filterables() {
+	}
+
+	public function get_dropdown_html_element_ids() {
 	}
 
 	/**
@@ -65,13 +75,6 @@ abstract class CAC_Filtering_Model {
 	/**
 	 * @since 3.5
 	 */
-	protected function get_comment_fields( $field ) {
-		return (array) $this->wpdb->get_col( "SELECT " . sanitize_key( $field ) . " FROM {$this->wpdb->comments} WHERE " . sanitize_key( $field ) . " <> ''" );
-	}
-
-	/**
-	 * @since 3.5
-	 */
 	protected function set_filter_value( $key, $value ) {
 		$this->filter_values[ $key ] = $value;
 	}
@@ -91,17 +94,92 @@ abstract class CAC_Filtering_Model {
 	}
 
 	/**
+	 * Enable filtering
+	 *
+	 * @since 3.8
+	 */
+	public function enable_filtering( $columns ) {
+
+		$filterables = $this->get_filterables();
+		$default_filterables = (array) $this->get_default_filterables();
+
+		foreach ( $columns as $column ) {
+			if ( ! in_array( $column->get_type(), $filterables ) ) {
+				continue;
+			}
+
+			$column->set_properties( 'is_filterable', true );
+
+			if ( in_array( $column->get_type(), (array) $default_filterables ) ) {
+				$column->set_options( 'filter', 'on' );
+			}
+		}
+	}
+
+	/**
 	 * @since 3.5
 	 */
 	public function enable_filtering_custom_field( $columns ) {
-
 		foreach ( $columns as $column ) {
-			if ( 'column-meta' === $column->properties->type ) {
+			if ( 'column-meta' === $column->get_type() ) {
 				if ( in_array( $column->options->field_type, array( '', 'checkmark', 'color', 'date', 'excerpt', 'image', 'library_id', 'numeric', 'title_by_id', 'user_by_id' ) ) ) {
 					$column->set_properties( 'is_filterable', true );
 				}
 				if ( in_array( $column->options->field_type, array( 'numeric' ) ) ) {
 					$column->set_properties( 'filterable_type', 'numeric' );
+				}
+			}
+		}
+	}
+
+	/**
+	 * @since 3.8
+	 */
+	public function enable_filtering_woocommerce( $columns ) {
+
+		if ( ! class_exists( 'CPAC_Addon_WC', false ) ) {
+			return;
+		}
+
+		$filterable_columns = array(
+			'product'     => array(
+				'product_cat',
+				'product_tag',
+				'column-wc-featured',
+				'column-wc-visibility',
+				'column-wc-shipping_class',
+				'column-wc-parent',
+				'column-wc-reviews_enabled',
+				'column-wc-tax_class',
+				'column-wc-tax_status',
+			),
+			'shop_order'  => array(
+				'order_status',
+				'customer_message',
+				'column-wc-tax_status',
+				'column-wc-payment_method',
+				'column-wc-product',
+				'column-wc-order_coupons_used',
+				'column-wc-order_shipping_method',
+			),
+			'shop_coupon' => array(
+				'column-wc-free_shipping',
+			),
+		);
+
+		if ( ! isset( $filterable_columns[ $this->storage_model->get_post_type() ] ) ) {
+			return;
+		}
+
+		foreach ( $columns as $column ) {
+			if ( in_array( $column->get_type(), $filterable_columns[ $this->storage_model->get_post_type() ] ) ) {
+				$column->set_properties( 'is_filterable', true );
+
+				if ( 'column-wc-product' == $column->get_type() && method_exists( $column, 'get_product_property' ) && ! in_array( $column->get_product_property(), array( 'title', 'sku' ) ) ) {
+					$column->set_properties( 'is_filterable', false );
+				}
+				if ( 'date' == $column->get_type() ) {
+					$column->set_properties( 'is_filterable', false );
 				}
 			}
 		}
@@ -255,7 +333,7 @@ abstract class CAC_Filtering_Model {
 						);
 						break;
 				}
-				break;
+				break; // case: date_picker
 
 			// Number
 			case 'number' :
@@ -456,7 +534,6 @@ abstract class CAC_Filtering_Model {
 
 		$i = 0;
 		foreach ( $array as $v ) {
-
 			if ( $v->$parentKey == $parentId ) {
 				$indent[ $i ] = $v;
 				$indent[ $i ]->$childrenKey = $this->indent( $array, $v->$selfKey, $parentKey, $selfKey );
@@ -569,9 +646,7 @@ abstract class CAC_Filtering_Model {
 					case "select" :
 					case "checkbox" :
 					case "radio" :
-						if ( isset( $field['choices'] ) && isset( $field['choices'][ $data->value ] ) ) {
-							$field_value = $field['choices'][ $data->value ];
-						}
+						$field_value = ( isset( $field['choices'] ) && isset( $field['choices'][ $data->value ] ) ) ? $field['choices'][ $data->value ] : false;
 						break;
 					case "true_false" :
 						$empty_option = false;
@@ -585,16 +660,27 @@ abstract class CAC_Filtering_Model {
 					case "page_link" :
 					case "post_object" :
 						$field_value = $column->get_post_title( $data->value );
+						if ( in_array( $field_value, $options ) ) {
+							$field_value .= ' (' . $column->get_raw_post_field( 'post_name', $data->value ) . ')';
+						}
 						break;
 					case "taxonomy" :
 						$term = get_term( $data->value, $field['taxonomy'] );
 						if ( $term && ! is_wp_error( $term ) ) {
 							$field_value = $term->name;
+							if ( in_array( $field_value, $options ) ) {
+								$field_value .= ' (' . $term->slug . ')';
+							}
 						}
 						break;
 					case "user" :
 						if ( $user = get_userdata( $data->value ) ) {
-							$field_value = $user->display_name;
+							$field_value = $column->get_display_name( $data->value );
+
+							// duplicate names will get email added
+							if ( $user->user_email && in_array( $field_value, $options ) ) {
+								$field_value .= ' (' . $user->user_email . ')';
+							}
 						}
 						break;
 
@@ -671,6 +757,9 @@ abstract class CAC_Filtering_Model {
 	 * @return array Output
 	 */
 	protected function apply_indenting_markup( $array, $level = 0, $output = array() ) {
+
+		$processed = array();
+
 		foreach ( $array as $v ) {
 
 			$prefix = '';
@@ -678,7 +767,15 @@ abstract class CAC_Filtering_Model {
 				$prefix .= '&nbsp;&nbsp;';
 			}
 
-			$output[ $v->slug ] = $prefix . $v->name;
+			// rename duplicates
+			$label = $v->name;
+			if ( in_array( $v->name, $processed ) ) {
+				$label = $v->name . ' (' . $v->slug . ')';
+			}
+
+			$output[ $v->slug ] = $prefix . $label;
+
+			$processed[] = $v->name;
 
 			if ( ! empty( $v->children ) ) {
 				$output = $this->apply_indenting_markup( $v->children, ( $level + 1 ), $output );
@@ -699,9 +796,9 @@ abstract class CAC_Filtering_Model {
 		<div class="cpac_range date<?php echo ( $min || $max ) ? ' active' : ''; ?>">
 			<div class="input_group">
 				<label class="prepend" for="<?php echo $min_id ?>"><?php echo $label; ?></label>
-				<input class="min<?php echo $min ? ' active' : ''; ?>" type="text" placeholder="<?php echo __( 'Start date', 'codepress-admin-columns' ); ?>" name="cpac_filter-min[<?php echo $column_name; ?>]" value="<?php echo $min ?>" id="<?php echo $min_id ?>">
+				<input class="min<?php echo $min ? ' active' : ''; ?>" type="text" placeholder="<?php echo __( 'Start date', 'codepress-admin-columns' ); ?>" name="cpac_filter-min[<?php echo $column_name; ?>]" value="<?php echo esc_attr( $min ); ?>" id="<?php echo $min_id ?>">
 				<label class="append" for="<?php echo $max_id ?>"><?php _e( 'until', 'codepress-admin-columns' ); ?></label>
-				<input class="max<?php echo $max ? ' active' : ''; ?>" type="text" placeholder="<?php echo __( 'End date', 'codepress-admin-columns' ); ?>" name="cpac_filter-max[<?php echo $column_name; ?>]" value="<?php echo $max ?>" id="<?php echo $max_id ?>">
+				<input class="max<?php echo $max ? ' active' : ''; ?>" type="text" placeholder="<?php echo __( 'End date', 'codepress-admin-columns' ); ?>" name="cpac_filter-max[<?php echo $column_name; ?>]" value="<?php echo esc_attr( $max ); ?>" id="<?php echo $max_id ?>">
 			</div>
 		</div>
 		<?php
@@ -718,9 +815,9 @@ abstract class CAC_Filtering_Model {
 		<div class="cpac_range number<?php echo ( $min || $max ) ? ' active' : ''; ?>">
 			<div class="input_group">
 				<label class="prepend" for="<?php echo $min_id ?>"><?php echo $label; ?></label>
-				<input class="min<?php echo $min ? ' active' : ''; ?>" type="number" placeholder="<?php _e( 'Min', 'codepress-admin-columns' ); ?>" name="cpac_filter-min[<?php echo $column_name; ?>]" value="<?php echo $min ?>" id="<?php echo $min_id ?>">
+				<input class="min<?php echo $min ? ' active' : ''; ?>" type="number" placeholder="<?php _e( 'Min', 'codepress-admin-columns' ); ?>" name="cpac_filter-min[<?php echo $column_name; ?>]" value="<?php echo esc_attr( $min ); ?>" id="<?php echo $min_id ?>">
 				<label class="append" for="<?php echo $max_id ?>"><?php _e( 'to', 'codepress-admin-columns' ); ?></label>
-				<input class="max<?php echo $max ? ' active' : ''; ?>" type="number" placeholder="<?php _e( 'Max', 'codepress-admin-columns' ); ?>" name="cpac_filter-max[<?php echo $column_name; ?>]" value="<?php echo $max ?>" id="<?php echo $max_id ?>">
+				<input class="max<?php echo $max ? ' active' : ''; ?>" type="number" placeholder="<?php _e( 'Max', 'codepress-admin-columns' ); ?>" name="cpac_filter-max[<?php echo $column_name; ?>]" value="<?php echo esc_attr( $max ); ?>" id="<?php echo $max_id ?>">
 			</div>
 		</div>
 		<?php
@@ -762,7 +859,9 @@ abstract class CAC_Filtering_Model {
 	 *
 	 * @return string Dropdown HTML select element
 	 */
-	private function dropdown( $column, $options, $add_empty_option = false, $current_item = '' ) {
+	private function dropdown( $column_name, $options, $add_empty_option = false, $current_item = '' ) {
+
+		$column = $this->storage_model->get_column_by_name( $column_name );
 
 		/**
 		 * Filter all dropdown options
@@ -816,14 +915,19 @@ abstract class CAC_Filtering_Model {
 			return;
 		}
 
-		foreach ( $this->storage_model->columns as $column ) {
+		foreach ( $this->storage_model->get_columns() as $column ) {
+
+			if ( in_array( $column->get_type(), (array) $this->get_default_filterables() ) ) {
+				continue;
+			}
+
 			if ( ! $this->is_filterable( $column ) ) {
 				continue;
 			}
 
 			// dev
 			if ( ! $this->use_cache() ) {
-				$this->delete_transient( $column->get_name() );
+				$this->delete_cache( $column->get_name() );
 			}
 
 			// Range inputs
@@ -846,7 +950,7 @@ abstract class CAC_Filtering_Model {
 			// Select dropdown
 			else {
 
-				$dropdown_options = $this->get_transient( $column->get_name() );
+				$dropdown_options = $this->get_cache( $column->get_name() );
 
 				// Placeholder text
 				if ( ! $dropdown_options ) {
@@ -856,7 +960,7 @@ abstract class CAC_Filtering_Model {
 
 				$current = isset( $_GET['cpac_filter'] ) && isset( $_GET['cpac_filter'][ $column->properties->name ] ) ? urldecode( $_GET['cpac_filter'][ $column->properties->name ] ) : '';
 
-				$this->dropdown( $column, $dropdown_options['options'], $dropdown_options['empty_option'], $current );
+				$this->dropdown( $column->get_name(), $dropdown_options['options'], $dropdown_options['empty_option'], $current );
 			}
 
 			$this->has_dropdown = true;
@@ -866,7 +970,7 @@ abstract class CAC_Filtering_Model {
 	/**
 	 * @since 3.6
 	 */
-	private function is_filterable( $column ) {
+	public function is_filterable( $column ) {
 		return $column->properties->is_filterable && 'on' == $column->options->filter;
 	}
 
@@ -874,35 +978,35 @@ abstract class CAC_Filtering_Model {
 	 * @since 3.5
 	 */
 	protected function get_cache_id( $id ) {
-		return md5( 'filtering' . $this->storage_model->key . $id );
+		return md5( 'filtering' . $this->storage_model->key . $this->storage_model->layout . $id );
 	}
 
 	/**
 	 * @since 3.6
 	 */
-	private function get_transient( $transient ) {
-		return get_transient( $this->get_cache_id( $transient ) );
+	private function get_cache( $id ) {
+		return get_transient( $this->get_cache_id( $id ) );
 	}
 
 	/**
 	 * @since 3.6
 	 */
-	private function delete_transient( $transient ) {
-		delete_transient( $this->get_cache_id( $transient ) );
+	private function delete_cache( $id ) {
+		delete_transient( $this->get_cache_id( $id ) );
 	}
 
 	/**
 	 * @since 3.6
 	 */
-	private function set_transient( $transient, $value, $time = 0 ) {
-		set_transient( $this->get_cache_id( $transient ), $value, $time );
+	private function set_cache( $id, $value, $time = 0 ) {
+		set_transient( $this->get_cache_id( $id ), $value, $time );
 	}
 
 	/**
 	 * @since 3.7
 	 */
-	private function get_transient_time_left( $transient ) {
-		return max( get_option( '_transient_timeout_' . $this->get_cache_id( $transient ) ) - time(), 0 );
+	private function get_cache_time_left( $id ) {
+		return max( get_option( '_transient_timeout_' . $this->get_cache_id( $id ) ) - time(), 0 );
 	}
 
 	/**
@@ -912,23 +1016,26 @@ abstract class CAC_Filtering_Model {
 	public function is_timeout() {
 
 		// time left on cache in seconds, unless it's being done with an external cache
-		$timer = wp_using_ext_object_cache() ? 'external-cache' : $this->get_transient_time_left( 'cache-timer' );
+		$timer = wp_using_ext_object_cache() ? 'external-cache' : $this->get_cache_time_left( 'cache-timer' );
 
-		return $this->get_transient( 'cache-timer' ) ? $timer : 0;
+		return $this->get_cache( 'cache-timer' ) ? $timer : 0;
 	}
 
 	public function set_timeout() {
-		$this->set_transient( 'cache-timer', true, 60 ); // 1 minute
+		$this->set_cache( 'cache-timer', true, 60 ); // 1 minute
 	}
 
 	public function clear_timeout() {
-		$this->delete_transient( 'cache-timer' );
+		$this->delete_cache( 'cache-timer' );
 	}
 
 	/**
 	 * @since 3.6
 	 */
 	public function ajax_update_dropdown_cache() {
+		check_ajax_referer( 'ac-filtering' );
+
+		$this->storage_model->set_layout( filter_input( INPUT_POST, 'layout' ) );
 
 		// this prevents too many simultaneous cache updates by multiple loggedin users
 		if ( ( $timer = $this->is_timeout() ) && $this->use_cache() ) {
@@ -938,16 +1045,16 @@ abstract class CAC_Filtering_Model {
 		$this->set_timeout();
 
 		ob_start();
-		foreach ( (array) $this->storage_model->columns as $column ) {
+		foreach ( (array) $this->storage_model->get_columns() as $column ) {
 			if ( $this->is_filterable( $column ) ) {
 
 				$options = $this->get_dropdown_options_by_column( $column );
 
 				if ( $options ) {
-					$this->dropdown( $column, $options['options'], $options['empty_option'] );
+					$this->dropdown( $column->get_name(), $options['options'], $options['empty_option'] );
 				}
 
-				$this->set_transient( $column->get_name(), $options );
+				$this->set_cache( $column->get_name(), $options );
 			}
 		}
 		$html = ob_get_clean();

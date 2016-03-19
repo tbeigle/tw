@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Admin Columns Pro
-Version: 3.7.4
+Version: 3.8.3
 Description: Customize columns on the administration screens for post(types), users and other content. Filter and sort content, and edit posts directly from the posts overview. All via an intuitive, easy-to-use drag-and-drop interface.
 Author: AdminColumns.com
 Author URI: https://www.admincolumns.com
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ACP_VERSION', '3.7.4' );
+define( 'ACP_VERSION', '3.8.3' );
 define( 'ACP_FILE', __FILE__ );
 
 // Only run plugin in the admin interface
@@ -65,7 +65,7 @@ class CPAC_Full {
 		$deactivated = false;
 
 		// Plugin files
-		$cpac_basename           = 'codepress-admin-columns/codepress-admin-columns.php';
+		$cpac_basename = 'codepress-admin-columns/codepress-admin-columns.php';
 		$cpac_addon_pro_basename = 'cac-addon-pro/cac-addon-pro.php';
 
 		if ( is_plugin_active( $cpac_basename ) ) {

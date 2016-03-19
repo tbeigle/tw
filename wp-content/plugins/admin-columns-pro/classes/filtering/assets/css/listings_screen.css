@@ -49,6 +49,14 @@ body.upload-php .filter-items select.active,
   box-shadow: 0 0 3px rgba(0, 115, 170, 0.8);
   border-color: #5b9dd9; }
 
+#cpac_form-user-list {
+  display: block;
+  clear: both; }
+
+select.postform.active {
+  box-shadow: 0 0 3px rgba(0, 115, 170, 0.8);
+  border-color: #5b9dd9; }
+
 .cpac_ui .ui-datepicker a {
   transition: none !important;
   -webkit-transition: none !important; }
@@ -88,8 +96,6 @@ body.users-php .tablenav .actions select.postform {
   margin-bottom: 4px; }
 
 body.users-php .tablenav .actions a.add-new-h2 {
-  float: none;
-  vertical-align: middle !important;
   top: 0 !important; }
 
 body.users-php .tablenav .actions .cpac_numberrange {

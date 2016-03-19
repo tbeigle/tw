@@ -14,13 +14,10 @@ class CAC_Filtering_Model_Comment extends CAC_Filtering_Model {
 	}
 
 	/**
-	 * Enable filtering
-	 *
-	 * @since 3.5
+	 * @since 3.8
 	 */
-	public function enable_filtering( $columns ) {
-
-		$include_types = array(
+	public function get_filterables() {
+		$column_types = array(
 
 			// WP default columns
 			'author',
@@ -40,11 +37,7 @@ class CAC_Filtering_Model_Comment extends CAC_Filtering_Model {
 			'column-user',
 		);
 
-		foreach ( $columns as $column ) {
-			if ( in_array( $column->properties->type, $include_types ) ) {
-				$column->set_properties( 'is_filterable', true );
-			}
-		}
+		return $column_types;
 	}
 
 	/**
@@ -119,13 +112,10 @@ class CAC_Filtering_Model_Comment extends CAC_Filtering_Model {
 	 * @since 3.5
 	 */
 	public function handle_filter_requests( $comment_query ) {
-
-		// only run once
-		if ( ! $comment_query->query_vars['number'] || empty( $_REQUEST['cpac_filter'] ) ) {
+		if ( empty( $_REQUEST['cpac_filter'] ) ) {
 			return $comment_query;
 		}
 
-		// go through all filter requests per column
 		foreach ( $_REQUEST['cpac_filter'] as $name => $value ) {
 
 			$value = urldecode( $value );
@@ -211,6 +201,8 @@ class CAC_Filtering_Model_Comment extends CAC_Filtering_Model {
 					break;
 
 			endswitch;
+
+			$comment_query->query_vars['filtered_by_ac'] = true;
 		}
 
 		return $comment_query;
@@ -222,7 +214,6 @@ class CAC_Filtering_Model_Comment extends CAC_Filtering_Model {
 	 * @since 3.5
 	 */
 	public function get_values_by_comment_field( $comment_field ) {
-
 		$comment_field = sanitize_key( $comment_field );
 
 		$sql = "
@@ -242,12 +233,23 @@ class CAC_Filtering_Model_Comment extends CAC_Filtering_Model {
 	}
 
 	/**
+	 * @since 3.5
+	 */
+	private function get_comment_fields( $field ) {
+		return (array) $this->wpdb->get_col( "
+			SELECT " . sanitize_key( $field ) . "
+			FROM {$this->wpdb->comments} AS c
+			INNER JOIN {$this->wpdb->posts} ps ON ps.ID = c.comment_post_ID
+			WHERE c." . sanitize_key( $field ) . " <> '';
+		" );
+	}
+
+	/**
 	 * Get values by meta key
 	 *
 	 * @since 3.5
 	 */
 	public function get_values_by_meta_key( $meta_key, $operator = 'DISTINCT meta_value AS value' ) {
-
 		$sql = "
 			SELECT {$operator}
 			FROM {$this->wpdb->commentmeta} cm
@@ -278,7 +280,7 @@ class CAC_Filtering_Model_Comment extends CAC_Filtering_Model {
 		$empty_option = false;
 		$order = 'ASC';
 
-		switch ( $column->properties->type ) :
+		switch ( $column->get_type() ) :
 
 			// WP Default
 			case 'author' :
@@ -397,11 +399,11 @@ class CAC_Filtering_Model_Comment extends CAC_Filtering_Model {
 		endswitch;
 
 		// sort the options
-		if ( 'ASC' == $order ) {
-			asort( $options );
-		}
-		if ( 'DESC' == $order ) {
-			arsort( $options );
+		if ( $order ) {
+			natcasesort( $options );
+			if ( 'DESC' === $order ) {
+				$options = array_reverse( $options );
+			}
 		}
 
 		return array( 'options' => $options, 'empty_option' => $empty_option );

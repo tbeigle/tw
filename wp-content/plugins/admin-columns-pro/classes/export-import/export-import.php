@@ -11,15 +11,5 @@ if ( ! is_admin() ) {
 	return false;
 }
 
-/**
- * Loads main plugin (CPAC) into the constructor
- *
- * @since 1.0
- */
-function init_cpac_export_import( $cpac ) {
-
-	require_once CAC_EI_DIR . 'classes/export_import.php';
-	new CAC_Export_Import( $cpac );
-}
-add_action( 'cac/loaded', 'init_cpac_export_import' );
-
+require_once CAC_EI_DIR . 'functions.php';
+require_once CAC_EI_DIR . 'classes/export_import.php';

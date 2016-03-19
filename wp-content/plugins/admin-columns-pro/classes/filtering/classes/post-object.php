@@ -13,9 +13,6 @@ class CAC_Filtering_Model_Post_Object extends CAC_Filtering_Model {
 		add_action( 'restrict_manage_posts', array( $this, 'add_filtering_markup' ) );
 	}
 
-	public function enable_filtering( $columns ) {
-	}
-
 	/**
 	 * Handle filter request for ranges
 	 *
@@ -77,5 +74,30 @@ class CAC_Filtering_Model_Post_Object extends CAC_Filtering_Model {
 		}
 
 		return $values;
+	}
+
+	/**
+	 * Get terms by taxonomy and post type
+	 *
+	 * @since 3.8
+	 */
+	protected function get_terms_by_post_type( $taxonomies, $post_types ) {
+		global $wpdb;
+
+		$query = $wpdb->prepare(
+			"SELECT t.term_id AS term_id, t.slug AS slug, t.name AS name, tt.taxonomy AS taxonomy, tt.parent AS parent
+			FROM $wpdb->terms AS t
+	        INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id
+	        INNER JOIN $wpdb->term_relationships AS r ON r.term_taxonomy_id = tt.term_taxonomy_id
+	        INNER JOIN $wpdb->posts AS p ON p.ID = r.object_id
+	        WHERE p.post_type IN('%s') AND tt.taxonomy IN('%s')
+	        GROUP BY t.term_id",
+			join( "', '", (array) $post_types ),
+			join( "', '", (array) $taxonomies )
+		);
+
+		$results = $wpdb->get_results( $query );
+
+		return $results;
 	}
 }

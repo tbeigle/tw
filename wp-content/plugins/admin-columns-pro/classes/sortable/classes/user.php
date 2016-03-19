@@ -9,7 +9,7 @@ class CAC_Sortable_Model_User extends CAC_Sortable_Model {
 
 	public function init_hooks() {
 		add_action( 'pre_user_query', array( $this, 'handle_sorting_request' ), 2 ); // prio after filtering
-		add_filter( "manage_users_sortable_columns", array( $this, 'add_sortable_headings' ) );
+		add_filter( "manage_" . $this->storage_model->get_screen_id() . "_sortable_columns", array( $this, 'add_sortable_headings' ) );
 		add_action( 'restrict_manage_users', array( $this, 'add_reset_button' ) );
 	}
 
@@ -54,7 +54,21 @@ class CAC_Sortable_Model_User extends CAC_Sortable_Model {
 			'column-wc-user-order_count'
 		);
 
-		return $column_names;
+		return array_merge( $column_names, (array) $this->get_default_sortables() ) ;
+	}
+
+	/**
+	 * Columns that are sortable by WordPress core
+	 *
+	 * @since 3.8
+	 */
+	public function get_default_sortables() {
+		$columns = array(
+			'username',
+			'name',
+			'email'
+		);
+		return $columns;
 	}
 
 	/**
@@ -116,7 +130,7 @@ class CAC_Sortable_Model_User extends CAC_Sortable_Model {
 				foreach ( $this->get_user_ids_by_query( $user_query ) as $id ) {
 					if ( $roles = get_user_meta( $id, $prefix . 'capabilities', true ) ) {
 						$roles = array_keys( $roles );
-						if( isset( $wp_roles->roles[ $roles[0] ] ) ){
+						if ( isset( $wp_roles->roles[ $roles[0] ] ) ) {
 							$_users[ $id ] = $this->prepare_sort_string_value( translate_user_role( $wp_roles->roles[ $roles[0] ]['name'] ) );
 						}
 					}
@@ -200,10 +214,7 @@ class CAC_Sortable_Model_User extends CAC_Sortable_Model {
 				break;
 
 			case 'column-meta' :
-
-				$result = $this->get_meta_items_for_sorting( $column, $user_query );
-
-				if ( $result ) {
+				if ( $result = $this->get_meta_items_for_sorting( $column, $user_query ) ) {
 					$_users = $result['items'];
 					$sort_flag = $result['sort_flag'];
 				}
@@ -219,17 +230,10 @@ class CAC_Sortable_Model_User extends CAC_Sortable_Model {
 
 			case 'column-acf_field' :
 				if ( method_exists( $column, 'get_field' ) ) {
-					$field = $column->get_field();
-					$sort_flag = in_array( $field['type'], array(
-						'date_picker',
-						'number'
-					) ) ? SORT_NUMERIC : SORT_REGULAR;
-
-					foreach ( $this->get_user_ids_by_query( $user_query ) as $id ) {
-						$value = $column->get_sorting_value( $id );
-						if ( $value || $show_all_results ) {
-							$_users[ $id ] = $this->prepare_sort_string_value( $value );
-						}
+					$is_sortable = $this->set_acf_sorting_vars( $column, $vars );
+					if ( ! $is_sortable ) {
+						$sort_flag = SORT_REGULAR;
+						$_users = $this->get_acf_sorting_data( $column, $this->get_user_ids_by_query( $user_query ) );
 					}
 				}
 				break;

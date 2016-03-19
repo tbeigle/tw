@@ -9,7 +9,7 @@ class CAC_Sortable_Model_Link extends CAC_Sortable_Model {
 
 	public function init_hooks() {
 		add_filter( 'get_bookmarks', array( $this, 'handle_sorting_request' ), 10, 2 );
-		add_filter( "manage_{$this->storage_model->page}_sortable_columns", array( $this, 'add_sortable_headings' ) );
+		add_filter( "manage_" . $this->storage_model->get_screen_id() . "_sortable_columns", array( $this, 'add_sortable_headings' ) );
 	}
 
 	/**
@@ -67,8 +67,6 @@ class CAC_Sortable_Model_Link extends CAC_Sortable_Model {
 		if ( empty( $column ) ) {
 			return $results;
 		}
-
-		$posts = array(); // unsorted Posts
 
 		$length = '';
 

@@ -69,13 +69,24 @@
 
 // media
 body.upload-php .filter-items,
-// post, user, comments
+	// post, user, comments
 .tablenav .actions {
 	select.active {
 		box-shadow: 0 0 3px rgba(0, 115, 170, .8);
 		border-color: #5b9dd9;
 	}
 }
+
+// MS Users
+#cpac_form-user-list {
+	display: block;
+	clear: both;
+}
+select.postform.active {
+	box-shadow: 0 0 3px rgba(0, 115, 170, .8);
+	border-color: #5b9dd9;
+}
+
 
 .cpac_ui {
 	.ui-datepicker {
@@ -132,8 +143,6 @@ body.users-php .tablenav .actions {
 		margin-bottom: 4px;
 	}
 	a.add-new-h2 {
-		float: none;
-		vertical-align: middle !important;
 		top: 0 !important
 	}
 	.cpac_numberrange {

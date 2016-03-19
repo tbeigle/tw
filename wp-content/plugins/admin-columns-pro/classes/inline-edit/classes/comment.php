@@ -165,7 +165,7 @@ class CACIE_Editable_Model_Comment extends CACIE_Editable_Model {
 			}
 
 			$columndata = array();
-			foreach ( $this->storage_model->columns as $column_name => $column ) {
+			foreach ( $this->storage_model->get_columns() as $column_name => $column ) {
 				if ( ! $this->is_edit_enabled( $column ) ) {
 					continue;
 				}
@@ -217,7 +217,7 @@ class CACIE_Editable_Model_Comment extends CACIE_Editable_Model {
 					'current_revision' => 0,
 					'itemdata' => $itemdata,
 					'editable' => array(
-						'formattedvalue' => $this->get_formatted_value( $column, $value )
+						'formattedvalue' => $this->get_formatted_value( $column->get_name(), $value )
 					)
 				);
 			}

@@ -8,6 +8,7 @@
 class CACIE_Editable_Model_User extends CACIE_Editable_Model {
 
 	private $users;
+
 	public $items;
 
 	/**
@@ -45,7 +46,6 @@ class CACIE_Editable_Model_User extends CACIE_Editable_Model {
 				// Custom columns
 			case 'column-first_name':
 			case 'column-last_name':
-			case 'column-meta':
 			case 'column-nickname':
 			case 'column-roles':
 			case 'column-rich_editing':
@@ -141,7 +141,7 @@ class CACIE_Editable_Model_User extends CACIE_Editable_Model {
 			),
 			'column-rich_editing'     => array(
 				'type'    => 'togglable',
-				'options' => array( 'true', 'false' )
+				'options' => array( true, false )
 			),
 			'column-user_description' => array(
 				'type' => 'textarea',
@@ -217,7 +217,7 @@ class CACIE_Editable_Model_User extends CACIE_Editable_Model {
 
 				$columndata = array();
 
-				foreach ( $this->storage_model->columns as $column_name => $column ) {
+				foreach ( $this->storage_model->get_columns() as $column_name => $column ) {
 
 					// Edit enabled for this column?
 					if ( ! $this->is_edit_enabled( $column ) ) {
@@ -281,7 +281,7 @@ class CACIE_Editable_Model_User extends CACIE_Editable_Model {
 						'current_revision' => 0,
 						'itemdata'         => $itemdata,
 						'editable'         => array(
-							'formattedvalue' => $this->get_formatted_value( $column, $value )
+							'formattedvalue' => $this->get_formatted_value( $column->get_name(), $value )
 						)
 					);
 				}
@@ -421,7 +421,7 @@ class CACIE_Editable_Model_User extends CACIE_Editable_Model {
 				$this->update_meta( $user->ID, 'nickname', $value );
 				break;
 			case 'column-rich_editing':
-				$this->update_meta( $user->ID, 'rich_editing', $value );
+				$this->update_meta( $user->ID, 'rich_editing', 'true' == $value ? 1 : 0 );
 				break;
 			case 'column-user_description':
 				$this->update_meta( $user->ID, 'description', $value );

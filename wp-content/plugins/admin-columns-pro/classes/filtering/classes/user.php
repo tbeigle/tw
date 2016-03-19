@@ -15,13 +15,10 @@ class CAC_Filtering_Model_User extends CAC_Filtering_Model {
 	}
 
 	/**
-	 * Enable filtering
-	 *
-	 * @since 3.5
+	 * @since 3.8
 	 */
-	public function enable_filtering( $columns ) {
-
-		$include_types = array(
+	public function get_filterables() {
+		$column_types = array(
 
 			// WP default columns
 			'email',
@@ -35,14 +32,13 @@ class CAC_Filtering_Model_User extends CAC_Filtering_Model {
 			'column-rich_editing',
 			'column-user_registered',
 			'column-user_url',
-
 		);
 
-		foreach ( $columns as $column ) {
-			if ( in_array( $column->properties->type, $include_types ) ) {
-				$column->set_properties( 'is_filterable', true );
-			}
-		}
+		return $column_types;
+	}
+
+	public function get_default_filterables() {
+		return array( 'role' );
 	}
 
 	/**

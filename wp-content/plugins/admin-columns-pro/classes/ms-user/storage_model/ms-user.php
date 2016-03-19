@@ -14,7 +14,6 @@ class CPAC_Storage_Model_MS_User extends CPAC_Storage_Model {
 		$this->type = 'user';
 		$this->meta_type = 'user';
 		$this->page = 'users';
-		$this->menu_type = 'other';
 
 		parent::__construct();
 	}

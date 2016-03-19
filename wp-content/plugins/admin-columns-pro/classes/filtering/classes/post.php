@@ -6,16 +6,12 @@
 class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 
 	/**
-	 * Enable filtering
-	 *
-	 * @since 1.0
+	 * @since 3.8
 	 */
-	public function enable_filtering( $columns ) {
-
-		$include_types = array(
+	public function get_filterables() {
+		$column_types = array(
 
 			// WP default columns
-			'categories',
 			'tags',
 
 			// Custom columns
@@ -26,6 +22,7 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 			'column-excerpt',
 			'column-featured_image',
 			'column-last_modified_author',
+			'column-parent',
 			'column-page_template',
 			'column-ping_status',
 			'column-post_formats',
@@ -33,36 +30,29 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 			'column-status',
 			'column-sticky',
 			'column-taxonomy',
-
-			// WooCommerce columns
-			'product_cat', // default
-			'product_tag', // default
-			'order_status', // default
-			'customer_message', // default
-			'column-wc-featured',
-			'column-wc-visibility',
-			'column-wc-free_shipping',
-			//'column-wc-apply_before_tax',
-			'column-wc-order_coupons_used',
-			'column-wc-shipping_class',
-			'column-wc-parent',
-			'column-wc-payment_method',
-			'column-wc-reviews_enabled'
 		);
 
-		foreach ( $columns as $column ) {
-			if ( in_array( $column->properties->type, $include_types ) ) {
-				$column->set_properties( 'is_filterable', true );
-			}
+		return array_merge( $column_types, $this->get_default_filterables() );
+	}
 
-			if ( 'column-wc-product' == $column->properties->type && method_exists( $column, 'get_product_property' ) && in_array( $column->get_product_property(), array(
-					'title',
-					'sku'
-				) )
-			) {
-				$column->set_properties( 'is_filterable', true );
-			}
-		}
+	/**
+	 * @since 3.8
+	 */
+	public function get_dropdown_html_element_ids() {
+		return array(
+			'date' => 'filter-by-date',
+			'categories' => 'cat'
+		);
+	}
+
+	/**
+	 * @since 3.8
+	 */
+	public function get_default_filterables() {
+		return array(
+			'date',
+			'categories'
+		);
 	}
 
 	/**
@@ -140,6 +130,11 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 
 	public function filter_by_wc_product_sku( $where ) {
 		return $where . $this->wpdb->prepare( "AND pm.meta_value = %s AND pm.meta_key = '_sku'", get_post_meta( $this->get_filter_value( 'column-wc-product-sku' ), '_sku', true ) );
+	}
+
+
+	public function filter_by_wc_shipping_method( $where ) {
+		return $where . $this->wpdb->prepare( "AND om.meta_value = %s AND om.meta_key = 'method_id'", $this->get_filter_value( 'column-wc-order_shipping_method' ) );
 	}
 
 	/**
@@ -242,7 +237,9 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 						'compare' => $meta_query_compare
 					);
 					break;
-
+				case 'column-parent':
+					$vars['post_parent'] = $value;
+					break;
 				case 'column-page_template' :
 					$vars['meta_query'][] = array(
 						'key'     => '_wp_page_template',
@@ -366,14 +363,12 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 
 					switch ( $column->get_product_property() ) {
 						case 'title' :
-
 							$this->set_filter_value( 'column-wc-product-title', $value );
 
 							add_filter( 'posts_join', array( $this, 'join_by_order_itemmeta' ) );
 							add_filter( 'posts_where', array( $this, 'filter_by_wc_product_title' ) );
 							break;
 						case 'sku' :
-
 							$this->set_filter_value( 'column-wc-product-sku', $value );
 
 							add_filter( 'posts_join', array( $this, 'join_by_order_itemmeta' ) );
@@ -381,12 +376,29 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 							add_filter( 'posts_where', array( $this, 'filter_by_wc_product_sku' ) );
 							break;
 					}
-
-
 					break;
 
 				case 'column-wc-reviews_enabled':
 					add_filter( 'posts_where', array( $this, 'filter_by_wc_reviews_enabled' ) );
+					break;
+
+				case 'column-wc-order_shipping_method':
+					add_filter( 'posts_join', array( $this, 'join_by_order_itemmeta' ) );
+					add_filter( 'posts_where', array( $this, 'filter_by_wc_shipping_method' ) );
+					break;
+
+				case 'column-wc-tax_class':
+					$vars['meta_query'][] = array(
+						'key'   => '_tax_class',
+						'value' => $meta_value,
+					);
+					break;
+
+				case 'column-wc-tax_status':
+					$vars['meta_query'][] = array(
+						'key'   => '_tax_status',
+						'value' => $meta_value,
+					);
 					break;
 
 				case 'order_status':
@@ -454,7 +466,13 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 					}
 				}
 				break;
-
+			case 'column-parent':
+				if ( $values = $this->get_post_fields( 'post_parent' ) ) {
+					foreach ( $values as $value ) {
+						$options[ $value ] = $column->get_post_title( $value );
+					}
+				}
+				break;
 			case 'column-ping_status' :
 				if ( $values = $this->get_post_fields( 'ping_status' ) ) {
 					foreach ( $values as $value ) {
@@ -638,6 +656,17 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 						$options[ $status->slug ] = $status->name;
 					}
 				}
+				break;
+			case 'column-wc-order_shipping_method':
+				$options = (array) $column->get_shipping_methods();
+				break;
+
+			case 'column-wc-tax_class':
+				$options = (array) $column->get_tax_classes();
+				break;
+
+			case 'column-wc-tax_status':
+				$options = (array) $column->get_tax_status();
 				break;
 
 			case 'customer_message':

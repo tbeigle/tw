@@ -7,6 +7,7 @@
   width: 15px;
   height: 15px; }
 
+.cpac-boxes.disabled .column-meta .column_label .inner .filtering:before,
 .opened .column-meta .column_label .inner .filtering:before {
   background-position: -15px 0; }
 

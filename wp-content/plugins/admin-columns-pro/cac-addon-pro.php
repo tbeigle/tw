@@ -34,6 +34,24 @@ final class CAC_Addon_Pro {
 	 */
 	private $network_settings_page;
 
+	private $_import_export;
+
+	/**
+	 * @since 3.8
+	 */
+	protected static $_instance = null;
+
+	/**
+	 * @since 3.8
+	 */
+	public static function instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+
+		return self::$_instance;
+	}
+
 	/**
 	 * @since 1.0
 	 */
@@ -105,32 +123,33 @@ final class CAC_Addon_Pro {
 	 */
 	public function init() {
 
-		if ( ! class_exists( 'CAC_Export_Import', false ) ) {
-			include_once 'classes/export-import/export-import.php';
-		}
-
 		if ( ! class_exists( 'CAC_Addon_Filtering', false ) ) {
-			include_once 'classes/filtering/filtering.php';
+			include_once CAC_PRO_DIR . 'classes/filtering/filtering.php';
 		}
 
 		if ( ! class_exists( 'CAC_Addon_Sortable', false ) ) {
-			include_once 'classes/sortable/sortable.php';
+			include_once CAC_PRO_DIR . 'classes/sortable/sortable.php';
 		}
 
 		if ( ! class_exists( 'CAC_Storage_Model_Taxonomy', false ) ) {
-			include_once 'classes/taxonomy/taxonomy.php';
+			include_once CAC_PRO_DIR . 'classes/taxonomy/taxonomy.php';
 		}
 
 		if ( ! class_exists( 'CPAC_Storage_Model_MS_User', false ) ) {
-			include_once 'classes/ms-user/ms-user.php';
+			include_once CAC_PRO_DIR . 'classes/ms-user/ms-user.php';
 		}
 
 		if ( ! class_exists( 'CACIE_Addon_InlineEdit', false ) ) {
-			include_once 'classes/inline-edit/cac-addon-inline-edit.php';
+			include_once CAC_PRO_DIR . 'classes/inline-edit/cac-addon-inline-edit.php';
 		}
 
 		if ( ! class_exists( 'CACIE_Addon_Columns', false ) ) {
-			include_once 'classes/columns/cac-addon-columns.php';
+			include_once CAC_PRO_DIR . 'classes/columns/cac-addon-columns.php';
+		}
+
+		if ( ! class_exists( 'CAC_Export_Import', false ) ) {
+			include_once CAC_PRO_DIR . 'classes/export-import/export-import.php';
+			$this->_import_export = new CAC_Export_Import();
 		}
 	}
 
@@ -140,10 +159,9 @@ final class CAC_Addon_Pro {
 	 * @since 3.4.1
 	 */
 	public function third_party() {
-
-		include_once 'classes/third-party/bbpress.php';
-		include_once 'classes/third-party/pods.php';
-		include_once 'classes/third-party/wordpress-seo.php';
+		include_once CAC_PRO_DIR . 'classes/third-party/bbpress.php';
+		include_once CAC_PRO_DIR . 'classes/third-party/pods.php';
+		include_once CAC_PRO_DIR . 'classes/third-party/wordpress-seo.php';
 	}
 
 	/**
@@ -153,9 +171,9 @@ final class CAC_Addon_Pro {
 	 */
 	public function init_after_cac_loaded( $cpac ) {
 
-		if ( ! class_exists( 'Codepress_Licence_Manager_Settings' ) ) {
+		if ( ! class_exists( 'Codepress_Licence_Manager_Settings', false ) ) {
 
-			include_once 'classes/licence-manager-settings.php';
+			include_once CAC_PRO_DIR . 'classes/licence-manager-settings.php';
 
 			// When used into Admin Columns Pro use it's root path...
 			$this->licence_manager = new Codepress_Licence_Manager_Settings( ACP_FILE, $cpac, $this );
@@ -163,7 +181,17 @@ final class CAC_Addon_Pro {
 			if ( defined( 'ACP_LICENCE' ) ) {
 				$this->licence_manager->set_licence_key( ACP_LICENCE );
 			}
+
+			include_once 'classes/layouts/layouts.php';
+			$this->profiles = new CAC_Layouts( $cpac );
 		}
+	}
+
+	/**
+	 * @since 3.8
+	 */
+	public function import_export() {
+		return $this->_import_export;
 	}
 
 	/**
@@ -187,7 +215,6 @@ final class CAC_Addon_Pro {
 	 * @since 1.0.3
 	 */
 	public function is_cpac_enabled() {
-
 		return class_exists( 'CPAC', false );
 	}
 
@@ -274,4 +301,8 @@ final class CAC_Addon_Pro {
 	}
 }
 
-new CAC_Addon_Pro();
+function ac_pro() {
+	return CAC_Addon_Pro::instance();
+}
+
+ac_pro();

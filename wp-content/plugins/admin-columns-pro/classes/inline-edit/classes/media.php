@@ -90,10 +90,11 @@ class CACIE_Editable_Model_Media extends CACIE_Editable_Model {
 			 * Default columns
 			 *
 			 */
-			'author' => array(
-				'type' 		=> 'select2_dropdown',
-				'property' 	=> 'post_author',
-				'ajax_populate' => true
+			'author'                => array(
+				'type'            => 'select2_dropdown',
+				'property'        => 'post_author',
+				'ajax_populate'   => true,
+				'formatted_value' => 'user'
 			),
 			'date' => array(
 				'type' 		=> 'date',
@@ -133,7 +134,7 @@ class CACIE_Editable_Model_Media extends CACIE_Editable_Model {
 		);
 
 		// Handle capabilities for editing post status
-		$post_type_object = get_post_type_object( $this->storage_model->post_type );
+		$post_type_object = get_post_type_object( $this->storage_model->get_post_type() );
 
 		if ( ! current_user_can( $post_type_object->cap->publish_posts ) ) {
 			unset( $data['column-status'] );
@@ -176,7 +177,7 @@ class CACIE_Editable_Model_Media extends CACIE_Editable_Model {
 
 			$columndata = array();
 
-			foreach ( $this->storage_model->columns as $column_name => $column ) {
+			foreach ( $this->storage_model->get_columns() as $column_name => $column ) {
 
 				// Edit enabled for this column?
 				if ( ! $this->is_edit_enabled( $column ) ) {
@@ -239,7 +240,7 @@ class CACIE_Editable_Model_Media extends CACIE_Editable_Model {
 					'current_revision' => 0,
 					'itemdata' => $itemdata,
 					'editable' => array(
-						'formattedvalue' => $this->get_formatted_value( $column, $value )
+						'formattedvalue' => $this->get_formatted_value( $column->get_name(), $value )
 					)
 				);
 			}

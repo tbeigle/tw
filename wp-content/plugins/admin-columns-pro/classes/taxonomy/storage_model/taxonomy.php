@@ -15,7 +15,7 @@ class CPAC_Storage_Model_Taxonomy extends CPAC_Storage_Model {
 		$this->type = 'taxonomy';
 		$this->page = 'edit-tags';
 		$this->taxonomy = $taxonomy;
-		$this->menu_type = $this->type;
+		$this->menu_type = __( 'Taxonomy', 'codepress-admin-columns' );
 
 		$this->set_labels();
 
