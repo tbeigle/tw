@@ -12,6 +12,18 @@
 */
 
 /*
+ * tw_get_current_uri
+ *
+ * Gets the current uri
+ */
+
+function tw_get_current_uri() {
+  global $wp;
+
+  return str_replace(get_site_url(), '', home_url(add_query_arg(array(),$wp->request)));
+}
+
+/*
  * tw_enqueue_parent_styles
  *
  * Adds the css from the parent theme
@@ -162,9 +174,9 @@ function tw_remove_wc_breadcrumbs() {
 add_action( 'wp', 'tw_redirect_on_disabled_shop' );
 function tw_redirect_on_disabled_shop() {
   if(class_exists('WC_Catalog_Visibility_Options')) {
-    global $wp, $wc_cvo;
+    global $wc_cvo;
 
-    $current_uri = str_replace(get_site_url(), '', home_url(add_query_arg(array(),$wp->request)));
+    $current_uri = tw_get_current_uri();
 
     // check for urls that contain order-now, cart and checkout and redirect if the shop is disabled
     if ( $wc_cvo->setting( 'wc_cvo_prices' ) != 'enabled' || $wc_cvo->setting( 'wc_cvo_atc' ) != 'enabled' ) {
@@ -355,10 +367,33 @@ function tw_show_product_categories_hero() {
  */
 add_action( 'woocommerce_before_shop_loop', 'tw_show_product_categories', 30 );
 function tw_show_product_categories() {
+  $current_uri = tw_get_current_uri();
+
+  if ($current_uri == '/order-now/mains') {
+    $mains_img = 'mains-active.png';
+  }
+  else {
+    $mains_img = 'mains-inactive.png';
+  }
+
+  if ($current_uri == '/order-now/sides') {
+    $sides_img = 'sides-active.png';
+  }
+  else {
+    $sides_img = 'sides-inactive.png';
+  }
+
+  if ($current_uri == '/order-now/extra') {
+    $extras_img = 'extras-active.png';
+  }
+  else {
+    $extras_img = 'extras-inactive.png';
+  }
+
   echo '<div class="category-tabs">';
-  echo '<a href="/order-now/mains"><img src="' . get_stylesheet_directory_uri() . '/images/cat_mains.png" class="product-cat"></a>';
-  echo '<a href="/order-now/sides"><img src="' . get_stylesheet_directory_uri() . '/images/cat_sides.png" class="product-cat"></a>';
-  echo '<a href="/order-now/extra"><img src="' . get_stylesheet_directory_uri() . '/images/cat_extras.png" class="product-cat"></a>';
+  echo '<a href="/order-now/mains"><img src="' . get_stylesheet_directory_uri() . '/images/' . $mains_img . '" class="product-cat"></a>';
+  echo '<a href="/order-now/sides"><img src="' . get_stylesheet_directory_uri() . '/images/' . $sides_img . '" class="product-cat"></a>';
+  echo '<a href="/order-now/extra"><img src="' . get_stylesheet_directory_uri() . '/images/' . $extras_img . '" class="product-cat"></a>';
   echo '</div>';
 }
 
@@ -369,8 +404,7 @@ function tw_show_product_categories() {
  */
 add_action( 'wp', 'tw_redirect_ordernow_page' );
 function tw_redirect_ordernow_page() {
-  global $wp;
-  $current_uri = str_replace(get_site_url(), '', home_url(add_query_arg(array(),$wp->request)));
+  $current_uri = tw_get_current_uri();
 
   if ( $current_uri == '/order-now' ) {
     wp_redirect( '/order-now/mains', 301 );
