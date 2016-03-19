@@ -5,6 +5,8 @@
       radioClass: 'iradio_square-purple',
     });*/
 
+    $('#createaccount').attr('checked', true);
+
     var form = $("form.checkout.woocommerce-checkout");
 
     var checkout_steps = form.steps({
