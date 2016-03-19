@@ -2,7 +2,7 @@
 /*
  * Plugin Name: Tinwings Woocommerce Reports
  * Depends: WooCommerce
- * Plugin URI:
+ * Plugin URI: https://planleft.com
  * Description: This is a custom plugin for Tinwings to create custom reports
  * Author: Plan Left
  * Version: 1.0
