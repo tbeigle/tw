@@ -77,6 +77,7 @@ function tinwings_reports() {
     <a class="nav-tab <?php echo $active_tab == 'last_month' ? 'nav-tab-active' : ''; ?>" href="<?php echo admin_url() ?>admin.php?page=tinwings-reports&tab=last_month">Last Month</a>
     <a class="nav-tab <?php echo $active_tab == 'week' ? 'nav-tab-active' : ''; ?>" href="<?php echo admin_url() ?>admin.php?page=tinwings-reports&tab=week">This Week</a>
     <a class="nav-tab <?php echo $active_tab == 'last_week' ? 'nav-tab-active' : ''; ?>" href="<?php echo admin_url() ?>admin.php?page=tinwings-reports&tab=last_week">Last Week</a>
+    <a class="nav-tab <?php echo $active_tab == 'week_as_list' ? 'nav-tab-active' : ''; ?>" href="<?php echo admin_url() ?>admin.php?page=tinwings-reports&tab=week_as_list">This Week (as a list)</a>
   </h2>
   <?php if($active_tab == ''): ?>
   <p>This section is used to display some custom basic reports. To print a report, simply click in the Print Page button right next the page title.</p>
@@ -472,6 +473,38 @@ function tinwings_reports() {
 
       echo '</tbody>';
       echo '</table>';
+      echo '</div>';
+    }
+
+    if($active_tab == 'week_as_list') {
+      function week_as_list_groupby( $groupby, $query ) {
+        global $wpdb;
+
+        return "{$wpdb->posts}.ID";
+      }
+
+      add_filter( 'posts_groupby', 'week_as_list_groupby', 10, 2 );
+      $query = new WP_Query([
+        'post_type' => 'shop_order',
+        'post_status' => 'publish',
+        'posts_per_page' => '-1',
+        'year' => date("Y"),
+        'monthnum' => date("m"),
+        'w' => date("W"),
+      ]);
+      remove_filter('posts_groupby', 'week_as_list_groupby');
+
+      echo '<div id="week_as_list_tab">';
+      echo '<h3>Orders This Week (as a list)</h3>';
+      foreach ($query->posts as $customer_order) {
+        $order = new WC_Order($customer_order->ID);
+
+        echo '<ul>';
+        foreach($order->get_items() as $item) {
+          echo '<li>' . $item['qty'] . ' &times; ' . $item['name'] . '</li>';
+        }
+        echo '</ul>';
+      }
       echo '</div>';
     }
 	?>
