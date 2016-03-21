@@ -572,3 +572,8 @@ input#giftcard_code {
   width: 71.3%;
   padding: 10px 10px 9px !important;
 }
+
+.category-tabs {
+  margin-top: 20px;
+  text-align: center;
+}

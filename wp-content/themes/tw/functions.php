@@ -351,23 +351,14 @@ function tw_enqueue_steps_styles() {
 }
 
 /*
- * tw_show_product_categories_hero
- *
- * Displays a big image at the top of every product archive page
- */
-add_action( 'woocommerce_archive_description', 'tw_show_product_categories_hero', 0 );
-function tw_show_product_categories_hero() {
-  echo '<img src="' . get_stylesheet_directory_uri() . '/images/ordernow_hero.png"" class="img-responsive product-cat-hero">';
-}
-
-/*
  * tw_show_product_categories
  *
  * Displays the product categories in the product archives
  */
-add_action( 'woocommerce_before_shop_loop', 'tw_show_product_categories', 30 );
+add_action( 'woocommerce_before_main_content', 'tw_show_product_categories', 30 );
 function tw_show_product_categories() {
   $current_uri = tw_get_current_uri();
+  $path = get_stylesheet_directory_uri();
 
   if ($current_uri == '/order-now/mains') {
     $mains_img = 'mains-active.png';
@@ -390,10 +381,11 @@ function tw_show_product_categories() {
     $extras_img = 'extras-inactive.png';
   }
 
+  echo '<img src="' . $path . '/images/ordernow_hero.png" class="img-responsive product-cat-hero">';
   echo '<div class="category-tabs">';
-  echo '<a href="/order-now/mains"><img src="' . get_stylesheet_directory_uri() . '/images/' . $mains_img . '" class="product-cat"></a>';
-  echo '<a href="/order-now/sides"><img src="' . get_stylesheet_directory_uri() . '/images/' . $sides_img . '" class="product-cat"></a>';
-  echo '<a href="/order-now/extra"><img src="' . get_stylesheet_directory_uri() . '/images/' . $extras_img . '" class="product-cat"></a>';
+  echo '<a href="/order-now/mains"><img src="' . $path . '/images/' . $mains_img . '" class="product-cat"></a>';
+  echo '<a href="/order-now/sides"><img src="' . $path . '/images/' . $sides_img . '" class="product-cat"></a>';
+  echo '<a href="/order-now/extra"><img src="' . $path . '/images/' . $extras_img . '" class="product-cat"></a>';
   echo '</div>';
 }
 
