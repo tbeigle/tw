@@ -68,7 +68,7 @@ add_action('tw_cron_execute', function() {
       // sends out the request
       $woocommerce->put('products/' . $product->ID, $data);
     } catch (HttpClientException $e) {
-      $e->getMessage() // Error message.
+      $e->getMessage(); // Error message.
     }
   }
 });
