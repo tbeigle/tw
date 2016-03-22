@@ -1,0 +1,66 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "0884ced478f20fb3a97680822e7e544d",
+    "content-hash": "5d94b4790931b6a99a0e5e389c7074fa",
+    "packages": [
+        {
+            "name": "automattic/woocommerce",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/woothemes/wc-api-php.git",
+                "reference": "3638f958df74852e4442bd60565d5e62b713a8c1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/woothemes/wc-api-php/zipball/3638f958df74852e4442bd60565d5e62b713a8c1",
+                "reference": "3638f958df74852e4442bd60565d5e62b713a8c1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">= 5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Automattic\\WooCommerce\\": [
+                        "src/WooCommerce"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Claudio Sanches",
+                    "email": "claudio.sanches@automattic.com"
+                }
+            ],
+            "description": "A PHP wrapper for the WooCommerce REST API",
+            "keywords": [
+                "api",
+                "woocommerce"
+            ],
+            "time": "2016-01-25 16:17:49"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
