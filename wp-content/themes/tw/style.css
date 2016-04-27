@@ -71,7 +71,7 @@ input[type="tel"] {
 
 @media screen and (min-width: 768px) {
   .woocommerce ul.products li.product .variations_button .button {
-    margin-top: -2em !important;
+    margin-top: 10px !important;
   }
 }
 
@@ -94,8 +94,20 @@ input[type="tel"] {
   }
 }
 
-.woocommerce .input-text.qty.text {
-  width: auto !important;
+.woocommerce .quantity .qty {
+  width: 3em !important;
+  margin-left: 28px !important;
+}
+
+.woocommerce .woocommerce-variation-add-to-cart .quantity {
+  position: relative;
+}
+
+.woocommerce .woocommerce-variation-add-to-cart .quantity:before {
+  content: "Qty: ";
+  position: absolute;
+  left: 0;
+  bottom: -39px;
 }
 
 .woocommerce .widget_shopping_cart .total,
@@ -221,6 +233,7 @@ img.product-cat:hover {
 .woocommerce ul.products li.product .price {
   font-size: 2em !important;
   clear: both;
+  line-height: 2.5;
 }
 
 .woocommerce ul.products li.product .stock {

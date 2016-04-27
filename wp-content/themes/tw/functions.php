@@ -24,13 +24,14 @@ function tw_get_current_uri() {
 }
 
 /*
- * tw_enqueue_parent_styles
+ * tw_enqueue_styles
  *
- * Adds the css from the parent theme
+ * Adds the css from the parent theme and child theme
  */
-add_action( 'wp_enqueue_scripts', 'tw_enqueue_parent_styles' );
-function tw_enqueue_parent_styles() {
+add_action( 'wp_enqueue_scripts', 'tw_enqueue_styles', 90 );
+function tw_enqueue_styles() {
   wp_enqueue_style( 'parent-style', get_template_directory_uri().'/style.css' );
+  wp_enqueue_style( 'child-style', get_stylesheet_directory_uri().'/style.css' );
 }
 
 /*
