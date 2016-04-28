@@ -5,6 +5,33 @@
       radioClass: 'iradio_square-purple',
     });*/
 
+    // find all the products
+    var forms = $("li.product").find("form.variations_form");
+
+    // iterate through all the products
+    $.each(forms, function(i, form) {
+      // the product id
+      var pid = parseInt($(form).data('product_id'), 10);
+
+      // the variations as checkboxes, we use
+      // form[data-product_id='" + pid + "'] to only affect one element, not all
+      var radio = "form[data-product_id='" + pid + "'] .variations input:radio";
+
+      // is the variation checkbox checked?
+      var checked = $(radio + ':checked').length;
+
+      // hide the price if no variation is selected
+      if (!checked) {
+        $("form[data-product_id='" + pid + "'] .woocommerce-variation").css('visibility', 'hidden');
+      }
+
+      // if someone clicks on a variation we need to show the price
+      // we just unset what we've set before
+      $(radio).change(function() {
+        $("form[data-product_id='" + pid + "'] .woocommerce-variation").css('visibility', '');
+      });
+    });
+
     $('#createaccount').attr('checked', true);
 
     var form = $("form.checkout.woocommerce-checkout");
