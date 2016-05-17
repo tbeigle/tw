@@ -375,7 +375,7 @@ function tw_show_product_categories() {
     $sides_img = 'sides-inactive.png';
   }
 
-  if ($current_uri == '/order-now/extra') {
+  if ($current_uri == '/order-now/extras') {
     $extras_img = 'extras-active.png';
   }
   else {
