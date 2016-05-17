@@ -57,6 +57,7 @@
 		<?php
 	}
 	?>
+
 	<form name="eemail_form" method="post" action="" onsubmit="return _email_setting()" >
 	<label for="tag-title"><?php _e('From email name', 'email-newsletter'); ?></label>
 	<input name="eemail_from_name" id="eemail_from_name" type="text" value="<?php echo $eemail_from_name; ?>" maxlength="150" size="50" />

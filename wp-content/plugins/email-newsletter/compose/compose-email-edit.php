@@ -1,7 +1,7 @@
 <?php if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You are not allowed to call this page directly.'); } ?>
 <div class="wrap">
 <?php
-$did = isset($_GET['did']) ? $_GET['did'] : '0';
+$did = isset($_GET['did']) ? mysql_real_escape_string($_GET['did']) : '0';
 
 // First check if ID exist with requested ID
 $sSql = $wpdb->prepare(

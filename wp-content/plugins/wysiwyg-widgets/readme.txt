@@ -1,10 +1,10 @@
 === Plugin Name ===
 Contributors: DvanKooten
-Donate link: http://dannyvankooten.com/donate/
-Tags: visual,tinymce,fckeditor,widget,widgets,rich text,wysiwyg,image widget,visual editor,html
-Requires at least: 3.1
-Tested up to: 3.8
-Stable tag: 2.3.4
+Donate link: https://dannyvankooten.com/donate/
+Tags: widget,visual editor,image widget,visual,tinymce,fckeditor,widgets,rich text,wysiwyg,html
+Requires at least: 3.7
+Tested up to: 4.2
+Stable tag: 2.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,7 +29,7 @@ You can create or edit the widget blocks just like you would edit any post or pa
 
 **Translators**
 
-- Dutch (nl_NL) - [Danny van Kooten](http://dannyvankooten.com/)
+- Dutch (nl_NL) - [Danny van Kooten](https://dannyvankooten.com/)
 - Spanish (es_ES) - [Maria Ramos - WebHostingHub](http://webhostinghub.com/)
 - Italian (it_IT) - [Tiziano D'Angelo - Studio D'Angelo](http://www.dangelos.it/)
 - Looking for more.. :)
@@ -38,10 +38,10 @@ If you have created your own language pack, or have an update of an existing one
 
 **More information**
 
-- [WYSIWYG Widgets](http://dannyvankooten.com/wordpress-plugins/wysiwyg-widgets/)
-- Check out more [WordPress plugins](http://dannyvankooten.com/wordpress-plugins/) by the same author
-- You should follow [@DannyvanKooten](http://twitter.com/dannyvankooten) on Twitter.
-- [Thank Danny for this plugin by donating $10, $20 or $50.](http://dannyvankooten.com/donate/)
+- [WYSIWYG Widgets](https://dannyvankooten.com/wordpress-plugins/wysiwyg-widgets/)
+- Check out more [WordPress plugins](https://dannyvankooten.com/wordpress-plugins/) by the same author
+- You should follow [@DannyvanKooten](https://twitter.com/dannyvankooten) on Twitter.
+- [Thank Danny for this plugin by donating $10, $20 or $50.](https://dannyvankooten.com/donate/)
 
 == Installation ==
 
@@ -78,6 +78,16 @@ Yes, totally. Donations are appreciated though!
 3. Drag the WYSIWYG Widget to one of your widget areas and select the Widget Block to show.
 
 == Changelog ==
+
+= 2.3.5 - March 18, 2015 =
+
+**Fixes**
+
+- Video URL's on their own line will now autoembed
+
+**Improvements**
+
+- Code styling now adheres to WordPress coding standard
 
 = 2.3.4 - December 20, 2013 =
 * Fixed: Paragraphs inside or after shortcodes
@@ -141,7 +151,7 @@ Yes, totally. Donations are appreciated though!
 * Total rewrite WITHOUT backwards compatibility. Please back-up your existing WYSIWYG Widgets' content before updating, you'll need to recreate them. Don't drag them to "deactivated widgets", just copy & paste the HTML content somewhere.
 
 = 1.2 =
-* Updated the plugin for WP 3.3. Broke backwards compatibility (on purpose), so when running WP 3.2.x and below: stick with [version 1.1.1](http://downloads.wordpress.org/plugin/wysiwyg-widgets.zip).
+* Updated the plugin for WP 3.3. Broke backwards compatibility (on purpose), so when running WP 3.2.x and below: stick with [version 1.1.1](https://downloads.wordpress.org/plugin/wysiwyg-widgets.zip).
 
 = 1.1.2 =
 * Temporary fix for WP 3.3+

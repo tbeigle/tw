@@ -1,4 +1,9 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // disable direct access
+}
+
 /**
  * Slide class represting a single slide. This is extended by type specific
  * slides (eg, MetaImageSlide, MetaYoutubeSlide (pro only), etc)
@@ -9,6 +14,15 @@ class MetaSlide {
     public $slider = 0;
     public $settings = array(); // slideshow settings
 
+
+    /**
+     * Constructor
+     */
+    public function __construct() {
+
+        add_action( 'wp_ajax_change_slide_image', array( $this, 'ajax_change_slide_image' ) );
+
+    }
 
     /**
      * Set the slide
@@ -50,6 +64,67 @@ class MetaSlide {
 
 
     /**
+     * Change the slide image.
+     *
+     * This creates a copy of the selected (new) image and assigns the copy to our existing media file/slide.
+     */
+    public function ajax_change_slide_image() {
+
+        if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'metaslider_changeslide' ) ) {
+            wp_die( json_encode( array(
+                    'status' => 'fail',
+                    'msg' => __( "Security check failed. Refresh page and try again.", "ml-slider" )
+                )
+            ));
+        }
+
+        $slide_from = absint( $_POST['slide_from'] );
+        $slide_to = absint( $_POST['slide_to'] );
+
+        // find the paths for the image we want to change to
+
+        // Absolute path
+        $abs_path = get_attached_file( $slide_to );
+        $abs_path_parts = pathinfo( $abs_path );
+        $abs_file_directory = $abs_path_parts['dirname'];
+
+        // Relative path
+        $rel_path = get_post_meta( $slide_to, '_wp_attached_file', true );
+        $rel_path_parts = pathinfo( $rel_path );
+        $rel_file_directory = $rel_path_parts['dirname'];
+
+        // old file name
+        $file_name = $abs_path_parts['basename'];
+
+        // new file name
+        $dest_file_name = wp_unique_filename( $abs_file_directory, $file_name );
+
+        // generate absolute and relative paths for the new file name
+        $dest_abs_path = trailingslashit($abs_file_directory) . $dest_file_name;
+        $dest_rel_path = trailingslashit($rel_file_directory) . $dest_file_name;
+
+        // make a copy of the image
+        if ( @ copy( $abs_path, $dest_abs_path ) ) {
+            // update the path on our slide
+            update_post_meta( $slide_from, '_wp_attached_file', $dest_rel_path );
+            wp_update_attachment_metadata( $slide_from, wp_generate_attachment_metadata( $slide_from, $dest_abs_path ) );
+            update_attached_file( $slide_from, $dest_rel_path );
+
+            wp_die( json_encode( array(
+                    'status' => 'success'
+                )
+            ));
+        }
+
+        wp_die( json_encode( array(
+                'status' => 'fail',
+                'msg' => __( "File copy failed. Please check upload directory permissions.", "ml-slider" )
+            )
+        ));
+    }
+
+
+    /**
      * Return the correct slide HTML based on whether we're viewing the slides in the
      * admin panel or on the front end.
      *
@@ -57,13 +132,17 @@ class MetaSlide {
      */
     public function get_slide_html() {
 
-        if ( is_admin() && isset( $_GET['page'] ) && $_GET['page'] == 'metaslider-theme-editor' ) {
+        $viewing_theme_editor = is_admin() && isset( $_GET['page'] ) && $_GET['page'] == 'metaslider-theme-editor';
+        $viewing_preview = did_action('admin_post_metaslider_preview');
+        $doing_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
+
+        if ( $doing_ajax || $viewing_preview || $viewing_theme_editor ) {
             return $this->get_public_slide();
         }
 
         $capability = apply_filters( 'metaslider_capability', 'edit_others_posts' );
 
-        if ( is_admin() && current_user_can( $capability ) && ! isset( $_GET['slider_id'] ) ) {
+        if ( is_admin() && current_user_can( $capability ) ) {
             return $this->get_admin_slide();
         }
 
@@ -202,8 +281,20 @@ class MetaSlide {
      */
     public function get_delete_button_html() {
 
-        return "<a class='delete-slide confirm' href='?page=metaslider&amp;id={$this->slider->ID}&amp;deleteSlide={$this->slide->ID}'>x</a>";
-    
+        $url = wp_nonce_url( admin_url( "admin-post.php?action=metaslider_delete_slide&slider_id={$this->slider->ID}&slide_id={$this->slide->ID}" ), "metaslider_delete_slide" );
+
+        return "<a title='" . __("Delete slide", "ml-slider") . "' class='tipsy-tooltip-top delete-slide dashicons dashicons-trash' href='{$url}'>" . __("Delete slide", "ml-slider") . "</a>";
+
+    }
+
+    /**
+     * Generate the HTML for the change slide image button
+     */
+    public function get_change_image_button_html() {
+
+        return apply_filters("metaslider_change_image_button_html", "", $this->slide);
+
+        //return "<a title='" . __("Change slide image", "ml-slider") . "' class='tipsy-tooltip-top change-image dashicons dashicons-edit' data-button-text='" . __("Change slide image", "ml-slider") . "' data-slide-id='{$this->slide->ID}'>" . __("Change slide image", "ml-slider") . "</a>";
     }
 
     /**
@@ -276,7 +367,7 @@ class MetaSlide {
         wp_update_post( array(
                 'ID' => $this->slide->ID,
                 'menu_order' => $menu_order
-            ) 
+            )
         );
 
     }
@@ -304,6 +395,32 @@ class MetaSlide {
         }
 
     }
+
+
+    /**
+     * Detect a [metaslider] or [ml-slider] shortcode in the slide caption, which has an ID that matches the current slideshow ID
+     *
+     * @param $content string
+     */
+    protected function detect_self_metaslider_shortcode( $content ) {
+        $pattern = get_shortcode_regex();
+
+        if ( preg_match_all( '/'. $pattern .'/s', $content, $matches ) && array_key_exists( 2, $matches ) && ( in_array( 'metaslider', $matches[2] ) || in_array( 'ml-slider', $matches[2] ) ) ) {
+            // caption contains [metaslider] shortcode
+            if ( array_key_exists( 3, $matches ) && array_key_exists( 0, $matches[3] ) ) {
+                // [metaslider] shortcode has attributes
+                $attributes = shortcode_parse_atts( $matches[3][0] );
+
+                if ( isset( $attributes['id'] ) && $attributes['id'] == $this->slider->ID ) {
+                    // shortcode has ID attribute that matches the current slideshow ID
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 
     /**
      * Get the thumbnail for the slide

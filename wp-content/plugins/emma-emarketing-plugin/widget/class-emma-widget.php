@@ -29,7 +29,7 @@ class Emma_Widget extends WP_Widget {
 			'description' => 'Displays an email subscription form for Emma Emarketing'
 		);
 		
-		$this->WP_Widget( 'emma-widget', 'Emma Emarketing Subscription Form', $widget_ops );
+		parent::__construct( 'emma-widget', 'Emma For WordPress', $widget_ops );
 		
 		// check to see if widget is being used
 		if ( is_active_widget(false, false, $this->id_base) ) {
@@ -95,9 +95,18 @@ class Emma_Widget extends WP_Widget {
 
         // instantiate form class, pass in plugin settings
 		$emma_form = new Emma_Form();
-
-        // hey crazy, if a function returns something, you'll need to echo it out.
-        echo $emma_form->generate_form();
+		$account_settings_options = get_option('emma_account_information');
+		
+		if ($account_settings_options['logged_in'] == 'true') {
+			// hey crazy, if a function returns something, you'll need to echo it out.
+	        echo $emma_form->generate_form();
+		} else {
+			// Only show the warning if the user is logged in
+			if ( current_user_can('manage_options') ) {
+				$account_settings_options = get_option('emma_account_information');
+				echo '<p class="emma-alert">You need to sign into your Emma account before we can display your form!</p>';
+			}
+		}
 
 		// end of widget output
 		echo $after_widget;
@@ -106,8 +115,12 @@ class Emma_Widget extends WP_Widget {
 
 } // end class Emma_Widget
 
-// use widgets_init action hook to execute custom function
-add_action( 'widgets_init', 'emma_register_widgets' );
+// Get account info and see if the user has logged in before showing the widget
+$account_settings = get_option('emma_account_information');
+if ($account_settings['logged_in'] == true) {
+	// use widgets_init action hook to execute custom function
+	add_action( 'widgets_init', 'emma_register_widgets' );
+}
 
 function emma_register_widgets() {
 	register_widget( 'emma_widget' );

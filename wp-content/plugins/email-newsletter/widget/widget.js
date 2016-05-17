@@ -42,8 +42,8 @@ function eemail_submit_ajax(url,app_id)
 	document.getElementById("eemail_msg").innerHTML="loading...";
 	var date_now = "";
     var mynumber = Math.random();
-	var str= "txt_email_newsletter="+ encodeURI(txt_email_newsletter.value) + "&timestamp=" + encodeURI(date_now) + "&action=" + encodeURI(mynumber);
-	eemail_submitpostrequest(url+'/eemail_subscribe.php', str);
+	var str= "txt_email_newsletter="+ encodeURI(txt_email_newsletter.value) + "&timestamp=" + encodeURI(date_now) + "&action=eemail-subscribe";
+	eemail_submitpostrequest(url, str);
 }
 
 var http_req = false;
@@ -107,7 +107,7 @@ function eemail_submitresult()
 				}
 				else if((http_req.responseText).trim() == "subscribed-pending-doubleoptin")
 				{
-					alert('You are on our list. Thank You!');
+					alert('You have successfully subscribed to the newsletter. You will receive a confirmation email in few minutes.\nPlease follow the link in it to confirm your subscription.\nIf the email takes more than 15 minutes to appear in your mailbox, please check your spam folder.');
 					document.getElementById("eemail_msg").innerHTML = "Subscribed successfully.";
 				}
 				else if((http_req.responseText).trim() == "already-exist")

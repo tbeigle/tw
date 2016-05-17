@@ -1,8 +1,6 @@
 <?php
 $eemail_abspath = dirname(__FILE__);
-$eemail_abspath_1 = str_replace('wp-content/plugins/email-newsletter/double-optin', '', $eemail_abspath);
-$eemail_abspath_1 = str_replace('wp-content\plugins\email-newsletter\double-optin', '', $eemail_abspath_1);
-require_once($eemail_abspath_1 .'wp-config.php');
+return;
 $blogname = get_option('blogname');
 ?>
 <html>
@@ -11,9 +9,9 @@ $blogname = get_option('blogname');
 </head>
 <body>
 <?php
-$form['rand'] = isset($_GET['rand']) ? $_GET['rand'] : '';
-$form['user'] = isset($_GET['user']) ? $_GET['user'] : '';
-$form['guid'] = isset($_GET['guid']) ? $_GET['guid'] : '';
+$form['rand'] = isset($_GET['rand']) ? mysql_real_escape_string($_GET['rand']) : '';
+$form['user'] = isset($_GET['user']) ? mysql_real_escape_string($_GET['user']) : '';
+$form['guid'] = isset($_GET['guid']) ? mysql_real_escape_string($_GET['guid']) : '';
 
 if ($form['rand'] == '' || $form['user'] == '' || $form['guid'] == '')
 {

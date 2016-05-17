@@ -3,7 +3,7 @@
 // Form submitted, check the data
 if (isset($_POST['frm_eemail_display']) && $_POST['frm_eemail_display'] == 'yes')
 {
-	$did = isset($_GET['did']) ? $_GET['did'] : '0';
+	$did = isset($_GET['did']) ? mysql_real_escape_string($_GET['did']) : '0';
 	
 	$eemail_success = '';
 	$eemail_success_msg = FALSE;

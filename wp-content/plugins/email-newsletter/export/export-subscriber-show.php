@@ -55,21 +55,21 @@ else
         <td>1</td>
         <td><?php _e('Subscriber email address', 'email-newsletter'); ?></td>
 		<td><?php echo $cnt_subscriber; ?></td>
-        <td><a onClick="javascript:exportcsv('<?php echo emailnews_plugin_url('export/export-setting.php'); ?>', 'view_subscriber')" href="javascript:void(0);"><?php _e('Click to export csv', 'email-newsletter'); ?></a> </td>
+        <td><a onClick="javascript:exportcsv('<?php echo $_SERVER["REQUEST_URI"]; ?>', 'view_subscriber')" href="javascript:void(0);"><?php _e('Click to export csv', 'email-newsletter'); ?></a> </td>
       </tr>
       <tr class="alternate">
         <td><input type="checkbox" value="" name="eemail_group_item[]"></td>
         <td>2</td>
         <td><?php _e('Registered email address', 'email-newsletter'); ?></td>
 		<td><?php echo $cnt_users; ?></td>
-        <td><a onClick="javascript:exportcsv('<?php echo emailnews_plugin_url('export/export-setting.php'); ?>', 'registered_user')" href="javascript:void(0);"><?php _e('Click to export csv', 'email-newsletter'); ?></a> </td>
+        <td><a onClick="javascript:exportcsv('<?php echo $_SERVER["REQUEST_URI"]; ?>', 'registered_user')" href="javascript:void(0);"><?php _e('Click to export csv', 'email-newsletter'); ?></a> </td>
       </tr>
       <tr>
         <td><input type="checkbox" value="" name="eemail_group_item[]"></td>
         <td>3</td>
         <td><?php _e('Comments author email address', 'email-newsletter'); ?></td>
 		<td><?php echo $cnt_comment_author; ?></td>
-        <td><a onClick="javascript:exportcsv('<?php echo emailnews_plugin_url('export/export-setting.php'); ?>', 'commentposed_user')" href="javascript:void(0);"><?php _e('Click to export csv', 'email-newsletter'); ?></a> </td>
+        <td><a onClick="javascript:exportcsv('<?php echo $_SERVER["REQUEST_URI"]; ?>', 'commentposed_user')" href="javascript:void(0);"><?php _e('Click to export csv', 'email-newsletter'); ?></a> </td>
       </tr>
       <tr class="alternate">
         <td><input type="checkbox" value="" name="eemail_group_item[]"></td>
@@ -78,7 +78,7 @@ else
 		<td><?php echo $cnt_contact_form; ?></td>
         <td>
 		<?php if($cnt_contact_form <> 'NA') { ?>
-		<a onClick="javascript:exportcsv('<?php echo emailnews_plugin_url('export/export-setting.php'); ?>', 'contact_user')" href="javascript:void(0);"><?php _e('Click to export csv', 'email-newsletter'); ?></a> 
+		<a onClick="javascript:exportcsv('<?php echo $_SERVER["REQUEST_URI"]; ?>', 'contact_user')" href="javascript:void(0);"><?php _e('Click to export csv', 'email-newsletter'); ?></a> 
 		<?php } else { echo $cnt_contact_form; } ?>
 		</td>
       </tr>

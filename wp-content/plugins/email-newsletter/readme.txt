@@ -1,18 +1,26 @@
-=== Email newsletter ===
+﻿=== Email newsletter ===
 Contributors: dabelon, wenzhixue, tanaylakhani, gopiplus
 Donate link: http://www.gopiplus.com/work/2010/09/25/email-newsletter
 Author URI: http://www.gopiplus.com/work/2010/09/25/email-newsletter/
 Plugin URI: http://www.gopiplus.com/work/2010/09/25/email-newsletter/
 Tags: Email, Newsletter, SendMail, Contact, plugin, widgets
 Requires at least: 3.0
-Tested up to: 3.8
-Stable tag: 20.5
+Tested up to: 4.1
+Stable tag: 20.15
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 	
-This easy-to-use plugin provides a simple way for Wordpress users to email registered users, commenters and subscribers. Automate user growth through ReadyGraph integration.
+A simple way for you to email registered users, commenters and subscribers. Automate user growth and revenue with ReadyGraph integration.
 
 == Description ==
+
+Check official website for live demo [http://plugins.readygraph.com/email-newsletter/](http://plugins.readygraph.com/email-newsletter/)
+
+* [Live demo](http://plugins.readygraph.com/email-newsletter/)
+
+* [More Description](http://plugins.readygraph.com/email-newsletter/)
+
+* [Suggestion/comments](http://plugins.readygraph.com/email-newsletter/)
 
 Email Newsletter plugin has options to send HTML emails/newsletters to registered users, comment authors, subscribers and contact form users.  When a visitor registers, comments, subscribes or uses the Simple Contact Form plugin, their information is stored in a database.  Email Newsletter plugin users can view their user base, and email users.  This plugin also sends automated email updates to registered users based on activity relevant to that user. This plugin is great for those who seek an easy way to capture user information and send newsletters and automated email updates.
 
@@ -129,6 +137,26 @@ Track daily-new subscribers, daily invites, total traffic, and other key metrics
 
 ReadyGraph’s newsfeed is an optional overlay on your site where your users can engage with others in your community and recommend your content or products to each other.  It is like having a social network that engages users embedded on your site. Users can leave comments, ‘like’ comments left by other subscribers and ‘follow’ other subscribers.  Subscribers will receive automated email updates based on these actions.
 
+= Content Voting and Ranking =
+
+ReadyGraph allows your subscribers to vote on your latest content. The top content from our network of sites is then ranked on UserBase.com by the number of votes that it has received in the past 7 days.
+
+= Monetization Through Sponsored Units =
+
+Due to popular demand, we are excited to announce that we have now added a new layer onto the ReadyGraph product: monetization. For quality sites with enough users and traffic to qualify, we will enable you to earn revenue through a set of elegant, unobtrusive sponsorship units.The ad units will be shown occasionally (much of the time they won't be noticeable) and are highly targeted based on user interests. Most importantly, they can be turned off or on at any time. In addition to helping qualifying sites support themselves, this initiative will allow us to continue to put resources towards enhancing the free features we offer each and every site owner.  Sites qualify on the basis of quality and a minimum traffic threshold.  You can view, adjust, or opt out through your site monetization settings page.
+
+= Want To Grow Even Faster? =
+
+Try [ReadyGraph premium](https://readygraph.com/accounts/payment/) for free to get these advanced features:
+
+1.	Monthly Promotion to 10,000 New Users
+2.	Unlimited New Blog Post Emails
+3.	Unlimited Viral Email Invites
+4.	Unlimited Facebook Invites
+5.	Many more premium features added all the time
+
+[Get it here!](https://readygraph.com/accounts/payment/)
+
 If you have questions or concerns contact us anytime at [info@readygraph.com](mailto:info@readygraph.com)
 
 = Translators =
@@ -140,6 +168,8 @@ If you have questions or concerns contact us anytime at [info@readygraph.com](ma
 == Installation ==
 
 = Installation Instruction =
+
+Installation Instruction and Configuration can also be found at [Installation Instruction and Configuration](http://plugins.readygraph.com/email-newsletter/installation/)
 	
 = Method 1 =
 	
@@ -186,6 +216,8 @@ Locate the “Email Newsletter” widget, and click the `Add` button.  From the 
 The plugin can be further configured through the `Setup Widget`, `Setup Email`, `Setup Unsubscribe` and `Opt in Settings` menu items, described above.
 
 == Frequently Asked Questions ==
+
+For detailed FAQ and other support visit [http://plugins.readygraph.com/email-newsletter/faq/](http://plugins.readygraph.com/email-newsletter/faq/)
 
 Please scroll down for questions regarding **READYGRAPH**.
 
@@ -253,6 +285,10 @@ In this file you will find the default text copied above, change the text and cl
 
 To sign-up for a readygraph account, go to the `Readygraph App` menu item in the Email Newsletter plugin drop-down menu (by clicking the cog-shaped icon).  Enter your site URL, Name, Email and Password in the specified text fields.  Click `Continue` and follow to configure the widget.  Once a user has signed up, you can view your subscribers by selecting the `Readygraph App` menu item in the Email Newsletter plugin drop-down menu (by clicking the cog-shaped icon) and click `Account Management`.
 
+= 12. Does this plugin help me earn revenue? =
+
+Due to popular demand, we are excited to announce that we have now added a new layer onto the ReadyGraph product: monetization. For quality sites with enough users and traffic to qualify, we will enable you to earn revenue through a set of elegant, unobtrusive sponsorship units.The ad units will be shown occasionally (much of the time they won't be noticeable) and are highly targeted based on user interests. Most importantly, they can be turned off or on at any time. In addition to helping qualifying sites support themselves, this initiative will allow us to continue to put resources towards enhancing the free features we offer each and every site owner. Sites qualify on the basis of quality and a minimum traffic threshold. You can view, adjust, or opt out through your site monetization settings page.
+
 = ReadyGraph FAQ =
 
 = GENERAL QUESTIONS: =
@@ -268,6 +304,12 @@ After installing this plug-in, you can activate the ReadyGraph features by conne
 **How do I uninstall ReadyGraph?**
 
 You can deactivate the ReadyGraph features by navigating to the upper-right corner of the “ReadyGraph App” page, clicking the drop-down menu with your email address, and disconnecting your ReadyGraph account.
+
+**How do I reinstall ReadyGraph after I had deleted?**
+
+1. Get the latest plugin update/reinstall the plugin.
+2. Deactivate the plugin
+3. Activate the plugin
 
 **Can I delay the sign-up pop-up?**
 
@@ -351,14 +393,14 @@ If you have questions or concerns, contact us anytime at [info@readygraph.com](m
 
 == Screenshots ==
 
-1. Admin Menu. http://www.gopiplus.com/work/2010/09/25/email-newsletter/
-2. Compose Mail. http://www.gopiplus.com/work/2010/09/25/email-newsletter/
-3. Compose Mail. http://www.gopiplus.com/work/2010/09/25/email-newsletter/
-4. Send Mail to Subscribed Users. http://www.gopiplus.com/work/2010/09/25/email-newsletter/
-5. Send Mail to a Registered User. http://www.gopiplus.com/work/2010/09/25/email-newsletter/
-6. Send Mail to Commenters. http://www.gopiplus.com/work/2010/09/25/email-newsletter/
+1. Admin Menu. http://plugins.readygraph.com/email-newsletter/screenshots/
+2. Compose Mail. http://plugins.readygraph.com/email-newsletter/screenshots/
+3. Compose Mail. http://plugins.readygraph.com/email-newsletter/screenshots/
+4. Send Mail to Subscribed Users. http://plugins.readygraph.com/email-newsletter/screenshots/
+5. Send Mail to a Registered User. http://plugins.readygraph.com/email-newsletter/screenshots/
+6. Send Mail to Commenters. http://plugins.readygraph.com/email-newsletter/screenshots/
 7. Export Users to CSV. http://www.gopiplus.com/work/2010/09/25/email-newsletter/
-8. Import Mails. http://www.gopiplus.com/work/2010/09/25/email-newsletter/
+8. Import Mails. http://plugins.readygraph.com/email-newsletter/screenshots/
 
 == Changelog ==
 
@@ -509,6 +551,96 @@ Uninstall Readygraph Option
 Daily digest
 Real time post update to all the subscribers
 
+= 20.6 =
+
+GUI change
+Tutorial
+FAQ included
+
+= 20.8 =
+
+ReadyGraph Premium Features
+UI Tweaks
+
+= 20.8.1 =
+
+link fix
+
+= 20.8.2 =
+
+Disconnect/Delete Readygraph Link fix
+Deactivation confirmation message
+
+= 20.9 =
+
+Sync subscribers with readygraph if you are connected
+
+= 20.10 =
+
+ReadyGraph Bug Fixes
+ReadyGraph Banner on plugin pages
+
+= 20.11 =
+
+Readygraph premium plan selections
+Site profile for readygraph promotions
+
+= 20.11.1 =
+
+Readygraph premium plan default change
+Bug Fixes
+
+= 20.11.2 =
+
+Get larger blog post for daily digest
+Code cleanup
+
+= 20.12 =
+
+Added ReadyGraph Monetization Features
+
+= 20.13 =
+
+Bug Fix for readygraph and compatibility with other plugins
+New code structure for readygraph
+User can delete the readygraph to completely remove it.
+Subsequent upgrades wont load readygraph except a plugin is disabled and re-enabled.
+
+= 20.13.1 =
+
+Bug Fix for readygraph load
+
+= 20.13.2 =
+
+Bug Fix for readygraph
+
+= 20.13.3 =
+
+Bug Fix for readygraph
+
+= 20.13.4 =
+
+Bug Fix for readygraph
+
+= 20.13.5 =
+
+Make monetization absolutely optional and opt-in
+Turn on monetization only after they register for ReadyGraph
+
+= 20.13.6 =
+
+Add versioning to the plugin
+bug fix
+RG banner removal - x buttons
+
+= 20.13.7 =
+
+security bug fix
+
+= 20.15 =
+
+Remove readygraph from email-newsletter
+
 == Upgrade Notice ==
 
 = 1.0 =
@@ -645,3 +777,96 @@ Updated signup form information
 Uninstall Readygraph Option
 Daily digest
 Real time post update to all the subscribers
+
+= 20.6 =
+
+GUI change
+Tutorial
+FAQ included
+
+= 20.7 =
+
+Bug Fix - Disable Popup
+
+= 20.8 =
+
+ReadyGraph Premium Features
+UI Tweaks
+
+= 20.8.1 =
+
+link fix
+
+= 20.8.2 =
+
+Disconnect/Delete Readygraph Link fix
+Deactivation confirmation message
+
+= 20.9 =
+
+Sync subscribers with readygraph if you are connected
+
+= 20.10 =
+
+ReadyGraph Bug Fixes
+ReadyGraph Banner on plugin pages
+
+= 20.11 =
+
+Readygraph premium plan selections
+Site profile for readygraph promotions
+
+= 20.11.1 =
+
+Readygraph premium plan default change
+Bug Fixes
+
+= 20.11.2 =
+
+Get larger blog post for daily digest
+Code cleanup
+
+= 20.12 =
+
+Added ReadyGraph Monetization Features
+
+= 20.13 =
+
+Bug Fix for readygraph and compatibility with other plugins
+New code structure for readygraph
+User can delete the readygraph to completely remove it.
+Subsequent upgrades wont load readygraph except a plugin is disabled and re-enabled.
+
+= 20.13.1 =
+
+Bug Fix for readygraph load
+
+= 20.13.2 =
+
+Bug Fix for readygraph
+
+= 20.13.3 =
+
+Bug Fix for readygraph
+
+= 20.13.4 =
+
+Bug Fix for readygraph
+
+= 20.13.5 =
+
+Make monetization absolutely optional and opt-in
+Turn on monetization only after they register for ReadyGraph
+
+= 20.14 =
+
+security bug fix
+disable double-opt-in and unsubscribe
+
+= 20.14.1 =
+
+Bug fix - WP 4.3
+
+= 20.15 =
+
+Remove readygraph from email-newsletter

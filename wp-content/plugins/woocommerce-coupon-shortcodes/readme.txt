@@ -3,8 +3,8 @@ Contributors: itthinx
 Donate link: http://www.itthinx.com/plugins/woocommerce-coupon-shortcodes
 Tags: conditional, coupon, coupons, discount, discounts, display, info, information, marketing, promotion, shortcode, shortcodes, subscription, subscriptions, woocommerce
 Requires at least: 4.0
-Tested up to: 4.3
-Stable tag: 1.2.6
+Tested up to: 4.4
+Stable tag: 1.3.0
 License: GPLv3
 
 Show coupon discount info using shortcodes. Allows to render coupon information and content conditionally, based on the validity of coupons.
@@ -26,6 +26,7 @@ It also works with [WooCommerce Coupons Countdown](http://www.itthinx.com/plugin
 It provides the following conditional shortcodes that allow to enclose content which is shown if coupons are applied, valid or not valid.
 
 `[coupon_is_applied]`
+`[coupon_is_not_applied]`
 `[coupon_is_valid]`
 `[coupon_is_not_valid]`
 
@@ -92,6 +93,10 @@ See the plugin page [WooCommerce Coupon Shortcodes](http://www.itthinx.com/plugi
 
 == Changelog ==
 
+= 1.3.0 =
+* Tested with WordPress 4.4 and WooCommerce 2.4.10.
+* Added the `[coupon_is_not_applied]` shortcode.
+
 = 1.2.6 =
 * Tested with WordPress 4.3 and WooCommerce 2.4.6.
 * Updated the documentation links.
@@ -127,5 +132,5 @@ See the plugin page [WooCommerce Coupon Shortcodes](http://www.itthinx.com/plugi
 
 == Upgrade Notice ==
 
-= 1.2.6 =
-* WordPress 4.3 and WooCommerce 2.4.x compatibility checked and updated documentation links. 
+= 1.3.0 =
+* WordPress 4.4 compatibility checked and added the `[coupon_is_applied]` shortcode.

@@ -30,6 +30,7 @@ class WooCommerce_Coupon_Shortcodes_Views {
 	public static function init() {
 		add_shortcode( 'coupon_enumerate', array( __CLASS__, 'coupon_enumerate' ) );
 		add_shortcode( 'coupon_is_applied', array( __CLASS__, 'coupon_is_applied' ) );
+		add_shortcode( 'coupon_is_not_applied', array( __CLASS__, 'coupon_is_not_applied' ) );
 		add_shortcode( 'coupon_is_valid', array( __CLASS__, 'coupon_is_valid' ) );
 		add_shortcode( 'coupon_is_not_valid', array( __CLASS__, 'coupon_is_not_valid' ) );
 		add_shortcode( 'coupon_code', array( __CLASS__, 'coupon_code' ) );
@@ -87,6 +88,64 @@ class WooCommerce_Coupon_Shortcodes_Views {
 			$is_applied = !empty( $applied_coupon_codes );
 		}
 		return $is_applied;
+	}
+
+	/**
+	 * Evaluate coupons not applied based on op and coupon codes.
+	 *
+	 * @param array $atts
+	 * @return boolean
+	 */
+	private static function _is_not_applied( $atts ) {
+
+		global $woocommerce_coupon_shortcodes_codes;
+
+		$options = shortcode_atts(
+			array(
+				'coupon' => null,
+				'code'   => null,
+				'op'     => 'and'
+			),
+			$atts
+		);
+
+		// remove * if present
+		if ( isset( $options['code'] ) ) {
+			$codes = array_map( 'trim', explode( ',', $options['code'] ) );
+			if ( in_array( '*', $codes ) ) {
+				$codes = array_diff( $codes, array( '*' ) );
+			}
+			$options['code'] = implode( ',', $codes );
+		}
+
+		$code = null;
+		if ( !empty( $options['code'] ) ) {
+			$code = $options['code'];
+		} else if ( !empty( $options['coupon'] ) ) {
+			$code = $options['coupon'];
+		}
+		if ( $code === null ) {
+			return '';
+		}
+
+		$applied_coupon_codes = self::_get_applied_codes();
+
+		$codes = array_map( 'trim', explode( ',', $code ) );
+
+			$woocommerce_coupon_shortcodes_codes = $codes;
+			$not_applied = array();
+			foreach ( $codes as $code ) {
+				$not_applied[] = !in_array( $code, $applied_coupon_codes );
+			}
+			switch( strtolower( $options['op'] ) ) {
+				case 'and' :
+					$is_not_applied = self::conj( $not_applied );
+					break;
+				default :
+					$is_not_applied = self::disj( $not_applied );
+			}
+
+		return $is_not_applied;
 	}
 
 	/**
@@ -418,6 +477,32 @@ class WooCommerce_Coupon_Shortcodes_Views {
 				remove_shortcode( 'coupon_is_applied' );
 				$content = do_shortcode( $content );
 				add_shortcode( 'coupon_is_applied', array( __CLASS__, 'coupon_is_applied' ) );
+				$output = $content;
+			}
+		}
+		return $output;
+	}
+
+	/**
+	 * Conditionally render content based on coupons which are not applied.
+	 *
+	 * Takes a comma-separated list of coupon codes as coupon or code attribute.
+	 *
+	 * The op attribute determines whether all codes must not be applied (and) or
+	 * any code can not be applied (or) for the content to be rendered.
+	 *
+	 * @param array $atts attributes
+	 * @param string $content content to render
+	 * @return string
+	 */
+	public static function coupon_is_not_applied( $atts, $content = null ) {
+		$output = '';
+		if ( !empty( $content ) ) {
+			$not_applied = self::_is_not_applied( $atts );
+			if ( $not_applied ) {
+				remove_shortcode( 'coupon_is_not_applied' );
+				$content = do_shortcode( $content );
+				add_shortcode( 'coupon_is_not_applied', array( __CLASS__, 'coupon_is_not_applied' ) );
 				$output = $content;
 			}
 		}

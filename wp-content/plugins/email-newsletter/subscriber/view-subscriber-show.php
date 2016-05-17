@@ -1,10 +1,10 @@
 <?php if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You are not allowed to call this page directly.'); } ?>
 <?php
 // Form submitted, check the data
-$search = isset($_GET['search']) ? $_GET['search'] : 'A,B,C';
+$search = isset($_GET['search']) ? htmlspecialchars($_GET['search'], ENT_QUOTES, 'UTF-8') : 'A,B,C';
 if (isset($_POST['frm_eemail_display']) && $_POST['frm_eemail_display'] == 'yes')
 {
-	$did = isset($_GET['did']) ? $_GET['did'] : '0';
+	$did = isset($_GET['did']) ? mysql_real_escape_string($_GET['did']) : '0';
 	
 	$eemail_success = '';
 	$eemail_success_msg = FALSE;
@@ -48,7 +48,7 @@ if (isset($_POST['frm_eemail_display']) && $_POST['frm_eemail_display'] == 'yes'
 			
 			if (isset($_GET['ac']) && $_GET['ac'] == 'resend' && isset($_GET['did']) && $_GET['did'] != '')
 			{
-				$did = isset($_GET['did']) ? $_GET['did'] : '0';
+				$did = isset($_GET['did']) ? mysql_real_escape_string($_GET['did']) : '0';
 				ViewSubscriberResendEmail($did);
 				$eemail_success_msg = TRUE;
 				$eemail_success  = __('Confirmation email resent successfully.', 'email-newsletter');

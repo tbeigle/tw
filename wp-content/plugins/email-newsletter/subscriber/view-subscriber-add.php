@@ -33,7 +33,7 @@ if (isset($_POST['eemail_form_submit']) && $_POST['eemail_form_submit'] == 'yes'
 		$CurrentDate = date('Y-m-d G:i:s'); 
 		for ($i = 0; $i < count($ArrayEmail); $i++)
 		{
-			$cSql = "select * from ".WP_eemail_TABLE_SUB." where eemail_email_sub='" . trim($ArrayEmail[$i]). "'";
+			$cSql = "select * from ".WP_eemail_TABLE_SUB." where eemail_email_sub='" . trim(sanitize_email($ArrayEmail[$i])). "'";
 			$data = $wpdb->get_results($cSql);
 			if ( empty($data) ) 
 			{
@@ -41,7 +41,7 @@ if (isset($_POST['eemail_form_submit']) && $_POST['eemail_form_submit'] == 'yes'
 					"INSERT INTO `".WP_eemail_TABLE_SUB."`
 					(`eemail_name_sub`,`eemail_email_sub`, `eemail_status_sub`, `eemail_date_sub`)
 					VALUES(%s, %s, %s, %s)",
-					array('No Name', $ArrayEmail[$i], $form['importemails_status'], $CurrentDate)
+					array('No Name', sanitize_email($ArrayEmail[$i]), $form['importemails_status'], $CurrentDate)
 				);
 				$wpdb->query($sql);
 				$Inserted = $Inserted + 1;

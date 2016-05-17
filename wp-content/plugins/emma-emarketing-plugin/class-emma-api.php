@@ -23,6 +23,8 @@ class Emma_API {
 	
 	private $_privateAPIkey;
 	
+	public $_signup_ID;
+	
 	private $_headers;
 
 	// base URL for API requests w/ trailing slash
@@ -30,12 +32,13 @@ class Emma_API {
 	const REQUEST_URL_BASE = 'https://api.e2ma.net/';
 
 	// THE CONSTRUCTOR
-	public function __construct( $_account_id, $_publicAPIkey, $_privateAPIkey ) {
+	public function __construct( $_account_id, $_publicAPIkey, $_privateAPIkey, $_signup_ID = '' ) {
 
 		// on construction, pass in public and private API keys, assign them to class properties, 
 		$this->_account_id = $_account_id;
 		$this->_publicAPIkey = $_publicAPIkey;
 		$this->_privateAPIkey = $_privateAPIkey;
+		$this->_signup_ID = $_signup_ID;
 		
 		// All API calls must include an HTTP Basic authentication header containing the public & private API keys for your account.
 		// build HTTP Basic Auth headers
@@ -63,7 +66,7 @@ class Emma_API {
 	public function list_groups() {
 	 
 		// build request url for list_groups()
-		$request_url = self::REQUEST_URL_BASE . $this->_account_id .'/groups';
+		$request_url = self::REQUEST_URL_BASE . $this->_account_id .'/groups?group_types=g';
 		
 		$request_args = array (
 			'method' => 'GET',
@@ -77,7 +80,10 @@ class Emma_API {
 		);
 		
 		// make the call, tyty WP HTTP API
-		$response = wp_remote_request( $request_url, $request_args );
+		$response = $emma_response = wp_remote_request( $request_url, $request_args );
+		if (is_array($response)) {
+			$decoded_response = json_decode($response['body']);
+		}
 
         #todo - @ this point, the emma api class should just return the object, let the class calling it handle the return. ( is_wp_error vs emma response object )
 
@@ -90,7 +96,7 @@ class Emma_API {
 
 			$response = $status_txt;
 
-		} else {
+		} elseif ( !empty( $decoded_response ) ){
 		
 			// decode the JSON from the response body
             // it'll be a stdClass Object of available groups
@@ -106,11 +112,63 @@ class Emma_API {
             }
 
 		
+		} else {
+			$response = 'No groups found. Check your API Keys, and your Account ID.';
 		} // end if / else
 		
 		return $response;
 		
 	} // end list_groups
+	
+	
+	
+	/**
+	* Create one or more new member groups.
+	* @param array $params		Array of options
+	* @access public
+	* @return 	An array of the new group ids and group names.
+	*/
+	function groupsAdd($data) {
+		
+		// encode the data, get it ready for transport.
+		$data = json_encode( $data );
+		
+		$request_url = self::REQUEST_URL_BASE . $this->_account_id .'/groups';
+		
+		$request_args = array (
+			'method' => 'POST',
+			'timeout' => 11,
+			'blocking' => true,
+			'headers' => $this->_headers,
+			'body' => $data,
+			'compress' => false,
+			'decompress' => true,
+			'sslverify' => false
+
+		);
+		
+		// make the call, tyty WP HTTP API
+		$response = wp_remote_request( $request_url, $request_args );
+		
+		// check to see if it throws a wordpress error
+		if( is_wp_error( $response ) ) {
+
+			$status_txt =  '<div class="e2ma-error">Something misfired. Please check your API keys and try again,</div>';
+			// get the wordpress error
+			$status_txt .= '<pre>' . $response->get_error_message() . '</pre>';
+
+			$response = $status_txt;
+
+		} else {
+		
+			// decode the JSON from the response body
+			$response = json_decode( $response['body'] );
+		
+		} // end if / else
+		
+		return $response;
+	}
+	
 
 	
 	/**
@@ -127,7 +185,33 @@ class Emma_API {
      * @param $data
      * @return array|mixed|string|\WP_Error
      */
-	public function import_single_member( $data ) {
+     public function import_single_member( $data ) {
+		
+		// encode the data, get it ready for transport.
+		$data = json_encode( $data );
+
+		$request_url = self::REQUEST_URL_BASE . $this->_account_id .'/members/signup';
+		
+		$request_args = array (
+			'method' => 'POST',
+			'timeout' => 11,
+			'blocking' => true,
+			'headers' => $this->_headers,
+			'body' => $data,
+			'compress' => false,
+			'decompress' => true,
+			'sslverify' => false
+
+		);
+		
+		// make the call, tyty WP HTTP API
+		$response = wp_remote_request( $request_url, $request_args );
+		
+		return $response;
+	
+	} // end import_single_member()
+	/*
+public function import_single_member( $data ) {
 		
 		// encode the data, get it ready for transport.
 		$data = json_encode( $data );
@@ -152,6 +236,8 @@ class Emma_API {
 		return $response;
 	
 	} // end import_single_member()
+*/
+	
 	
 	/**
      * get_member_detail

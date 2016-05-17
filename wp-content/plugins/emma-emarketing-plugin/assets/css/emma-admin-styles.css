@@ -1,0 +1,115 @@
+/* Adjust the spacing of settings pages */
+.settings_page_emma_plugin_options #wpbody-content .wrap form .form-table {
+	margin-bottom:4em
+}
+
+.settings_page_emma_plugin_options #wpbody-content .wrap td {
+	position: relative;
+}
+
+.emma-description-text {
+    position: absolute;
+    left: 380px;
+    top: 15px;
+    width: 200px;
+    font-size: .8em;
+    font-style: italic;
+}
+
+.emma-description-text.alert, .add-group-response {
+	font-size: .9em;
+	color: red;
+}
+
+.emma-description-text.alert {
+	left:220px;
+	width:300px;
+}
+
+.add-group-response {
+	font-style: italic;
+	font-weight: bold;
+	display: block;
+	margin-top: 8px;
+}
+
+.wp-core-ui .emma-submit .button-primary {
+	margin-right: 1em;
+}
+
+input[value="emma_account_information"] ~ table.form-table:last-of-type tr:first-child {
+    display:none;
+}
+
+.settings_page_emma_plugin_options #wpbody-content .wrap form input[value="emma_account_information"] ~ table.form-table:last-of-type {
+	margin-bottom: 0;
+}
+
+
+.emma-custom-content-outer {
+    position:relative;
+}
+
+.emma-custom-fields {
+	display: inline-block;
+}
+
+.emma-custom-content-cta {
+    position: absolute;
+    background-color: rgba(255,255,255,.8);
+    box-shadow: 0 0 20px 1px rgba(0,0,0,.1);
+    padding: 2em;
+    text-align:center;
+    top:0;
+    display:none;
+}
+
+.emma-custom-content-cta.animated {
+	background-color: #fff;
+}
+
+.animated { 
+    -webkit-animation-duration: 600ms; 
+    animation-duration: 600ms; 
+    -webkit-animation-fill-mode: both; 
+    animation-fill-mode: both; 
+} 
+
+@-webkit-keyframes flipInX { 
+    0% { 
+        -webkit-transform: perspective(400px) rotateX(90deg); 
+        opacity: 0; 
+    } 
+    40% { 
+        -webkit-transform: perspective(400px) rotateX(-10deg); 
+    } 
+    70% { 
+        -webkit-transform: perspective(400px) rotateX(10deg); 
+    } 
+    100% { 
+        -webkit-transform: perspective(400px) rotateX(0deg); 
+        opacity: 1; 
+    } 
+} 
+@keyframes flipInX { 
+    0% { 
+        transform: perspective(400px) rotateX(90deg); 
+        opacity: 0; 
+    } 
+    40% { 
+        transform: perspective(400px) rotateX(-10deg); 
+    } 
+    70% { 
+        transform: perspective(400px) rotateX(10deg); 
+    } 
+    100% { 
+        transform: perspective(400px) rotateX(0deg); 
+        opacity: 1; 
+    } 
+} 
+.flipInX { 
+    -webkit-backface-visibility: visible !important; 
+    -webkit-animation-name: flipInX; 
+    backface-visibility: visible !important; 
+    animation-name: flipInX; 
+}

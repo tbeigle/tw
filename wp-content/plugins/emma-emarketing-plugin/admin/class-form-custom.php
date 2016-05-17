@@ -28,11 +28,13 @@ class Form_Custom {
 
     public static function get_settings_defaults() {
         $defaults = array(
+        	'form_layout_select' => 'vertical',
             'border_width' => '1',
             'border_color' => '000',
             'border_type' => 'solid',
             'txt_color' => '000',
             'bg_color' => 'FFF',
+            'submit_btn_width' => '',
             'submit_txt_color' => 'FFF',
             'submit_bg_color' => '000',
             'submit_border_width' => '1',
@@ -53,9 +55,11 @@ class Form_Custom {
         register_setting( self::$key, self::$key, array( &$this, 'sanitize_form_custom_settings') );
 
         // add_settings_section( $id, $title, $callback, $page );
-
+		
+		add_settings_section( 'section_form_layout_select', 'Form Layout', array( &$this, 'section_form_layout_select_desc' ), self::$key );
+        add_settings_field( 'form_layout_select', 'Form Layout', array( &$this, 'field_form_layout_select' ), self::$key, 'section_form_layout_select' );
+		
         add_settings_section( 'section_form_fields_custom', 'Form Fields customization', array( &$this, 'section_form_fields_custom_desc' ), self::$key );
-
         add_settings_field( 'border_width', 'Border Width', array( &$this, 'field_border_width' ), self::$key, 'section_form_fields_custom' );
         add_settings_field( 'border_color', 'Border Color', array( &$this, 'field_border_color' ), self::$key, 'section_form_fields_custom' );
         add_settings_field( 'border_type', 'Border Type', array( &$this, 'field_border_type' ), self::$key, 'section_form_fields_custom' );
@@ -63,24 +67,38 @@ class Form_Custom {
         add_settings_field( 'bg_color', 'Background Color', array( &$this, 'field_bg_color' ), self::$key, 'section_form_fields_custom' );
 
         add_settings_section( 'section_submit_custom', 'Submit button customization', array( &$this, 'section_submit_desc' ), self::$key );
-
+        add_settings_field( 'submit_btn_width', 'Submit Button Width', array( &$this, 'field_submit_btn_width' ), self::$key, 'section_submit_custom' );
         add_settings_field( 'submit_txt_color', 'Submit Button Text Color', array( &$this, 'field_submit_txt_color' ), self::$key, 'section_submit_custom' );
         add_settings_field( 'submit_bg_color', 'Submit Button Background Color', array( &$this, 'field_submit_bg_color' ), self::$key, 'section_submit_custom' );
-
         add_settings_field( 'submit_border_width', 'Submit Button Border Width', array( &$this, 'field_submit_border_width' ), self::$key, 'section_submit_custom' );
         add_settings_field( 'submit_border_color', 'Submit Button Border Color', array( &$this, 'field_submit_border_color' ), self::$key, 'section_submit_custom' );
         add_settings_field( 'submit_border_type', 'Submit Button Border Type', array( &$this, 'field_submit_border_type' ), self::$key, 'section_submit_custom' );
 
         add_settings_section( 'section_submit_hover_custom', 'Submit button hover state customization', array( &$this, 'section_submit_hover_desc' ), self::$key );
-
         add_settings_field( 'submit_hover_txt_color', 'Submit Button Hover Text Color', array( &$this, 'field_submit_hover_txt_color' ), self::$key, 'section_submit_hover_custom' );
         add_settings_field( 'submit_hover_bg_color', 'Submit Button Hover Background Color', array( &$this, 'field_submit_hover_bg_color' ), self::$key, 'section_submit_hover_custom' );
-
         add_settings_field( 'submit_hover_border_width', 'Submit Button Hover Border Width', array( &$this, 'field_submit_hover_border_width' ), self::$key, 'section_submit_hover_custom' );
         add_settings_field( 'submit_hover_border_color', 'Submit Button Hover Border Color', array( &$this, 'field_submit_hover_border_color' ), self::$key, 'section_submit_hover_custom' );
         add_settings_field( 'submit_hover_border_type', 'Submit Button Hover Border Type', array( &$this, 'field_submit_hover_border_type' ), self::$key, 'section_submit_hover_custom' );
     }
 
+	function section_form_layout_select_desc() { }
+	
+	function field_form_layout_select() { ?>
+        <label for="form_layout_select_vertical">Vertical</label>
+        <input id="form_layout_select_vertical"
+           type="radio"
+           name="<?php echo self::$key; ?>[form_layout_select]"
+           value="vertical" <?php checked( 'vertical', ( self::$settings['form_layout_select'] ) ); ?>
+        />
+        <label for="form_layout_select_horizontal">Horizontal</label>
+        <input id="form_layout_select_horizontal"
+           type="radio"
+           name="<?php echo self::$key; ?>[form_layout_select]"
+           value="horizontal" <?php checked( 'horizontal', ( self::$settings['form_layout_select'] ) ); ?>
+        />
+    <?php }
+	
     function section_form_fields_custom_desc() {  }
 
     function field_border_width() { ?>
@@ -130,7 +148,16 @@ class Form_Custom {
     <?php }
 
     function section_submit_desc() {  }
-
+	
+	function field_submit_btn_width() { ?>
+		<input  id="emma_submit_btn_width"
+			type="text"
+			size="6"
+			name="<?php echo self::$key; ?>[submit_btn_width]"
+			value="<?php echo esc_attr( self::$settings['submit_btn_width'] ); ?>"
+		/> Use '<strong>px</strong>' or '<strong>%</strong>' after your width
+	<?php }
+	
     function field_submit_txt_color() { ?>
         # <input id="emma_submit_txt_color"
              type="text"
@@ -339,7 +366,10 @@ class Form_Custom {
                     'error'
                 );
             }
-
+			
+			$valid_input['form_layout_select'] = $input['form_layout_select'];
+			$valid_input['submit_btn_width'] = $input['submit_btn_width'];
+			
             // validate pixel values,
             $valid_input['border_width'] = (is_numeric($input['border_width']) ? $input['border_width'] : $valid_input['border_width']);
             $valid_input['submit_border_width'] = (is_numeric($input['submit_border_width']) ? $input['submit_border_width'] : $valid_input['submit_border_width']);

@@ -23,7 +23,7 @@ $eemail_errors = array();
 $eemail_success = '';
 $eemail_error_found = FALSE;
 
-$search = isset($_GET['search']) ? $_GET['search'] : 'A,B,C';
+$search = isset($_GET['search']) ? htmlspecialchars($_GET['search'], ENT_QUOTES, 'UTF-8') : 'A,B,C';
 if (isset($_POST['eemail_sendmail_contactform']) && $_POST['eemail_sendmail_contactform'] == 'yes')
 {
 	//	Just security thingy that wordpress offers us

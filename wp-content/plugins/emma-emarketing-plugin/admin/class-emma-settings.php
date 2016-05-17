@@ -32,11 +32,13 @@ class Emma_Settings {
         $this->_plugin_settings_tabs[ Account_Information::$key ]   = 'Account Information';
         $this->_plugin_settings_tabs[ Form_Setup::$key ]            = 'Form Setup';
         $this->_plugin_settings_tabs[ Form_Custom::$key ]           = 'Form Customization';
+        $this->_plugin_settings_tabs[ Advanced_Settings::$key ]   	= 'Advanced Settings';
         $this->_plugin_settings_tabs[ Help::$key ]                  = 'Help';
 
         $account_information = new Account_Information();
         $form_setup = new Form_Setup();
         $form_custom = new Form_Custom();
+        $advanced_settings = new Advanced_Settings();
         $help = new Help();
 
     }
@@ -76,7 +78,7 @@ class Emma_Settings {
       */
     function add_admin_menus() {
         // add_options_page( $page_title, $menu_title, $capability, $menu_slug, $callback );
-        add_options_page( 'Emma Emarketing', 'Emma Emarketing', 'manage_options', self::$_plugin_options_key, array( &$this, 'plugin_options_page' ) );
+        add_options_page( 'Emma for WordPress', 'Emma for WordPress', 'manage_options', self::$_plugin_options_key, array( &$this, 'plugin_options_page' ) );
 
         // enqueue stylesheet for form preview only on our plugin settings page, not entire admin area.
         // Using registered $menu_slug from add_options_page handle to hook stylesheet loading
@@ -103,7 +105,7 @@ class Emma_Settings {
                 do_settings_sections( $tab );
                 // don't do the submit button on the help tab...
                 if ( $tab !== 'emma_help' ) {
-                    echo '<p class="submit">';
+                    echo '<p class="submit emma-submit">';
                     submit_button( 'Save', 'primary', $tab . '[submit]', false, array( 'id' => 'submit' ) );
                     submit_button( 'Reset', 'primary', $tab . '[reset]', false, array( 'id' => 'reset' ) );
                     echo '</p>';
@@ -115,7 +117,7 @@ class Emma_Settings {
                 <h3>DISPLAYING THE FORM ON YOUR SITE</h3>
                 <p>
                     To insert the form as a <strong>widget</strong> on your sidebar, go to Appearance -> Widgets and then move
-                    the “Emma Emarketing Subscription Form” to the widget area where you want the form to appear.
+                    the “Emma for Wordpress Subscription Form” to the widget area where you want the form to appear.
                 </p>
                 <p>
                     To insert the form as a <strong>shortcode</strong> within your site, insert [emma_form] within your text editor
@@ -136,9 +138,8 @@ class Emma_Settings {
     function plugin_options_tabs() {
         $current_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : Account_Information::$key;
         screen_icon();
-        echo '<img style="margin: 7px 8px 0 0; float: left" src="' . EMMA_EMARKETING_ASSETS . '/images/e2ma_logo_35x33.png"/>';
-        echo '<h2 class="nav-tab-wrapper">';
-        echo '<span style="padding-right:10px">Emma Emarketing</span>';
+        echo '<img class="emma-settings-logo" style="margin:3px 30px 0 0; float: left; width:170px;height:auto;" src="' . EMMA_EMARKETING_ASSETS . '/images/Emma_Logo_Horizontal.png"/>';
+        echo '<h2 class="nav-tab-wrapper" style="padding-top:40px">';
         foreach ( $this->_plugin_settings_tabs as $tab_key => $tab_caption ) {
             $active = $current_tab == $tab_key ? 'nav-tab-active' : '';
             echo '<a class="nav-tab ' . $active . '" href="?page=' . self::$_plugin_options_key . '&tab=' . $tab_key . '">' . $tab_caption . '</a>';
@@ -146,7 +147,7 @@ class Emma_Settings {
         echo '</h2>';
         // a little output buffering to keep the settings errors from jumping to the top of the page.
         ob_start();
-        settings_errors();
+        //settings_errors();
         $errors = ob_get_contents();
         ob_end_clean();
         echo $errors;

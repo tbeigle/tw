@@ -1,8 +1,8 @@
 <?php if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You are not allowed to call this page directly.'); } ?>
 <div class="wrap">
 <?php
-$did = isset($_GET['did']) ? $_GET['did'] : '0';
-$search = isset($_GET['search']) ? $_GET['search'] : 'A,B,C';
+$did = isset($_GET['did']) ? mysql_real_escape_string($_GET['did']) : '0';
+$search = isset($_GET['search']) ? htmlspecialchars($_GET['search'], ENT_QUOTES, 'UTF-8') : 'A,B,C';
 
 // First check if ID exist with requested ID
 $sSql = $wpdb->prepare(

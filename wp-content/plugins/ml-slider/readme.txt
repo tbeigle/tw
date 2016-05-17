@@ -3,8 +3,8 @@ Contributors: matchalabs
 Tags: wordpress slideshow,seo,slideshow,slider,widget,wordpress slider,image slider,flexslider,flex slider,nivoslider,nivo slider,responsive,responsive slides,coinslider,coin slider,slideshow,carousel,responsive slider,vertical slides
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CQ84KC4X8YKW8
 Requires at least: 3.5
-Tested up to: 3.9
-Stable tag: 3.0
+Tested up to: 4.5
+Stable tag: 3.3.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,7 +47,7 @@ Upgrade to [Meta Slider Pro](http://www.metaslider.com/upgrade) to add support f
 
 * YouTube & Vimeo slides
 * HTML slides
-* Layer slides with CSS3 animations
+* Layer slides with CSS3 animations & HTML5 Video backgrounds
 * Dynamic Post Feed/Featured Image Slides (content slider)
 * Custom Themes
 * Thumbnail Navigation
@@ -59,7 +59,7 @@ Upgrade to [Meta Slider Pro](http://www.metaslider.com/upgrade) to add support f
 * Spanish (thanks to eltipografico)
 * German (thanks to Rewolve44)
 * Polish (thanks to gordon34)
-* Chinese (thanks to 断青丝)
+* Chinese (thanks to 断青丝 and mamsds)
 * Taiwanese (thanks to 断青丝)
 * Norwegian (thanks to Dreamsoft)
 * Romanian (thanks to Octav Madalin Stanoaia)
@@ -68,6 +68,9 @@ Upgrade to [Meta Slider Pro](http://www.metaslider.com/upgrade) to add support f
 * Hungarian (thanks to szripio)
 * Croatian
 * Hebrew (thanks to Ahrale)
+* Portuguese (thanks to mauro.mascarenhas)
+* Russian (thanks to asidoryak)
+* Ukrainian (thanks to mister_r)
 
 Read more and thanks to:
 
@@ -143,6 +146,82 @@ See www.metaslider.com/documentation/image-cropping/
 6. Administration panel - selecting slides
 
 == Changelog ==
+
+= 3.3.7 [06/05/15] =
+
+* Fix: "Maximum level reached" error when inserting the shortcode for a slideshow into it's own caption. Thanks to Zhouyuan @ Fortinet for reporting this.
+
+= 3.3.6 [14/12/15] =
+
+* Fix: Save Spinner
+
+= 3.3.5 [22/09/15] =
+
+* Prepare plugin for WordPress.org translation project (rename textdomain from 'metaslider' to 'ml-slider')
+* Small styling fix
+
+= 3.3.4.1 [29/07/15] =
+
+* Fix Roots theme CSS conflict
+
+= 3.3.4 [16/07/15] =
+
+* Add HTML5 validation by applying a property="stylesheet" attribute to meta slider <link> CSS tags
+* Remove unused "Resource Manager" code
+* Chinese language pack updated (thanks to mamsds!)
+
+= 3.3.3 [11/06/15] =
+
+* Ukrainian language pack added (thanks to mister_r!)
+* Fix: Meta Slider hoplink incorrectly adding parameters to filtered url
+* Add "metaslider_attachment_url" filter
+
+= 3.3.2 [16/04/15] =
+
+* Fix: FPD Security issue. Thanks to Ole Aass (@oleaass) for finding and disclosing this issue.
+
+More information:
+
+The fix will prevent some servers (configured with 'display_errors' set to 'on') from disclosing the full path to certain files within Meta Slider.
+
+http://codex.wordpress.org/Security_FAQ#Why_are_there_path_disclosures_when_directly_loading_certain_files.3F
+
+= 3.3.1 [23/03/15] =
+
+* Fix: Remove 'create video playlist' option from Media Library (on Meta Slider page only)
+* Fix: Support for Enhanced Media Library plugin
+* Fix: Return public slide when DOING_AJAX
+* Improvement: Use admin actions to save slideshow settings
+
+= 3.3 [17/02/15] =
+
+* New feature: Smart pad option (for Image Slides & Flex Slider only)
+* Portuguese language files added (thanks to mauro.mascarenhas)
+* Russian language files updated (thanks to asidoryak)
+
+= 3.2.1 [16/12/14] =
+
+* Change: Change slide image functionality backed out
+* Fix: Apply FireFox mobile fix to Flex Slider (github #1110)
+
+= 3.2 [26/11/14] =
+
+* New feature: Change slide image (click top right of slide thumbnail)
+* Update: German language files (thanks to Ov3rfly!)
+
+= 3.1.1 [21/10/14] =
+
+* Fix: restrict_to shortcode parameter
+* Change: Add metaslider_flex_slider_list_item_attributes filter
+
+= 3.1 [14/10/14] =
+
+* New feature: Ajax delete slide (to stop users from losing changes when deleting a slide)
+* New feature: restrict_to shortcode parameter now accepts page IDs
+* Update: Change icon
+* Fix: Minor admin styling fix
+* Fix: Hide share buttons for pro users
+* Change: Remove upgrade nags from media library, add Go Pro page (with an option to hide the page)
 
 = 3.0.1 [19/08/14] =
 

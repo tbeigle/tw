@@ -3,6 +3,7 @@
 RewriteEngine On
 RewriteBase /
 RewriteRule ^index\.php$ - [L]
+RewriteRule ^unsubscribe/$ /wp-content/plugins/email-newsletter/unsubscribe/unsubscribe.php [QSA,L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L]
