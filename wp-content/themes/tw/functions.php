@@ -386,7 +386,7 @@ function tw_show_product_categories() {
   echo '<div class="category-tabs">';
   echo '<a href="/order-now/mains"><img src="' . $path . '/images/' . $mains_img . '" class="product-cat"></a>';
   echo '<a href="/order-now/sides"><img src="' . $path . '/images/' . $sides_img . '" class="product-cat"></a>';
-  echo '<a href="/order-now/extra"><img src="' . $path . '/images/' . $extras_img . '" class="product-cat"></a>';
+  echo '<a href="/order-now/extras"><img src="' . $path . '/images/' . $extras_img . '" class="product-cat"></a>';
   echo '</div>';
 }
 
