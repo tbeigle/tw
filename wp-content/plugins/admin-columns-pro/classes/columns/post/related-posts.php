@@ -1,5 +1,6 @@
 <?php
 
+// plugin by Barry Kooij
 class CPAC_Column_Related_Posts extends CPAC_Column {
 
 	/**
@@ -127,7 +128,7 @@ class CPAC_Column_Related_Posts extends CPAC_Column {
 		}
 
 		$pt_manager = new RP4WP_Post_Type_Manager();
-		return $pt_manager->is_post_type_installed( $this->storage_model->get_post_type() );
+		return $pt_manager->is_post_type_installed( $this->get_post_type() );
 	}
 
 	public function is_related_posts_active() {
@@ -140,7 +141,7 @@ class CPAC_Column_Related_Posts extends CPAC_Column {
 	public function get_editable_ajax_options( $searchterm ) {
 
 		$pt_manager = new RP4WP_Post_Type_Manager();
-		$post_types = $pt_manager->get_installed_post_type( $this->storage_model->get_post_type() );
+		$post_types = $pt_manager->get_installed_post_type( $this->get_post_type() );
 
 		return $this->get_editable()->get_posts_options( array( 's' => $searchterm, 'post_type' => $post_types ) );
 	}

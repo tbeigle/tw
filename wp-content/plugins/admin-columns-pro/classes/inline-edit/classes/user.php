@@ -281,7 +281,7 @@ class CACIE_Editable_Model_User extends CACIE_Editable_Model {
 						'current_revision' => 0,
 						'itemdata'         => $itemdata,
 						'editable'         => array(
-							'formattedvalue' => $this->get_formatted_value( $column->get_name(), $value )
+							'formattedvalue' => $this->get_formatted_value( $column, $value )
 						)
 					);
 				}
@@ -355,9 +355,9 @@ class CACIE_Editable_Model_User extends CACIE_Editable_Model {
 			return;
 		}
 
-		$editable = $this->get_editable( $column->properties->name );
+		$editable = $this->get_editable( $column->get_name() );
 
-		switch ( $column->properties->type ) {
+		switch ( $column->get_type() ) {
 
 			/**
 			 * Default Columns

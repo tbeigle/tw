@@ -102,7 +102,7 @@ class CACIE_Editable_Model_Post extends CACIE_Editable_Model {
 		// By default, inherit editability from parent
 		$is_editable = parent::is_editable( $column );
 
-		switch ( $column->properties->type ) {
+		switch ( $column->get_type() ) {
 			// Default columns
 			case 'author':
 			case 'date':
@@ -210,8 +210,10 @@ class CACIE_Editable_Model_Post extends CACIE_Editable_Model {
 				$options = get_post_format_strings();
 				break;
 			case 'column-status':
-				$options = get_post_statuses();
-				$options['trash'] = __( 'Trash' );
+				if ( ( $_column = $this->storage_model->get_column_by_name( $column['column-name'] ) ) && ( method_exists( $_column, 'get_statuses' ) ) ) {
+					$options = $_column->get_statuses();
+					$options['trash'] = __( 'Trash' );
+				}
 				break;
 			case 'column-taxonomy':
 				$options = $this->get_term_options( $column['taxonomy'] );
@@ -260,13 +262,10 @@ class CACIE_Editable_Model_Post extends CACIE_Editable_Model {
 	 * @return array Order status options ([slug] => [label])
 	 */
 	public function get_wc_order_status_options() {
-
 		$statuses = array();
-
 		if ( cpac_is_wc_version_gte( '2.2' ) ) {
 			$statuses = wc_get_order_statuses();
 		}
-
 		else {
 			$statuses_raw = (array) get_terms( 'shop_order_status', array( 'hide_empty' => 0, 'orderby' => 'id' ) );
 			foreach ( $statuses_raw as $status ) {
@@ -285,7 +284,6 @@ class CACIE_Editable_Model_Post extends CACIE_Editable_Model {
 	 * @return array Parent post options ([post ID] => [post title])
 	 */
 	public function get_post_parent_options() {
-
 		$options = array();
 
 		$posts_query = new WP_Query( array(
@@ -718,7 +716,7 @@ class CACIE_Editable_Model_Post extends CACIE_Editable_Model {
 					'current_revision' => 0,
 					'itemdata'         => $itemdata,
 					'editable'         => array(
-						'formattedvalue' => $this->get_formatted_value( $column->get_name(), $value )
+						'formattedvalue' => $this->get_formatted_value( $column, $value )
 					)
 				);
 			}
@@ -940,9 +938,9 @@ class CACIE_Editable_Model_Post extends CACIE_Editable_Model {
 		}
 
 		// Get editability data for the column to be saved
-		$editable = $this->get_editable( $column->properties->name );
+		$editable = $this->get_editable( $column->get_name() );
 
-		switch ( $column->properties->type ) {
+		switch ( $column->get_type() ) {
 
 			// Default
 			case 'categories':
@@ -1005,12 +1003,13 @@ class CACIE_Editable_Model_Post extends CACIE_Editable_Model {
 				}
 				break;
 			case 'column-taxonomy':
-				if ( ! empty( $column->options->taxonomy ) && taxonomy_exists( $column->options->taxonomy ) ) {
-					if ( 'post_format' == $column->options->taxonomy && ! empty( $value ) ) {
+				$taxonomy = $column->get_option( 'taxonomy' );
+				if ( $taxonomy && taxonomy_exists( $taxonomy ) ) {
+					if ( 'post_format' == $taxonomy && ! empty( $value ) ) {
 						$value = $value[0];
 					}
 
-					$this->set_post_terms( $id, $value, $column->options->taxonomy );
+					$this->set_post_terms( $id, $value, $taxonomy );
 				}
 				break;
 

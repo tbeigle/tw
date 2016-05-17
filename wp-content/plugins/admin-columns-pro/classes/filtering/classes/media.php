@@ -104,12 +104,12 @@ class CAC_Filtering_Model_Media extends CAC_Filtering_Model_Post_Object {
 
 				case 'column-taxonomy' :
 					$vars['tax_query']['relation'] = 'AND';
-					$vars['tax_query'][] = $this->get_taxonomy_query( $value, $column->options->taxonomy );
+					$vars['tax_query'][] = $this->get_taxonomy_query( $value, $column->get_option( 'taxonomy' ) );
 					break;
 
 				// Custom Fields
 				case 'column-meta' :
-					$vars['meta_query'][] = $this->get_meta_query( $column->get_field_key(), $value, $column->options->field_type );
+					$vars['meta_query'][] = $this->get_meta_query( $column->get_field_key(), $value, $column->get_option( 'field_type' ) );
 					break;
 
 				// ACF
@@ -190,9 +190,9 @@ class CAC_Filtering_Model_Media extends CAC_Filtering_Model_Post_Object {
 				break;
 
 			case 'column-taxonomy' :
-				if ( taxonomy_exists( $column->options->taxonomy ) ) {
+				if ( taxonomy_exists( $column->get_option( 'taxonomy' ) ) ) {
 					$empty_option = true;
-					$options = $this->apply_indenting_markup( $this->get_terms_by_post_type( $column->options->taxonomy, $column->get_post_type() ) );
+					$options = $this->apply_indenting_markup( $this->get_terms_by_post_type( $column->get_option( 'taxonomy' ), $column->get_post_type() ) );
 				}
 				break;
 

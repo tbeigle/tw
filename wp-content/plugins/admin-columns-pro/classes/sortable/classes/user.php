@@ -54,7 +54,7 @@ class CAC_Sortable_Model_User extends CAC_Sortable_Model {
 			'column-wc-user-order_count'
 		);
 
-		return array_merge( $column_names, (array) $this->get_default_sortables() ) ;
+		return array_merge( $column_names, (array) $this->get_default_sortables() );
 	}
 
 	/**
@@ -68,6 +68,7 @@ class CAC_Sortable_Model_User extends CAC_Sortable_Model {
 			'name',
 			'email'
 		);
+
 		return $columns;
 	}
 
@@ -128,13 +129,16 @@ class CAC_Sortable_Model_User extends CAC_Sortable_Model {
 				$sort_flag = SORT_REGULAR;
 				$prefix = $wpdb->get_blog_prefix();
 				foreach ( $this->get_user_ids_by_query( $user_query ) as $id ) {
-					if ( $roles = get_user_meta( $id, $prefix . 'capabilities', true ) ) {
-						$roles = array_keys( $roles );
-						if ( isset( $wp_roles->roles[ $roles[0] ] ) ) {
-							$_users[ $id ] = $this->prepare_sort_string_value( translate_user_role( $wp_roles->roles[ $roles[0] ]['name'] ) );
+					if ( $caps = get_user_meta( $id, $prefix . 'capabilities', true ) ) {
+
+						// Filter out caps that are not role names and assign to $this->roles
+						if ( $roles = array_filter( array_keys( $caps ), array( $wp_roles, 'is_role' ) ) ) {
+							$role = $roles[0];
+							if ( isset( $wp_roles->roles[ $role ] ) ) {
+								$_users[ $id ] = $this->prepare_sort_string_value( translate_user_role( $wp_roles->roles[ $role ]['name'] ) );
+							}
 						}
 					}
-
 				}
 				break;
 
@@ -219,7 +223,7 @@ class CAC_Sortable_Model_User extends CAC_Sortable_Model {
 					$sort_flag = $result['sort_flag'];
 				}
 				else {
-					$is_numeric = in_array( $column->options->field_type, array(
+					$is_numeric = in_array( $column->get_option( 'field_type' ), array(
 						'numeric',
 						'library_id',
 						'count'
@@ -292,7 +296,8 @@ class CAC_Sortable_Model_User extends CAC_Sortable_Model {
 			// sorting
 			if ( 'ASC' == $vars['order'] ) {
 				asort( $_users, $sort_flag );
-			} else {
+			}
+			else {
 				arsort( $_users, $sort_flag );
 			}
 

@@ -189,7 +189,7 @@ class CAC_Filtering_Model_Comment extends CAC_Filtering_Model {
 
 				// Custom Fields
 				case 'column-meta' :
-					$comment_query->meta_query->queries[] = $this->get_meta_query( $column->get_field_key(), $value, $column->options->field_type );
+					$comment_query->meta_query->queries[] = $this->get_meta_query( $column->get_field_key(), $value, $column->get_option( 'field_type' ) );
 					break;
 
 				// ACF

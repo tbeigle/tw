@@ -205,6 +205,10 @@ class CAC_Sortable_Model_Post extends CAC_Sortable_Model {
 				$posts = $this->get_posts_sorted_by_taxonomy( 'category' );
 				break;
 
+			case 'date' :
+				// Needs to be here, otherwise default sorting is not working for date
+				break;
+
 			case 'tags' :
 				$sort_flag = SORT_NUMERIC;
 				$posts = $this->get_posts_sorted_by_taxonomy( 'post_tag' );
@@ -364,12 +368,12 @@ class CAC_Sortable_Model_Post extends CAC_Sortable_Model {
 
 			case 'column-taxonomy' :
 				$sort_flag = SORT_NUMERIC;
-				$posts = $this->get_posts_sorted_by_taxonomy( $column->options->taxonomy );
+				$posts = $this->get_posts_sorted_by_taxonomy( $column->get_option( 'taxonomy' ) );
 				break;
 
 			case 'column-author_name' :
 				$sort_flag = SORT_STRING;
-				if ( 'userid' == $column->options->display_author_as ) {
+				if ( 'userid' == $column->get_option( 'display_author_as' ) ) {
 					$sort_flag = SORT_NUMERIC;
 				}
 				break;
@@ -400,7 +404,7 @@ class CAC_Sortable_Model_Post extends CAC_Sortable_Model {
 				else {
 					$vars['meta_query'][] = array(
 						'key'     => $column->get_field_key(),
-						'type'    => in_array( $column->options->field_type, array( 'numeric', 'library_id', 'count' ) ) ? 'NUMERIC' : 'CHAR',
+						'type'    => in_array( $column->get_option( 'field_type' ), array( 'numeric', 'library_id', 'count' ) ) ? 'NUMERIC' : 'CHAR',
 						'compare' => '!=',
 						'value'   => ''
 					);

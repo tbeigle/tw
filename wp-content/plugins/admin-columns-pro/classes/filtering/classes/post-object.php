@@ -13,6 +13,13 @@ class CAC_Filtering_Model_Post_Object extends CAC_Filtering_Model {
 		add_action( 'restrict_manage_posts', array( $this, 'add_filtering_markup' ) );
 	}
 
+	public function get_filterables() {
+
+	}
+
+	public function get_dropdown_options_by_column( $column ) {
+	}
+
 	/**
 	 * Handle filter request for ranges
 	 *

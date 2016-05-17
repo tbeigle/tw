@@ -1,5 +1,4 @@
 jQuery( document ).ready( function( $ ) {
-
 	$( document ).bind( 'cac_model_ready', function( e, type ) {
 
 		var container = $( '.columns-container[data-type=' + type + ']' );
@@ -19,7 +18,7 @@ jQuery( document ).ready( function( $ ) {
 		// Add new layout
 		layouts.find( 'a.add-new' ).click( function( e ) {
 			e.preventDefault();
-			$( this ).closest( '.layouts' ).find( '.new' ).slideToggle();
+			$( this ).toggleClass( 'open' ).closest( '.layouts' ).find( '.new' ).slideToggle();
 		} );
 
 		// Add new error message

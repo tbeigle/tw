@@ -20,7 +20,8 @@ class CPAC_Column_Term_Parent extends CPAC_Column {
 	 * @since 2.0.0
 	 */
 	public function get_value( $term_id ) {
-		if ( ! ( $parent_id = $this->get_raw_value( $term_id ) ) ) {
+		$parent_id = $this->get_raw_value( $term_id );
+		if ( ! $parent_id ) {
 			return false;
 		}
 		switch ( $this->get_option( 'term_property' ) ) {
@@ -50,11 +51,7 @@ class CPAC_Column_Term_Parent extends CPAC_Column {
 	}
 
 	public function apply_conditional() {
-		if ( ! is_taxonomy_hierarchical( $this->storage_model->taxonomy ) ) {
-			return false;
-		}
-
-		return true;
+		return is_taxonomy_hierarchical( $this->storage_model->taxonomy );
 	}
 
 	public function display_settings() {

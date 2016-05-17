@@ -73,10 +73,10 @@ jQuery( document ).ready( function( $ ) {
 
 	$.post( ajaxurl, {
 			plugin_id : 'cpac',
-			action : 'cac_update_filtering_cache_' + CAC_Filtering.storage_model,
+			action : 'cac_update_filtering_cache',
 			storage_model : CAC_Filtering.storage_model,
 			layout : CAC_Filtering.layout,
-			_ajax_nonce : CAC_Filtering.nonce,
+			_ajax_nonce : CAC_Filtering.nonce
 		},
 		function( response ) {
 

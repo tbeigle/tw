@@ -27,7 +27,7 @@ class CPAC_Storage_Model_Taxonomy extends CPAC_Storage_Model {
 	 */
 	public function init_manage_columns() {
 		add_filter( "manage_edit-{$this->taxonomy}_columns", array( $this, 'add_headings' ) );
-		add_action( "manage_{$this->taxonomy}_custom_column", array( $this, 'manage_value' ), 10, 3 );
+		add_filter( "manage_{$this->taxonomy}_custom_column", array( $this, 'manage_value' ), 10, 3 );
 	}
 
 	/**
@@ -158,5 +158,4 @@ class CPAC_Storage_Model_Taxonomy extends CPAC_Storage_Model {
 
 		return $value;
 	}
-
 }

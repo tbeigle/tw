@@ -1,5 +1,75 @@
 == Changelog ==
 
+= 3.8.6.1 =
+Release Date: April 29th, 2016
+
+* [Updated] Admin Columns core to v2.5.6.2
+* [Fixed] Hotfix. Admin Columns core version 2.5.6 did not display the stored column settings, which is now hotfixed.
+
+= 3.8.6 =
+Release Date: April 29th, 2016
+
+* [Improved] Column set menu will display the selected role and user (only single) in the description
+* [Improved] Renamed the label from "Column Set" to "Column View" on the posts screen
+* [Fixed] There was a possibility that a layout was loaded that didn't belong to the current user
+* [Fixed] User roles will sort correctly when a user has custom capabilities assigned
+* [Updated] German language is 100% translated, big thanks to Björn Scheppler
+* [Updated] Admin Columns core to v2.5.6
+    * [Fixed] Row actions are now only added to the first column when the primary column isn't available
+    * [Fixed] The true/false field option for the Custom Field column will display a cross icon when the value is empty or zero
+
+= 3.8.5 =
+Release Date: April 7th, 2016
+
+* [Fixed] WordPress columns that are filterable by default (like date and acategories) can now be disabled
+* [Fixed] Inline edit now loads ajax options properly when not using column sets
+* [Fixed] When updating post_date with inline edit the GMT date will now also be updated
+* [Fixed] Other select2 libraries will now be disabled on the column settings page to prevent possible conflicts with plugins and themes
+* [Improved] Changed the name 'Sets' to 'Column Sets'
+* [Refactor] Removed filter 'handle_reset' from CAC_Sortable_Model::__construct()
+* [Updated] Admin Columns core to v2.5.5
+    * [Improved] Columns with empty values will now display a dash symbol
+    * [Fixed] Excerpt column: The label "Excerpt from content" will now only display when the post has content
+
+= 3.8.4.1 =
+Release Date: March 29th, 2016
+
+* [Updated] Admin Columns core to v2.5.4
+    * [Fixed] Columns can be marked as original, in case the default has been replaced by an ac-column
+    * [Fixed] WooCommerce columns will now have the right order when column haven't been stored yet
+    * [Fixed] WooCommerce columns will now display it's value again after using inline edit
+
+= 3.8.4 =
+Release Date: March 29th, 2016
+
+* [Fixed] Inline edit will now work correctly when layout is empty
+* [Fixed] Status column will now display all available stati when using inline edit
+* [Fixed] Filtering dropdown with roles are now translated when a translation is available
+* [Fixed] Old PHP export format can be used again
+* [Fixed] Filtering on empty featured images has been fixed
+* [Fixed] Fixed small styling issue with the user/roles selector for sets
+* [Fixed] Displaying all results when sorting ACF columns will now work correctly
+* [Fixed] Show filter when options are empty or when the empty/not empty options are enabled
+* [Fixed] Sorting for default column date is working again
+* [Improved] Added missing security nonces to ajax calls
+* [Improved] "Add set" button is now affording (displaying close when opened)
+* [Improved] Inline edit will load less data on listings pages
+* [Removed] Removed obsolete language files
+*
+* [Notes for developers]
+* [Refactor] removed all filters from CAC_Filtering_Model::__construct()
+* [Refactor] removed all filters from CACIE_Editable_Model::__construct()
+* [Updated] Admin Columns core to v2.5.4
+    * [Fixed] Edit columns button will be positioned correctly on the Trash page
+    * [Fixed] Obsolete images have been removed
+    * [Fixed] Roles names column will display the available translation
+    * [Fixed] Content type label (next to store settings) is displayed correctly when translations are loaded
+    * [Fixed] After using quick edit the column values will be populated correctly again
+    * [Fixed] WPML will correctly display it's "+" icons again. Make sure to add/remove the column.
+    * [Improved Messages on the settings screen (when using restore columns) are now displayed directly above the columns
+    * [Improved] Excerpt column will now display a label "excerpt from content" when the actual excerpt field is empty
+    * [Added] New filter 'cac/get_posts/post_status' has been added to change post_status when using CPAC_Storage_model::get_posts()
+
 = 3.8.3 =
 Release Date: March 18th, 2016
 
@@ -79,7 +149,7 @@ Release Date: March 16th, 2016
 	* [Improved] bbPress columns are loaded correctly
 	* [Updated] All languages files have been updated from Transifex (https://www.transifex.com/codepress/admin-columns)
 	*
-	* [Developer notes]
+	* [Notes for developers]
 	* [Refactor] CPAC now is a singleton class
 	* [Refactor] Storage model has been refactored but should stay backwards compatible when extending
 	* [Refactor] CPAC_Column $storage_model variable has become private. Use CAPC_Column::get_storage_model() method.

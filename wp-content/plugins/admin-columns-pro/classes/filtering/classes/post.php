@@ -32,7 +32,7 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 			'column-taxonomy',
 		);
 
-		return array_merge( $column_types, $this->get_default_filterables() );
+		return $column_types;
 	}
 
 	/**
@@ -40,7 +40,7 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 	 */
 	public function get_dropdown_html_element_ids() {
 		return array(
-			'date' => 'filter-by-date',
+			'date'       => 'filter-by-date',
 			'categories' => 'cat'
 		);
 	}
@@ -132,7 +132,6 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 		return $where . $this->wpdb->prepare( "AND pm.meta_value = %s AND pm.meta_key = '_sku'", get_post_meta( $this->get_filter_value( 'column-wc-product-sku' ), '_sku', true ) );
 	}
 
-
 	public function filter_by_wc_shipping_method( $where ) {
 		return $where . $this->wpdb->prepare( "AND om.meta_value = %s AND om.meta_key = 'method_id'", $this->get_filter_value( 'column-wc-order_shipping_method' ) );
 	}
@@ -187,13 +186,13 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 			}
 
 			// add the value to so we can use it in the 'post_where' callback
-			$this->set_filter_value( $column->properties->type, $value );
+			$this->set_filter_value( $column->get_type(), $value );
 
 			// meta arguments
 			$meta_value = in_array( $value, array( 'cpac_empty', 'cpac_not_empty' ) ) ? '' : $value;
 			$meta_query_compare = 'cpac_not_empty' == $value ? '!=' : '=';
 
-			switch ( $column->properties->type ) :
+			switch ( $column->get_type() ) :
 
 				// Default
 				case 'tags' :
@@ -223,10 +222,14 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 					break;
 
 				case 'column-featured_image' :
+					if ( 'cpac_empty' == $value ) {
+						$meta_query_compare = 'NOT EXISTS';
+					}
+
 					$vars['meta_query'][] = array(
 						'key'     => '_thumbnail_id',
 						'value'   => $meta_value,
-						'compare' => 'cpac_empty' == $value ? 'NOT EXISTS' : '='
+						'compare' => $meta_query_compare
 					);
 					break;
 
@@ -275,12 +278,12 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 
 				case 'column-taxonomy' :
 					$vars['tax_query']['relation'] = 'AND';
-					$vars['tax_query'][] = $this->get_taxonomy_query( $value, $column->options->taxonomy );
+					$vars['tax_query'][] = $this->get_taxonomy_query( $value, $column->get_option( 'taxonomy' ) );
 					break;
 
 				// Custom Fields
 				case 'column-meta' :
-					$vars['meta_query'][] = $this->get_meta_query( $column->get_field_key(), $value, $column->options->field_type );
+					$vars['meta_query'][] = $this->get_meta_query( $column->get_field_key(), $value, $column->get_option( 'field_type' ) );
 					break;
 
 				// ACF
@@ -431,7 +434,7 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 		$empty_option = false;
 		$order = 'ASC';
 
-		switch ( $column->properties->type ) :
+		switch ( $column->get_type() ) :
 
 			// Default
 			case 'tags' :
@@ -449,10 +452,7 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 				break;
 
 			case 'column-roles' :
-				global $wp_roles;
-				foreach ( $wp_roles->role_names as $role => $name ) {
-					$options[ $role ] = $name;
-				}
+				$options = $column->get_roles();
 				break;
 
 			case 'column-page_template' :
@@ -544,11 +544,11 @@ class CAC_Filtering_Model_Post extends CAC_Filtering_Model_Post_Object {
 				break;
 
 			case 'column-taxonomy' :
-				if ( taxonomy_exists( $column->options->taxonomy ) ) {
+				if ( taxonomy_exists( $column->get_option( 'taxonomy' ) ) ) {
 					$empty_option = true;
 					$order = false; // do not sort, messes up the indenting
 					$terms_args = apply_filters( 'cac/addon/filtering/taxonomy/terms_args', array() );
-					$options = $this->apply_indenting_markup( $this->indent( get_terms( $column->options->taxonomy, $terms_args ), 0, 'parent', 'term_id' ) );
+					$options = $this->apply_indenting_markup( $this->indent( get_terms( $column->get_option( 'taxonomy' ), $terms_args ), 0, 'parent', 'term_id' ) );
 				}
 				break;
 

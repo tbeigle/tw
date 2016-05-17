@@ -228,7 +228,7 @@ jQuery.fn.cacie_edit_float = function( column, item ) {
 		type : 'text',
 		value : el.cacie_get_value( column, item ),
 		validate : function( value ) {
-			if ( value && ! cacie_is_float( value ) ) {
+			if ( value && !cacie_is_float( value ) ) {
 				return qie_i18n.errors.invalid_float;
 			}
 		}
@@ -438,7 +438,7 @@ jQuery.fn.cacie_edit_select2_dropdown = function( column, item ) {
 			showbuttons : false,
 			select2 : {
 				width : 200,
-				minimumInputLength : 1,
+				minimumInputLength : 0,
 				initSelection : function( element, callback ) {
 					var data = [];
 
@@ -468,9 +468,10 @@ jQuery.fn.cacie_edit_select2_dropdown = function( column, item ) {
 							action : 'cacie_get_options',
 							searchterm : searchterm,
 							column : column.column_name,
-							storage_model : CACIE_Storage_Model,
-							layout : CACIE_Layout,
-							item_id : item.ID
+							storage_model : CACIE.storage_model,
+							layout : CACIE.layout,
+							item_id : item.ID,
+							_ajax_nonce : CACIE.nonce
 						};
 					},
 					results : function( response, page ) {
@@ -774,9 +775,10 @@ jQuery.fn.cacie_xeditable = function( args, column, item ) {
 		params : {
 			plugin_id : 'cpac',
 			action : 'cacie_column_save',
-			storage_model : CACIE_Storage_Model,
-			layout : CACIE_Layout,
-			column : column.column_name
+			storage_model : CACIE.storage_model,
+			layout : CACIE.layout,
+			column : column.column_name,
+			_ajax_nonce : CACIE.nonce
 		},
 		pk : item.ID,
 		value : jQuery( this ).cacie_get_value( column, item ),
@@ -996,11 +998,12 @@ jQuery.fn.cacie_savecolumn = function( column, item, newvalue, storerevision ) {
 	jQuery.post( ajaxurl, {
 		plugin_id : 'cpac',
 		action : 'cacie_column_save',
-		storage_model : CACIE_Storage_Model,
-		layout : CACIE_Layout,
+		storage_model : CACIE.storage_model,
+		layout : CACIE.layout,
 		column : column.column_name,
 		pk : item.ID,
-		value : newvalue
+		value : newvalue,
+		_ajax_nonce : CACIE.nonce
 	}, function( response ) {
 		if ( response.success ) {
 			// update data even when empty, in case field is cleared
@@ -1208,7 +1211,7 @@ function cacie_init() {
 		column.column_name = column_name;
 
 		// Make column editable
-		if ( column.edit == 'on' && column.addon_cacie.editable ) {
+		if ( column.addon_cacie.editable ) {
 			if ( typeof column.addon_cacie.editable.type === 'undefined' || column.addon_cacie.editable.type === '' ) {
 				continue;
 			}
@@ -1340,7 +1343,8 @@ jQuery( document ).ready( function( $ ) {
 			plugin_id : 'cpac',
 			action : 'cacie_editability_state_save',
 			value : window.cacie_edit_enabled,
-			storage_model : CACIE_Storage_Model,
+			storage_model : CACIE.storage_model,
+			_ajax_nonce : CACIE.nonce
 		} );
 
 		e.preventDefault();

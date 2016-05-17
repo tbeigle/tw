@@ -64,6 +64,9 @@ class CAC_Addon_Sortable {
 		add_action( 'cac/settings/groups/row=sorting', array( $this, 'settings_display' ) );
 
 		add_action( 'admin_init', array( $this, 'handle_settings_request' ) );
+
+		// handle reset request
+		add_action( 'admin_init', array( $this, 'handle_reset' ) );
 	}
 
 	/**
@@ -218,7 +221,7 @@ class CAC_Addon_Sortable {
 			return false;
 		}
 
-		$sort = 'on' === $column->options->sort;
+		$sort = 'on' === $column->get_option( 'sort' );
 		?>
 		<tr class="column_sorting">
 			<?php $column->label_view( __( 'Enable sorting?', 'codepress-admin-columns' ), __( 'This will make the column support sorting.', 'codepress-admin-columns' ), 'sorting' ); ?>
@@ -244,7 +247,7 @@ class CAC_Addon_Sortable {
 	 */
 	function add_label_sort_indicator( $column ) {
 		if ( $column->properties->is_sortable ) : ?>
-			<span class="sorting <?php echo esc_attr( $column->options->sort ); ?>" data-indicator-id="<?php $column->attr_id( 'sort' ); ?>" title="<?php echo esc_attr( __( 'Enable sorting?' , 'codepress-admin-columns' ) ); ?>"></span>
+			<span class="sorting <?php echo esc_attr( $column->get_option( 'sort' ) ); ?>" data-indicator-id="<?php $column->attr_id( 'sort' ); ?>" title="<?php echo esc_attr( __( 'Enable sorting?', 'codepress-admin-columns' ) ); ?>"></span>
 			<?php
 		endif;
 
@@ -277,11 +280,34 @@ class CAC_Addon_Sortable {
 	}
 
 	public function handle_settings_request() {
-		if ( isset( $_POST['reset-preference'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'reset-sorting-preference' ) ) {
+		if ( isset( $_POST['reset-preference'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'reset-sorting-preference' ) && current_user_can( 'manage_admin_columns' ) ) {
 			global $wpdb;
 			$wpdb->query( "DELETE FROM {$wpdb->usermeta} WHERE meta_key LIKE 'ac_sortedby_%';" );
 
 			cpac_admin_message( __( 'All sorting preferences have been reset.', 'codepress-admin-columns' ) );
+		}
+	}
+
+	/**
+	 * Handle reset request
+	 *
+	 * @since 1.0
+	 */
+	public function handle_reset() {
+		if ( ! empty( $_REQUEST['reset-sorting'] ) && $storage_model = cpac()->get_current_storage_model() ) {
+			if ( $sortable_model = $this->get_model( $storage_model->key ) ) {
+
+				$sortable_model->delete_sorting_preference();
+
+				// redirect back to admin
+				$admin_url = trailingslashit( admin_url() ) . $storage_model->page . '.php';
+				if ( 'post' == $storage_model->get_type() ) {
+					$admin_url = add_query_arg( array( 'post_type' => $storage_model->get_post_type() ), $admin_url );
+				}
+
+				wp_safe_redirect( $admin_url );
+				exit;
+			}
 		}
 	}
 }

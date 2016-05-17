@@ -160,7 +160,7 @@ class CAC_Sortable_Model_Comment extends CAC_Sortable_Model {
 				global $wpdb;
 				$pieces['join'] = $pieces['join'] . " JOIN $wpdb->commentmeta cm ON $wpdb->comments.comment_ID = cm.comment_id";
 				$pieces['orderby'] = "cm.meta_value";
-				$pieces['where'] = $pieces['where'] . $wpdb->prepare( " AND cm.meta_key=%s", $column->options->field );
+				$pieces['where'] = $pieces['where'] . $wpdb->prepare( " AND cm.meta_key=%s", $column->get_option( 'field' ) );
 				break;
 
 		endswitch;

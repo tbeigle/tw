@@ -178,7 +178,7 @@ class CAC_Filtering_Model_User extends CAC_Filtering_Model {
 
 				// Custom Fields
 				case 'column-meta' :
-					$user_query->query_vars['meta_query'][] = $this->get_meta_query( $column->get_field_key(), $value, $column->options->field_type );
+					$user_query->query_vars['meta_query'][] = $this->get_meta_query( $column->get_field_key(), $value, $column->get_option( 'field_type' ) );
 					break;
 
 				// ACF

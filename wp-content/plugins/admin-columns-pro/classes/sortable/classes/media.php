@@ -194,7 +194,7 @@ class CAC_Sortable_Model_Media extends CAC_Sortable_Model {
 
 			case 'column-taxonomy' :
 				$sort_flag = SORT_STRING;
-				$posts = $this->get_posts_sorted_by_taxonomy( $column->options->taxonomy );
+				$posts = $this->get_posts_sorted_by_taxonomy( $column->get_option( 'taxonomy' ) );
 				break;
 
 			// Custom Field
@@ -206,7 +206,7 @@ class CAC_Sortable_Model_Media extends CAC_Sortable_Model {
 				else {
 					$vars['meta_query'][] = array(
 						'key'     => $column->get_field_key(),
-						'type'    => in_array( $column->options->field_type, array( 'numeric', 'library_id', 'count' ) ) ? 'NUMERIC' : 'CHAR',
+						'type'    => in_array( $column->get_option( 'field_type' ), array( 'numeric', 'library_id', 'count' ) ) ? 'NUMERIC' : 'CHAR',
 						'compare' => '!=',
 						'value'   => ''
 					);

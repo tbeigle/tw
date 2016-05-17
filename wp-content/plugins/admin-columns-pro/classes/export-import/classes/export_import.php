@@ -45,6 +45,19 @@ class CAC_Export_Import {
 		$columndata = $this->exported_columns[ $storage_model->key ];
 
 		// Convert old export formats to new layout format
+		$old_format_columns = array();
+		foreach ( $columndata as $k => $data ) {
+			if ( ! isset( $data['columns'] ) ) {
+				$old_format_columns[ $k ] = $data;
+				unset( $columndata[ $k ] );
+			}
+		}
+
+		if ( $old_format_columns ) {
+			array_unshift( $columndata, array( 'columns' => $old_format_columns ) );
+		}
+
+		// Add layout if missing
 		foreach ( $columndata as $k => $data ) {
 			if ( ! isset( $data['layout'] ) ) {
 				$columndata[ $k ] = array(
@@ -238,7 +251,7 @@ class CAC_Export_Import {
 			$message = sprintf(
 				__( 'Succesfully created %s %s for %s.', 'codepress-admin-columns' ),
 				str_replace( ', ' . end( $links ), ' and ' . end( $links ), implode( ', ', $links ) ),
-				_n( 'layout', 'layouts', count( $links ), 'codepress-admin-columns' ),
+				_n( 'set', 'sets', count( $links ), 'codepress-admin-columns' ),
 				"<strong>{$storage_model->label}</strong>"
 			);
 
@@ -250,7 +263,7 @@ class CAC_Export_Import {
 	 * @since 3.8
 	 */
 	private function export_single_layouts() {
-		return apply_filters( 'ac/export_import/export_single_layouts', true );
+		return apply_filters( 'ac/export_import/export_single_sets', true );
 	}
 
 	/**

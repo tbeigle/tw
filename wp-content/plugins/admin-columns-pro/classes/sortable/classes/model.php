@@ -33,9 +33,6 @@ abstract class CAC_Sortable_Model {
 
 		// enable sorting per column
 		add_action( "cac/columns/storage_key={$this->storage_model->key}", array( $this, 'enable_sorting' ) );
-
-		// handle reset request
-		add_action( 'admin_init', array( $this, 'handle_reset' ) );
 	}
 
 	/**
@@ -71,7 +68,7 @@ abstract class CAC_Sortable_Model {
 		return get_user_meta( get_current_user_id(), $this->get_preference_key(), true );
 	}
 
-	private function delete_sorting_preference() {
+	public function delete_sorting_preference() {
 		return delete_user_meta( get_current_user_id(), $this->get_preference_key() );
 	}
 
@@ -125,31 +122,6 @@ abstract class CAC_Sortable_Model {
 			} );
 		</script>
 		<?php
-	}
-
-	/**
-	 * Handle reset request
-	 *
-	 * @since 1.0
-	 */
-	public function handle_reset() {
-
-		// On Columns page
-		if ( ! empty( $_REQUEST['reset-sorting'] ) && cpac()->is_columns_screen() && $this->storage_model->is_current_screen() ) {
-
-			$this->delete_sorting_preference();
-
-			// redirect back to admin
-			$admin_url = trailingslashit( admin_url() ) . $this->storage_model->page . '.php';
-
-			// for posts we need to add the type to the admin url
-			if ( 'post' == $this->storage_model->get_type() ) {
-				$admin_url = add_query_arg( array( 'post_type' => $this->storage_model->get_post_type() ), $admin_url );
-			}
-
-			wp_safe_redirect( $admin_url );
-			exit;
-		}
 	}
 
 	/**
@@ -307,16 +279,14 @@ abstract class CAC_Sortable_Model {
 	 */
 	public function get_posts( $args = array() ) {
 		$defaults = array(
-			'posts_per_page' => - 1,
-			'post_status'    => array( 'any', 'trash' ),
+			'posts_per_page' => -1,
+			'post_status'    => apply_filters( 'cac/get_posts/post_status', array( 'any', 'trash' ), $this->storage_model ),
 			'post_type'      => $this->storage_model->get_post_type(),
 			'fields'         => 'ids',
-			'no_found_rows'  => 1, // lowers our carbon footprint
+			'no_found_rows'  => 1,
 		);
 
-		$post_ids = (array) get_posts( array_merge( $defaults, $args ) );
-
-		return $post_ids;
+		return (array) get_posts( array_merge( $defaults, $args ) );
 	}
 
 	/**
@@ -401,12 +371,28 @@ abstract class CAC_Sortable_Model {
 			return false;
 		}
 
+		if ( $this->get_show_all_results() ) {
+			$vars['meta_query']['relation'] = 'OR';
+
+			$vars['meta_query'][] = array(
+				'key'     => $field['name'],
+				'compare' => 'NOT EXISTS',
+			);
+			
+			$vars['meta_query'][] = array(
+				'key'     => $field['name'],
+				'compare' => '=',
+				'value'   => '',
+			);
+		}
+
 		$vars['meta_query'][] = array(
 			'key'     => $field['name'],
 			'type'    => SORT_NUMERIC == $are_sortable[ $field['type'] ] ? 'NUMERIC' : 'CHAR',
 			'compare' => '!=',
 			'value'   => '',
 		);
+
 		$vars['orderby'] = $field['name'];
 
 		return true;
@@ -451,11 +437,11 @@ abstract class CAC_Sortable_Model {
 			foreach ( $_columns as $column ) {
 				if ( $column->properties->is_sortable ) {
 
-					if ( 'on' == $column->options->sort ) {
+					if ( 'on' == $column->get_option( 'sort' ) ) {
 						$columns[ $column->properties->name ] = $column->get_sanitized_label();
 					}
 
-					else if ( 'off' == $column->options->sort ) {
+					else if ( 'off' == $column->get_option( 'sort' ) ) {
 						unset( $columns[ $column->properties->name ] );
 					}
 				}
@@ -485,15 +471,17 @@ abstract class CAC_Sortable_Model {
 		$items = array();
 		$show_all_results = $this->get_show_all_results();
 
-		switch ( $column->options->field_type ) {
+		switch ( $column->get_option( 'field_type' ) ) {
 
 			case 'title_by_id':
 				$sort_flag = SORT_REGULAR;
 				foreach ( $this->get_items( $item_args ) as $id ) {
 
 					// sort by the actual post_title instead of ID
-					$meta = $column->get_meta_by_id( $id );
-					$title_ids = $column->get_ids_from_meta( $meta );
+					$string = $this->recursive_implode( ', ', $this->get_raw_value( $id ) );
+					$title_ids = $column->get_ids_from_meta( $string );
+
+					// use first title to sort with
 					$title = isset( $title_ids[0] ) ? $column->get_post_title( $title_ids[0] ) : '';
 
 					if ( $title || $show_all_results ) {

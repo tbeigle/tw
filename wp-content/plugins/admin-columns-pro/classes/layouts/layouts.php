@@ -20,7 +20,9 @@ class CAC_Layouts {
 		add_action( 'cac/settings/after_title', array( $this, 'menu' ) );
 		add_action( 'cac/settings/after_menu', array( $this, 'layout_help' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'scripts' ) );
-		add_action( 'admin_init', array( $this, 'request' ) );
+		add_action( 'admin_init', array( $this, 'select2_conflict_fix' ), 1 );
+		add_action( 'admin_init', array( $this, 'request_settings' ) );
+		add_action( 'admin_init', array( $this, 'request_listings' ), 9 ); // needs to run before init_listings_layout
 		add_action( 'admin_footer', array( $this, 'switcher' ) );
 
 		// ajax
@@ -69,12 +71,22 @@ class CAC_Layouts {
 		);
 	}
 
+	// Try to prevent older version 3.x of select2 from loading and causing conflicts with 4.x
+	public function select2_conflict_fix() {
+		if ( cac_is_setting_screen() ) {
+			wp_enqueue_script( 'disable-older-version-select2', CAC_LAY_URL . "assets/js/select2_conflict_fix.js", array(), CAC_PRO_VERSION );
+		}
+	}
+
 	public function scripts() {
 		$minified = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		if ( $this->cpac->is_settings_screen() ) {
+
+			wp_deregister_script( 'select2' ); // try to remove any other version of select2
+
 			wp_enqueue_style( 'cpac-layouts', CAC_LAY_URL . "assets/css/layouts{$minified}.css", array(), CAC_PRO_VERSION, 'all' );
-			wp_enqueue_style( 'cpac-layouts-select2', CAC_LAY_URL . "assets/css/select2.min.css", array(), CAC_PRO_VERSION, 'all' );
+			wp_enqueue_style( 'cpac-layouts-select2', CAC_LAY_URL . "assets/css/select2.min.css", array(), '4.0.2', 'all' );
 
 			wp_register_script( 'cpac-layouts-select2', CAC_LAY_URL . "assets/js/select2{$minified}.js", array( 'jquery' ), CAC_PRO_VERSION );
 			wp_enqueue_script( 'cpac-layouts', CAC_LAY_URL . "assets/js/layouts.js", array( 'cpac-layouts-select2' ), CAC_PRO_VERSION );
@@ -92,7 +104,7 @@ class CAC_Layouts {
 		}
 	}
 
-	public function request() {
+	public function request_settings() {
 		$nonce = isset( $_REQUEST['_cpac_nonce'] ) ? $_REQUEST['_cpac_nonce'] : '';
 
 		// Settings screen
@@ -133,7 +145,7 @@ class CAC_Layouts {
 							) );
 
 							if ( is_wp_error( $layout_id ) ) {
-								cpac_admin_message( $layout_id->get_error_message(), 'error' );
+								cpac_settings_message( $layout_id->get_error_message(), 'error' );
 
 								return;
 							}
@@ -142,7 +154,7 @@ class CAC_Layouts {
 							$storage_model->store( $original_columns );
 							$storage_model->set_user_layout_preference();
 
-							cpac_admin_message( sprintf( __( 'Layout %s succesfully created.', 'codepress-admin-columns' ), "<strong>\"" . esc_html( $name ) . "\"</strong>" ), 'updated' );
+							cpac_settings_message( sprintf( __( 'Set %s succesfully created.', 'codepress-admin-columns' ), "<strong>\"" . esc_html( $name ) . "\"</strong>" ), 'updated' );
 						}
 					}
 					break;
@@ -159,10 +171,10 @@ class CAC_Layouts {
 								$storage_model->restore();
 								$storage_model->set_single_layout_id();
 
-								cpac_admin_message( sprintf( __( 'Layout %s succesfully deleted.', 'codepress-admin-columns' ), "<strong>\"" . esc_html( $layout->name ) . "\"</strong>" ), 'updated' );
+								cpac_settings_message( sprintf( __( 'Set %s succesfully deleted.', 'codepress-admin-columns' ), "<strong>\"" . esc_html( $layout->name ) . "\"</strong>" ), 'updated' );
 							}
 							else {
-								cpac_admin_message( __( "Screen does not exist.", 'codepress-admin-columns' ), 'error' );
+								cpac_settings_message( __( "Screen does not exist.", 'codepress-admin-columns' ), 'error' );
 							}
 						}
 					}
@@ -171,6 +183,7 @@ class CAC_Layouts {
 				// Default
 				case 'select_layout' :
 					if ( $storage_model = $this->cpac->get_storage_model( $key ) ) {
+
 						if ( isset( $_REQUEST['layout_id'] ) ) {
 
 							// Specified layout
@@ -185,28 +198,18 @@ class CAC_Layouts {
 
 							$storage_model->set_user_layout_preference();
 						}
-
-						// User preference
-						else {
-							$storage_model->init_layout();
-						}
 					}
 					break;
 			endswitch;
 		}
+	}
 
-		// Listings screen
-		else if ( isset( $_REQUEST['cpac_action'] ) && ( $storage_model = cpac()->get_current_storage_model() ) ) {
-			switch ( $_REQUEST['cpac_action'] ) :
-				case 'select_layout' :
-					if ( wp_verify_nonce( $nonce, 'select-layout' ) ) {
-						$layout = filter_input( INPUT_POST, 'layout' );
-
-						$storage_model->set_layout( $layout );
-						$storage_model->set_user_layout_preference();
-					}
-					break;
-			endswitch;
+	public function request_listings() {
+		if ( 'select_layout' == filter_input( INPUT_POST, 'cpac_action' ) && ( $storage_model = cpac()->get_current_storage_model() ) ) {
+			if ( wp_verify_nonce( filter_input( INPUT_POST, '_cpac_nonce' ), 'select-layout' ) ) {
+				$storage_model->set_layout( filter_input( INPUT_POST, 'layout' ) );
+				$storage_model->set_user_layout_preference();
+			}
 		}
 	}
 
@@ -288,7 +291,7 @@ class CAC_Layouts {
 			<form method="post" class="layout-switcher">
 				<?php wp_nonce_field( 'select-layout', '_cpac_nonce' ); ?>
 				<input type="hidden" name="cpac_action" value="select_layout"/>
-				<span class="label"><?php _e( 'Column Set', 'codepress-admin-columns' ); ?></span>
+				<span class="label"><?php _e( 'Column View', 'codepress-admin-columns' ); ?></span>
 				<span class="spinner"></span>
 				<select name="layout">
 					<?php foreach ( $layouts as $layout ) : ?>
@@ -312,7 +315,7 @@ class CAC_Layouts {
 		if ( $layouts = $storage_model->get_layouts() ) : ?>
 			<div class="layout-selector">
 				<ul class="subsubsub">
-					<li class="first"><?php _e( 'Sets', 'codepress-admin-columns' ); ?>:</li>
+					<li class="first"><?php _e( 'Column Sets', 'codepress-admin-columns' ); ?>:</li>
 					<?php $count = 0;
 					foreach ( $layouts as $layout ) : ?>
 						<li data-screen="<?php echo $layout->id; ?>">
@@ -406,12 +409,30 @@ class CAC_Layouts {
 	}
 
 	private function get_title_description( $layout ) {
-		$title_description = array_filter( array(
-			! empty( $layout->roles ) ? __( 'roles', 'codepress-admin-columns' ) : false,
-			! empty( $layout->users ) ? __( 'users', 'codepress-admin-columns' ) : false,
-		) );
+		$description = array();
 
-		return implode( ' & ', $title_description );
+		if ( ! empty( $layout->roles ) ) {
+			if ( 1 == count( $layout->roles ) ) {
+				$_roles = get_editable_roles();
+				$role = $layout->roles[0];
+				$description[] = isset( $_roles[ $role ] ) ? $_roles[ $role ]['name'] : $role;
+			}
+			else {
+				$description[] = __( 'Roles', 'codepress-admin-columns' );
+			}
+		}
+
+		if ( ! empty( $layout->users ) ) {
+			if ( 1 == count( $layout->users ) ) {
+				$user = get_userdata( $layout->users[0] );
+				$description[] = $user ? $this->get_user_name( $user ) : __( 'User', 'codepress-admin-columns' );
+			}
+			else {
+				$description[] = __( 'Users', 'codepress-admin-columns' );
+			}
+		}
+
+		return implode( ' & ', array_filter( $description ) );
 	}
 
 	public function instructions() { ?>
@@ -427,8 +448,11 @@ class CAC_Layouts {
 
 			<div class="header">
 				<h3>
-					<?php _e( 'Sets', 'codepress-admin-columns' ); ?>
-					<a class="button add-new"><?php _e( '+ Add set', 'codepress-admin-columns' ); ?></a>
+					<?php _e( 'Column Sets', 'codepress-admin-columns' ); ?>
+					<a class="button add-new">
+						<span class="add"><?php _e( '+ Add set', 'codepress-admin-columns' ); ?></span>
+						<span class="close"><?php _e( 'Cancel', 'codepress-admin-columns' ); ?></span>
+					</a>
 				</h3>
 			</div>
 			<div class="item new">
@@ -439,7 +463,7 @@ class CAC_Layouts {
 					<input type="hidden" name="cpac_layout" value="<?php echo $storage_model->layout; ?>">
 					<div class="body">
 						<div class="row info">
-							<p><?php printf( __( "Create new sets to switch between different column views on the %s screen.", 'codepress-admin-coliumns' ), $storage_model->label ); ?></p>
+							<p><?php printf( __( "Create new sets to switch between different column views on the %s screen.", 'codepress-admin-columns' ), $storage_model->label ); ?></p>
 						</div>
 
 						<?php $this->input_rows( $storage_model->key ); ?>
@@ -542,6 +566,9 @@ class CAC_Layouts {
 			<p>
 			<p>
 				<img src="<?php echo CAC_LAY_URL; ?>/assets/images/layout-selector.png"/>
+			</p>
+			<p>
+				<a href="https://www.admincolumns.com/documentation/how-to/make-multiple-column-sets/" target="_blank"><?php _e( 'Online documentation', 'codepress-admin-columns' ); ?></a>
 			</p>
 		</div>
 		<?php
