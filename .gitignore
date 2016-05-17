@@ -2,4 +2,7 @@
 error_log
 wp-config.php
 wp-cli.yml
-.htaccess
+.htaccess*
+wp-content/plugins/wordfence/tmp/
+wp-content/wflogs/
+.user.ini
