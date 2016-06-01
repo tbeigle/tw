@@ -79,8 +79,6 @@ get_header( 'shop' ); ?>
 			<?php wc_get_template( 'loop/no-products-found.php' ); ?>
 
 		<?php endif; ?>
-
-		<img src="<?php print get_stylesheet_directory_uri() . '/images/tags.png' ?>" class="img-responsive">
 	<?php
 		/**
 		 * woocommerce_after_main_content hook
@@ -117,7 +115,7 @@ get_header( 'shop' ); ?>
 
 		</div>
 <!--end wrapper-->
-        
+
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript" src="http://arrow.scrolltotop.com/arrow5.js"></script>
 <noscript>Not seeing a <a href="http://www.scrolltotop.com/">Scroll to Top Button</a>? Go to our FAQ page for more info.</noscript>

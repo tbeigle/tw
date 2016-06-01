@@ -391,6 +391,38 @@ function tw_show_product_categories() {
 }
 
 /*
+ * tw_archive_top_content
+ *
+ * Displays some information for the visitor
+ */
+add_action( 'woocommerce_before_main_content', 'tw_archive_top_content', 30 );
+
+function tw_archive_top_content() {
+?>
+<div id="woocommerce-archive-info">
+  <p>We've organized our menu into three sections; Mains, Sides and Extras - be sure to check for all the goodies.</p>
+  <p><img src="<?php print get_stylesheet_directory_uri() . '/images/tags.png' ?>" class="img-responsive"></p>
+  <p>Dietary restrictions? Click on the buttons to see this week's options in any given category.</p>
+</div>
+<?php
+}
+
+/*
+ * tw_archive_bottom_content
+ *
+ * Displays some information for the visitor
+ */
+add_action( 'woocommerce_after_main_content', 'tw_archive_bottom_content', 5 );
+function tw_archive_bottom_content() {
+?>
+<div id="woocommerce-archive-info">
+  <p><img src="<?php print get_stylesheet_directory_uri() . '/images/tags.png' ?>" class="img-responsive"></p>
+  <p>Dietary restrictions? Click on the buttons to see this week's options in any given category.</p>
+</div>
+<?php
+}
+
+/*
  * tw_redirect_ordernow_page
  *
  * Redirects the Order Now page to the Main category
