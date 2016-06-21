@@ -193,13 +193,13 @@ input[type="tel"] {
   padding: 0 !important;
 }
 
-.woocommerce .product.odd,
-.mini_cart_item.odd {
+.woocommerce .product:nth-child(odd),
+.mini_cart_item:nth-child(odd) {
   background-color: #fff;
 }
 
-.woocommerce .product.even,
-.mini_cart_item.even {
+.woocommerce .product:nth-child(even),
+.mini_cart_item:nth-child(even) {
   background-color: #f2f2f3;
 }
 

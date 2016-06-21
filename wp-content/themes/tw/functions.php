@@ -503,3 +503,15 @@ add_action('admin_print_footer_scripts', function() {
     <?php
   }
 });
+
+/*
+ * Removes the price in the main loop
+ */
+remove_action('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price');
+
+/*
+ * Adds add-to-cart button in the main loop
+ */
+add_action('woocommerce_after_shop_loop_item','woocommerce_template_single_add_to_cart');
+remove_action('woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10 );
+add_action('woocommerce_after_shop_loop_item', 'tw_show_price_and_stock_after_description');
