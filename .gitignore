@@ -9,3 +9,4 @@ wp-cli.yml
 .user.ini
 wordfence-waf.php
 /wp-content/managewp/
+/wp-content/wflogs/

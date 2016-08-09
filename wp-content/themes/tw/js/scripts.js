@@ -69,6 +69,6 @@
         }
     });
 
-    $('.woocommerce-shipping-fields').append('<p>Special requests? Yes please! We always try to make you happy. Someone will contact you by Monday to confirm all the details & give you a price.</p>');
+    //$('.woocommerce-shipping-fields').append('<p>Special requests? Yes please! We always try to make you happy. Someone will contact you by Monday to confirm all the details & give you a price.</p>');
   });
 })( jQuery );
