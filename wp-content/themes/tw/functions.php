@@ -381,7 +381,11 @@ function tw_show_product_categories() {
     $extras_img = 'extras-inactive.png';
   }
 
-  echo '<img src="' . $path . '/images/ordernow_hero.png" class="img-responsive product-cat-hero">';
+  echo '<p><img src="' . $path . '/images/ordernow_hero.png" class="img-responsive product-cat-hero"></p>';
+  ?>
+  <p>Ready, Set- simplify your meals this week -- we cook -- so you don’t have to!<br>Online ordering for your weekly meals available Wednesday by 10 am and end Sunday at 10am - for delivery (Green Hills, West Nashville, Belmont, 12 South, Vanderbilt areas) and pickup at the Tinwings market the following Wednesday. If you have any questions- please feel free to call or email us at <a href="mailto:hello@tinwings.com">hello@tinwings.com</a>.</p>
+  <center><strong><p>We've organized our menu into three sections;<br> Mains, Sides and Extras - be sure to check for all the goodies.</p></strong></center>
+  <?php
   echo '<div class="category-tabs">';
   echo '<a href="/order-now/mains"><img src="' . $path . '/images/' . $mains_img . '" class="product-cat"></a>';
   echo '<a href="/order-now/sides"><img src="' . $path . '/images/' . $sides_img . '" class="product-cat"></a>';
@@ -399,7 +403,6 @@ add_action( 'woocommerce_before_main_content', 'tw_archive_top_content', 30 );
 function tw_archive_top_content() {
 ?>
 <div id="woocommerce-archive-info">
-  <p>We've organized our menu into three sections; Mains, Sides and Extras - be sure to check for all the goodies.</p>
   <p><img src="<?php print get_stylesheet_directory_uri() . '/images/tags.png' ?>" class="img-responsive"></p>
   <p>Dietary restrictions? Click on the buttons to see this week's options in any given category.</p>
 </div>

@@ -10,6 +10,10 @@
  Text Domain:  tw
 */
 
+p {
+  margin-bottom: 12px !important;
+}
+
 .woocommerce #left,
 .woocommerce-account #left {
   width: 65% !important;
@@ -58,7 +62,7 @@ input[type="tel"] {
 .woocommerce ul.products li.product,
 .woocommerce-page ul.products li.product {
   width: 100% !important;
-  font-size: 12px;
+  font-size: 14px;
   box-sizing: border-box;
 }
 
