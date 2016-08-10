@@ -425,7 +425,7 @@ jQuery.fn.cacie_edit_select2_dropdown = function( column, item ) {
 		showbuttons : true,
 		source : cacie_options_format_editable( options ),
 		select2 : {
-			width : 200
+			width : '200px'
 		}
 	};
 
@@ -894,7 +894,8 @@ jQuery.fn.cacie_xeditable = function( args, column, item ) {
 		args.display = function() {}; // should be left empty, do not remove
 		args.success = function( response ) { // replace display with ajax value
 			if ( response.success ) {
-				el.html( response.data.value );
+				var $val = jQuery('<div>' ).html( response.data.value ).append( el.find('.row-actions') );
+				el.html( $val.html() );
 			}
 
 			el.cacie_after_save( column, item );
@@ -1225,6 +1226,11 @@ function cacie_init() {
 
 			// Loop through items for current column
 			jQuery( '.column-' + column_name, list ).each( function() {
+				if( jQuery(this ).hasClass('cacie-editable-container' ) ){
+					// in case we run init again
+					return true;
+				}
+
 				// Get corresponding item for row
 				var item;
 				var id_attr = jQuery( this ).parents( 'tr' ).attr( 'id' );
@@ -1245,7 +1251,7 @@ function cacie_init() {
 				}
 
 				// Value must be defined and must no be a WP Error object
-				if ( ( typeof currentvalue === 'undefined' ) || ( typeof currentvalue.errors !== 'undefined' ) ) {
+				if ( currentvalue == null || ( typeof currentvalue === 'undefined' ) || ( typeof currentvalue.errors !== 'undefined' ) ) {
 					// Skip to the next element (equivalent to "continue" in a for-loop)
 					return true;
 				}
@@ -1311,6 +1317,13 @@ function cacie_disable() {
  * Onload functions
  */
 jQuery( document ).ready( function( $ ) {
+
+
+	$( '.wp-list-table tbody').on( 'updated', 'tr', function(){
+
+		//jQuery( window.xeditables ).editable( 'enable' );
+		cacie_init();
+	});
 
 	// Columns and items are available
 	if ( typeof CACIE_Columns === 'undefined' || typeof CACIE_Items === 'undefined' || CACIE_Items == null ) {

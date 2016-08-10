@@ -640,7 +640,7 @@ if ( ! class_exists( 'Codepress_Licence_Manager_Settings' ) ) {
 			 *
 			 * @param bool $hide Whether to hide the renewal notice. Defaults to false.
 			 */
-			if ( apply_filters( 'cac/hide_renewal_notice', false ) ) {
+			if ( apply_filters( 'cac/hide_renewal_notice', false ) || cpac()->suppress_site_wide_notices() ) {
 				return;
 			}
 

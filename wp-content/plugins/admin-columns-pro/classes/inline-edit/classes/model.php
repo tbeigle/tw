@@ -108,7 +108,7 @@ abstract class CACIE_Editable_Model {
 					switch ( $column->get_field_type() ) {
 						case 'checkbox':
 						case 'color_picker':
-						case 'date_picker':
+
 							//case 'date_time_picker':
 						case 'email':
 						case 'file':
@@ -134,6 +134,13 @@ abstract class CACIE_Editable_Model {
 						case 'wysiwyg':
 							$is_editable = true;
 							break;
+						case 'date_picker':
+							$is_editable = true;
+							$field = $column->get_field();
+							if ( isset( $field['date_format'] ) && 'yymmdd' != $field['date_format'] ) {
+								$is_editable = false;
+							}
+
 					}
 				}
 				break;
@@ -192,7 +199,7 @@ abstract class CACIE_Editable_Model {
 			'posts_per_page' => 100, // max 100 records in case we get a very large db
 			'post_type'      => 'any',
 			'orderby'        => 'title',
-			'order'          => 'ASC'
+			'order'          => 'ASC',
 		) );
 
 		$processed = array();
@@ -202,7 +209,7 @@ abstract class CACIE_Editable_Model {
 				if ( ! isset( $options[ $post->post_type ] ) ) {
 					$options[ $post->post_type ] = array(
 						'label'   => $post->post_type,
-						'options' => array()
+						'options' => array(),
 					);
 				}
 
@@ -264,7 +271,7 @@ abstract class CACIE_Editable_Model {
 			if ( ! isset( $options[ $role ] ) ) {
 				$options[ $role ] = array(
 					'label'   => translate_user_role( $roles[ $role ]['name'] ),
-					'options' => array()
+					'options' => array(),
 				);
 			}
 
@@ -410,6 +417,10 @@ abstract class CACIE_Editable_Model {
 			case 'select':
 				$editable['type'] = 'select';
 				$editable['advanced_dropdown'] = true;
+
+				if ( $field['multiple'] == 0 && $field['allow_null'] == 1 ) {
+					$editable['clear_button'] = true;
+				}
 				break;
 			case 'text':
 				$editable['type'] = 'text';
@@ -502,12 +513,12 @@ abstract class CACIE_Editable_Model {
 							if ( ! empty( $field['allow_null'] ) ) {
 								if ( $field['type'] == 'taxonomy' ) {
 									$option_null = array(
-										'' => __( 'None' )
+										'' => __( 'None' ),
 									);
 								}
 								else {
 									$option_null = array(
-										'null' => __( '- Select -', 'codepress-admin-columns' )
+										'null' => __( '- Select -', 'codepress-admin-columns' ),
 									);
 								}
 
@@ -661,7 +672,7 @@ abstract class CACIE_Editable_Model {
 			if ( $this->is_edit_enabled( $column ) && ( false !== ( $editable = $this->get_editable( $column_name ) ) ) ) {
 				$columns[ $column_name ] = array(
 					'type'        => $column->get_type(),
-					'addon_cacie' => array( 'editable' => $editable )
+					'addon_cacie' => array( 'editable' => $editable ),
 				);
 			}
 		}
@@ -764,7 +775,7 @@ abstract class CACIE_Editable_Model {
 				else {
 					$newoptions[] = array(
 						'value' => $index,
-						'label' => $option
+						'label' => $option,
 					);
 				}
 			}

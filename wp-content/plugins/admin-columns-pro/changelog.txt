@@ -1,5 +1,19 @@
 == Changelog ==
 
+= 3.8.7 =
+Release Date: July 6th, 2016
+
+* [Added] License chack notices can be disabled by filter add_filter( 'cac/suppress_site_wide_notices', '__return_true' )
+* [Fixed] Enabling and disabling sorting for columns was not working
+* [Fixed] Fatal error for sorting on Custom Field Columns with format set to 'Posts by ID' fixed
+* [Fixed] ACF4 datepicker fix. Only support inline edit when the default save format is used yymmdd
+* [Fixed] JS bug solved for inline edit where current value could be NULL
+* [Fixed] Past date filtering for ACF dates not excludes empty values
+* [Fixed] Clear option added for ACF selectboxes that can be NULL
+* [Fixed] Disablied filtering for ACF Users (multiselect) column
+* [Fixed] Inline edit causes actions (quick edit, edit) to disappear when you edit the value
+* [Fixed] Initialize inline edit after using ajax action like quick edit and reply comment
+
 = 3.8.6.1 =
 Release Date: April 29th, 2016
 

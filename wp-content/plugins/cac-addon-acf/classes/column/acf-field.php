@@ -315,8 +315,18 @@ abstract class CPAC_ACF_Column_ACF_Field extends CPAC_Column {
 			case 'date_picker':
 				if ( $value ) {
 					// PHP 5.3.0 and higher
-					if ( method_exists( 'DateTime', 'createFromFormat' ) && ( $date = DateTime::createFromFormat( 'Ymd', $value ) ) ) {
-						$value = $date->format( $this->parse_jquery_dateformat( $field['return_format'] ) );
+					if ( method_exists( 'DateTime', 'createFromFormat' ) ) {
+						// ACF4
+						if( isset( $field['date_format'] ) ){
+							$jquery_format = $field['display_format'];
+							$date = DateTime::createFromFormat( $this->parse_jquery_dateformat( $field['date_format'] ) , $value );
+						}
+						// ACF5
+						else {
+							$jquery_format = $field['return_format'];
+							$date = DateTime::createFromFormat( 'Ymd', $value );
+						}
+						$value = $date->format( $this->parse_jquery_dateformat( $jquery_format ) );
 					} // PHP 5.2.0 and lower
 					else {
 						$value = $this->get_date( $value );

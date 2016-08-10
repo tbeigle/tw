@@ -47,7 +47,7 @@ class MMB_Core extends MMB_Helper
 
     public function __construct()
     {
-        global $blog_id, $_mmb_item_filter, $_mmb_options;
+        global $blog_id, $_mmb_options;
 
         $_mmb_options = get_option('wrksettings');
         $_mmb_options = !empty($_mmb_options) ? $_mmb_options : array();
@@ -55,6 +55,8 @@ class MMB_Core extends MMB_Helper
         if (is_multisite()) {
             $this->mmb_multisite         = $blog_id;
             $this->network_admin_install = get_option('mmb_network_admin_install');
+
+            add_action('wpmu_new_blog', array(&$this, 'updateKeys'));
         } else {
             $this->mmb_multisite         = false;
             $this->network_admin_install = null;
@@ -77,9 +79,6 @@ class MMB_Core extends MMB_Helper
                 add_action('admin_notices', array(&$this, 'admin_notice'));
             }
         }
-
-        $_mmb_item_filter['pre_init_stats'] = array('core_update', 'hit_counter', 'comments', 'backups', 'posts', 'drafts', 'scheduled', 'site_statistics');
-        $_mmb_item_filter['get']            = array('updates', 'errors');
 
         $this->mmb_init_actions = array();
 
@@ -300,8 +299,7 @@ EOF;
         }
 
         /** @var wpdb $wpdb */
-        global $wpdb, $_wp_using_ext_object_cache;
-        $_wp_using_ext_object_cache = false;
+        global $wpdb;
 
         //delete plugin options, just in case
         if ($this->mmb_multisite != false) {
@@ -367,8 +365,7 @@ EOF;
     {
         /** @var wpdb $wpdb */
         mwp_uninstall();
-        global $current_user, $wpdb, $_wp_using_ext_object_cache;
-        $_wp_using_ext_object_cache = false;
+        global $current_user, $wpdb;
 
         if ($this->mmb_multisite != false) {
             $network_blogs = $wpdb->get_col("select `blog_id` from `{$wpdb->blogs}`");
@@ -487,7 +484,7 @@ EOF;
     public function deactivateWorkerIfNotAddedAfterTenMinutes()
     {
         $workerActivationTime = get_option("mmb_worker_activation_time");
-        if ((int) $workerActivationTime + 600 > time()) {
+        if ((int)$workerActivationTime + 600 > time()) {
             return;
         }
         $activated_plugins = get_option('active_plugins');
@@ -497,5 +494,33 @@ EOF;
         }
         unset($activated_plugins[$keyWorker]);
         update_option('active_plugins', $activated_plugins);
+    }
+
+    public function updateKeys()
+    {
+        /** @var MMB_Core $mmbCore */
+        if (!$this->mmb_multisite) {
+            return;
+        }
+
+        global $wpdb;
+
+        $publicKey = $this->get_parent_blog_option('_worker_public_key');
+
+        if (empty($publicKey)) {
+            return;
+        }
+
+        $networkBlogs = $wpdb->get_results("select `blog_id` from `{$wpdb->blogs}`");
+
+        if (empty($networkBlogs)) {
+            return;
+        }
+
+        foreach ($networkBlogs as $details) {
+            update_blog_option($details->blog_id, '_worker_public_key', $publicKey);
+        }
+
+        return;
     }
 }

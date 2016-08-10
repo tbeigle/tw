@@ -250,7 +250,6 @@ class CACIE_Editable_Model_Media extends CACIE_Editable_Model {
 
 			$items[ $post->ID ] = array(
 				'ID'         => $post->ID,
-				'object'     => get_object_vars( $post ),
 				'columndata' => $columndata
 			);
 		}

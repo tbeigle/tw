@@ -218,7 +218,6 @@ class CACIE_Editable_Model_Taxonomy extends CACIE_Editable_Model {
 
 			$items[ $term->term_id ] = array(
 				'ID'         => $term->term_id,
-				'object'     => get_object_vars( $term ),
 				'columndata' => $columndata
 			);
 		}

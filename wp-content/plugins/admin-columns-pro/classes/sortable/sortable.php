@@ -52,6 +52,8 @@ class CAC_Addon_Sortable {
 		// add column options
 		add_filter( 'cac/column/default_options', array( $this, 'set_column_default_options' ) );
 
+		add_action( "cac/column_types", array( $this, 'set_wp_default_column_options' ), 10, 2 );
+
 		// add setting field
 		add_action( 'cac/column/settings_after', array( $this, 'add_settings_field' ), 10 );
 
@@ -67,6 +69,32 @@ class CAC_Addon_Sortable {
 
 		// handle reset request
 		add_action( 'admin_init', array( $this, 'handle_reset' ) );
+
+		// enable sorting per column
+		add_action( "cac/columns", array( $this, 'enable_sorting' ), 10, 2 );
+	}
+
+	/**
+	 * Enable sorting
+	 *
+	 * @param CPAC_Column[] $columns
+	 *
+	 * @since 1.0
+	 */
+	public function enable_sorting( $columns, $storage_model ) {
+		$sortable = $this->get_model( $storage_model->key );
+
+		if ( ! $sortable ) {
+			return;
+		}
+
+		$sortables = $sortable->get_sortables();
+
+		foreach ( $columns as $column ) {
+			if ( in_array( $column->get_type(), $sortables ) ) {
+				$column->set_properties( 'is_sortable', true );
+			}
+		}
 	}
 
 	/**
@@ -152,7 +180,7 @@ class CAC_Addon_Sortable {
 					wp_enqueue_script( 'ac-sortable', CAC_SC_URL . "assets/js/sortable.js", array( 'jquery' ), CPAC_VERSION );
 					wp_localize_script( 'ac-sortable', 'AC_SORTABLE', array(
 						'column_name' => $column->properties->name,
-						'order'       => $preference['order']
+						'order'       => $preference['order'],
 					) );
 				}
 			}
@@ -213,6 +241,23 @@ class CAC_Addon_Sortable {
 	}
 
 	/**
+	 * @since 3.8.7
+	 *
+	 * @param CPAC_Column[] $columns
+	 * @param $storage_model
+	 */
+	public function set_wp_default_column_options( $columns, $storage_model ) {
+		if ( $sortable = $this->get_model( $storage_model->key ) ) {
+			$default_sortables = $sortable->get_default_sortables();
+			foreach ( $columns as $column ) {
+				if ( in_array( $column->get_type(), (array) $default_sortables ) ) {
+					$column->set_options( 'sort', 'on' );
+				}
+			}
+		}
+	}
+
+	/**
 	 * @since 1.0
 	 */
 	function add_settings_field( $column ) {
@@ -264,7 +309,7 @@ class CAC_Addon_Sortable {
 
 		$groups['sorting'] = array(
 			'title'       => __( 'Sorting Preferences', 'codepress-admin-columns' ),
-			'description' => __( 'This will reset the sorting preference for all users.', 'codepress-admin-columns' )
+			'description' => __( 'This will reset the sorting preference for all users.', 'codepress-admin-columns' ),
 		);
 
 		return $groups;

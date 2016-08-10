@@ -288,7 +288,6 @@ class CACIE_Editable_Model_User extends CACIE_Editable_Model {
 
 				$items[ $user->ID ] = array(
 					'ID'         => $user->ID,
-					'object'     => get_object_vars( $user ),
 					'columndata' => $columndata
 				);
 			}

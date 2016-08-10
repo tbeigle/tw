@@ -55,6 +55,9 @@ class MWP_Worker_Kernel
         $actionName = $request->getAction();
         $params     = $request->getParams();
         $context    = $container->getWordPressContext();
+        if (!is_array($params)) {
+            $params = array();
+        }
 
         if (!$request->isMasterRequest()) {
             // This is a public request. Allow the plugin to hook onto WordPress.
@@ -100,6 +103,8 @@ class MWP_Worker_Kernel
             if ($hookName !== null && $deferredCallback !== null) {
                 $proxy = new MWP_WordPress_HookProxy(array($this, 'hookResponse'), $request, $callback, $params, $actionDefinition, $deferredCallback);
                 $context->addAction($hookName, $proxy->getCallable(), $actionDefinition->getOption('hook_priority'));
+
+                mwp_logger()->debug('Finished MU context work');
 
                 return;
             }

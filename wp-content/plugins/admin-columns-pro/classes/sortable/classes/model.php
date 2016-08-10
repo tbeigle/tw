@@ -30,9 +30,6 @@ abstract class CAC_Sortable_Model {
 		$this->storage_model = $storage_model;
 
 		$this->set_default_orderby();
-
-		// enable sorting per column
-		add_action( "cac/columns/storage_key={$this->storage_model->key}", array( $this, 'enable_sorting' ) );
 	}
 
 	/**
@@ -122,33 +119,6 @@ abstract class CAC_Sortable_Model {
 			} );
 		</script>
 		<?php
-	}
-
-	/**
-	 * Enable sorting
-	 *
-	 * @since 1.0
-	 */
-	public function enable_sorting( $column_types ) {
-		$sortables = $this->get_sortables();
-		$default_sortables = $this->get_default_sortables();
-
-		foreach ( $column_types as $column ) {
-			if ( ! in_array( $column->get_type(), $sortables ) ) {
-				continue;
-			}
-
-			$column->set_properties( 'is_sortable', true );
-
-			if ( in_array( $column->get_type(), (array) $default_sortables ) ) {
-				$column->set_options( 'sort', 'on' );
-			}
-
-			// set default sort as on
-			if ( ! $column->is_default() ) {
-				$column->set_options( 'sort', 'on' );
-			}
-		}
 	}
 
 	/**
@@ -478,7 +448,7 @@ abstract class CAC_Sortable_Model {
 				foreach ( $this->get_items( $item_args ) as $id ) {
 
 					// sort by the actual post_title instead of ID
-					$string = $this->recursive_implode( ', ', $this->get_raw_value( $id ) );
+					$string = $column->recursive_implode( ', ', $column->get_raw_value( $id ) );
 					$title_ids = $column->get_ids_from_meta( $string );
 
 					// use first title to sort with

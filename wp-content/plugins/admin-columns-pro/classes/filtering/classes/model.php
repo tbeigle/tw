@@ -117,6 +117,7 @@ abstract class CAC_Filtering_Model {
 
 					case 'post_object' :
 					case 'select' :
+					case 'user' :
 						// only allow single values
 						if ( 0 === $field['multiple'] ) {
 							$is_filterable = true;
@@ -138,7 +139,6 @@ abstract class CAC_Filtering_Model {
 					case 'radio' :
 					case 'true_false' :
 					case 'page_link' :
-					case 'user' :
 					case 'color_picker' :
 						$is_filterable = true;
 						break;
@@ -333,10 +333,18 @@ abstract class CAC_Filtering_Model {
 						}
 						else if ( 'past' == $value ) {
 							$meta_query = array(
-								'key'     => $key,
-								'value'   => date( 'Ymd' ),
-								'compare' => '<=',
-								'type'    => 'NUMERIC'
+								'relation' => 'AND',
+								array(
+									'key'     => $key,
+									'value'   => date( 'Ymd' ),
+									'compare' => '<=',
+									'type'    => 'NUMERIC'
+								),
+								array(
+									'key'     => $key,
+									'value'   => '',
+									'compare' => '!=',
+								),
 							);
 						}
 						break;

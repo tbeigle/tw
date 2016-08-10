@@ -47,6 +47,8 @@ class wfScanEngine {
 	 * @var wfScanKnownFilesLoader
 	 */
 	private $knownFilesLoader;
+	
+	private $metrics = array();
 
 	public static function testForFullPathDisclosure($url = null, $filePath = null) {
 		if ($url === null && $filePath === null) {
@@ -71,10 +73,11 @@ class wfScanEngine {
 	}
 
 	public function __sleep(){ //Same order here as above for properties that are included in serialization
-		return array('hasher', 'jobList', 'i', 'wp_version', 'apiKey', 'startTime', 'maxExecTime', 'publicScanEnabled', 'fileContentsResults', 'scanner', 'scanQueue', 'hoover', 'scanData', 'statusIDX', 'userPasswdQueue', 'passwdHasIssues', 'dbScanner', 'knownFilesLoader');
+		return array('hasher', 'jobList', 'i', 'wp_version', 'apiKey', 'startTime', 'maxExecTime', 'publicScanEnabled', 'fileContentsResults', 'scanner', 'scanQueue', 'hoover', 'scanData', 'statusIDX', 'userPasswdQueue', 'passwdHasIssues', 'dbScanner', 'knownFilesLoader', 'metrics');
 	}
 	public function __construct(){
 		$this->startTime = time();
+		$this->recordMetric('scan', 'start', $this->startTime);
 		$this->maxExecTime = self::getMaxExecutionTime();
 		$this->i = new wfIssues();
 		$this->cycleStartTime = time();
@@ -86,6 +89,7 @@ class wfScanEngine {
 		$this->jobList[] = 'publicSite';
 		$this->jobList[] = 'checkSpamvertized';
 		$this->jobList[] = 'checkSpamIP';
+		$this->jobList[] = 'checkGSB';
 		$this->jobList[] = 'heartbleed';
 		$this->jobList[] = 'knownFiles_init';
 		$this->jobList[] = 'knownFiles_main';
@@ -123,8 +127,15 @@ class wfScanEngine {
 			$this->i->setScanTimeNow();
 			//scan ID only incremented at end of scan to make UI load new results
 			$this->emailNewIssues();
+			$this->recordMetric('scan', 'duration', (time() - $this->startTime));
+			$this->recordMetric('scan', 'memory', wfConfig::get('wfPeakMemory', 0));
+			$this->submitMetrics();
 		} catch(Exception $e){
 			wfConfig::set('lastScanCompleted', $e->getMessage());
+			$this->recordMetric('scan', 'duration', (time() - $this->startTime));
+			$this->recordMetric('scan', 'memory', wfConfig::get('wfPeakMemory', 0));
+			$this->recordMetric('scan', 'failure', $e->getMessage());
+			$this->submitMetrics();
 			throw $e;
 		}
 	}
@@ -145,6 +156,9 @@ class wfScanEngine {
 	}
 	public function emailNewIssues(){
 		$this->i->emailNewIssues();
+	}
+	public function submitMetrics() {
+		$this->api->call('record_scan_metrics', array(), array('metrics' => $this->metrics));
 	}
 	private function doScan(){
 		while(sizeof($this->jobList) > 0){
@@ -238,6 +252,48 @@ class wfScanEngine {
 
 		} else {
 			wordfence::statusPaidOnly("Checking if your IP is generating spam is for paid members only");
+			sleep(2);
+		}
+	}
+	
+	private function scan_checkGSB(){
+		if(wfConfig::get('isPaid')){
+			$this->statusIDX['checkGSB'] = wordfence::statusStart("Checking if your site is on the Google Safe Browsing list");
+			
+			$urlsToCheck = array(array(get_site_url()));
+			$haveIssues = false;
+			$badURLs = $this->api->call('check_bad_urls', array(), array( 'toCheck' => json_encode($urlsToCheck)) );
+			if (is_array($badURLs) && sizeof($badURLs) > 0) {
+				foreach ($badURLs as $id => $badSiteList) {
+					foreach ($badSiteList as $badSite) {
+						$url = $badSite[0];
+						$badList = $badSite[1];
+						
+						if ($badList == 'goog-malware-shavar') {
+							$shortMsg = 'Your site is listed on Google\'s Safe Browsing malware list.';
+							$longMsg = "The URL " . esc_html($url) . " is on the malware list. More info available at <a href=\"http://safebrowsing.clients.google.com/safebrowsing/diagnostic?site=" . urlencode($url) . "&client=googlechrome&hl=en-US\" target=\"_blank\">Google Safe Browsing diagnostic page</a>.";
+							$gsb = $badList;
+						}
+						else if ($badList == 'googpub-phish-shavar') {
+							$shortMsg = 'Your site is listed on Google\'s Safe Browsing phishing list.';
+							$longMsg = "The URL " . esc_html($url) . " is on the phishing list. More info available at <a href=\"http://safebrowsing.clients.google.com/safebrowsing/diagnostic?site=" . urlencode($url) . "&client=googlechrome&hl=en-US\" target=\"_blank\">Google Safe Browsing diagnostic page</a>.";
+							$gsb = $badList;
+						}
+						else {
+							$shortMsg = 'Your site is listed on Google\'s Safe Browsing list.';
+							$longMsg = "The URL is: " . esc_html($url) . ". More info available at <a href=\"http://safebrowsing.clients.google.com/safebrowsing/diagnostic?site=" . urlencode($url) . "&client=googlechrome&hl=en-US\" target=\"_blank\">Google Safe Browsing diagnostic page</a>.";
+							$gsb = 'unknown';
+						}
+						
+						$this->addIssue('checkGSB', 1, 'checkGSB', 'checkGSB' . $url, $shortMsg, $longMsg, array('badURL' => $url, 'gsb' => $gsb));
+						$haveIssues = true;
+					}
+				}
+			}
+			
+			wordfence::statusEnd($this->statusIDX['checkGSB'], $haveIssues);
+		} else {
+			wordfence::statusPaidOnly("Checking if your site is on the Google Safe Browsing list is for paid members only");
 			sleep(2);
 		}
 	}
@@ -466,7 +522,7 @@ class wfScanEngine {
 
 
 	private function scan_posts_init(){
-		$this->statusIDX['posts'] = wordfence::statusStart('Scanning posts for URL\'s in Google\'s Safe Browsing List');
+		$this->statusIDX['posts'] = wordfence::statusStart('Scanning posts for URLs in Google\'s Safe Browsing List');
 		$blogsToScan = self::getBlogsToScan('posts');
 		$wfdb = new wfDB();
 		$this->hoover = new wordfenceURLHoover($this->apiKey, $this->wp_version);
@@ -573,7 +629,7 @@ class wfScanEngine {
 		wordfence::statusEnd($this->statusIDX['posts'], $haveIssues);
 	}
 	private function scan_comments_init(){
-		$this->statusIDX['comments'] = wordfence::statusStart('Scanning comments for URL\'s in Google\'s Safe Browsing List');
+		$this->statusIDX['comments'] = wordfence::statusStart('Scanning comments for URLs in Google\'s Safe Browsing List');
 		$this->scanData = array();
 		$this->scanQueue = array();
 		$this->hoover = new wordfenceURLHoover($this->apiKey, $this->wp_version);
@@ -767,7 +823,7 @@ class wfScanEngine {
 			$this->userPasswdQueue = substr($this->userPasswdQueue, 4);
 			$userLogin = $wfdb->querySingle("select user_login from $wpdb->users where ID=%s", $userID);
 			if(! $userLogin){
-				wordfence::status(2, 'error', "Could not get username for user with ID $userID when checking password strenght.");
+				wordfence::status(2, 'error', "Could not get username for user with ID $userID when checking password strength.");
 				continue;
 			}
 			wordfence::status(4, 'info', "Checking password strength for user $userLogin with ID $userID");
@@ -1005,8 +1061,15 @@ class wfScanEngine {
 		// Plugin updates needed
 		if (count($update_check->getPluginUpdates()) > 0) {
 			foreach ($update_check->getPluginUpdates() as $plugin) {
+				$severity = 1; //Critical
+				if (isset($plugin['vulnerabilityPatched'])) {
+					if (!$plugin['vulnerabilityPatched']) {
+						$severity = 2; //Warning
+					}
+				}
 				$key = 'wfPluginUpgrade' . ' ' . $plugin['pluginFile'] . ' ' . $plugin['newVersion'] . ' ' . $plugin['Version'];
-				if ($this->addIssue('wfPluginUpgrade', 1, $key, $key, "The Plugin \"" . $plugin['Name'] . "\" needs an upgrade.", "You need to upgrade \"" . $plugin['Name'] . "\" to the newest version to ensure you have any security fixes the developer has released.", $plugin)) {
+				$shortMsg = "The Plugin \"" . $plugin['Name'] . "\" needs an upgrade (" . $plugin['Version'] . " -> " . $plugin['newVersion'] . ").";
+				if ($this->addIssue('wfPluginUpgrade', $severity, $key, $key, $shortMsg, "You need to upgrade \"" . $plugin['Name'] . "\" to the newest version to ensure you have any security fixes the developer has released.", $plugin)) {
 					$haveIssues = true;
 				}
 			}
@@ -1089,7 +1152,7 @@ class wfScanEngine {
 		}
 		$cronKey = wfUtils::bigRandomHex();
 		wfConfig::set('currentCronKey', time() . ',' . $cronKey);
-		if( (! wfConfig::get('startScansRemotely', false)) && (! is_wp_error($testResult)) && is_array($testResult) && strstr($testResult['body'], 'WFSCANTESTOK') !== false){
+		if( (! wfConfig::get('startScansRemotely', false)) && (! is_wp_error($testResult)) && (is_array($testResult) || $testResult instanceof ArrayAccess) && strstr($testResult['body'], 'WFSCANTESTOK') !== false){
 			//ajax requests can be sent by the server to itself
 			$cronURL = 'admin-ajax.php?action=wordfence_doScan&isFork=' . ($isFork ? '1' : '0') . '&cronKey=' . $cronKey;
 			$cronURL = admin_url($cronURL);
@@ -1196,6 +1259,23 @@ class wfScanEngine {
 			}
 		}
 		return $themes;
+	}
+	
+	public function recordMetric($type, $key, $value, $singular = true) {
+		if (!isset($this->metrics[$type])) {
+			$this->metrics[$type] = array();
+		}
+		
+		if (!isset($this->metrics[$type][$key])) {
+			$this->metrics[$type][$key] = array();
+		}
+		
+		if ($singular) {
+			$this->metrics[$type][$key] = $value;
+		}
+		else {
+			$this->metrics[$type][$key][] = $value;
+		}
 	}
 }
 

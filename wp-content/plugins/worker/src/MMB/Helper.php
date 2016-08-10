@@ -29,22 +29,30 @@ class MMB_Helper
      */
     public function mmb_parse_action_params($key = '', $params = null, $call_object = null)
     {
-        global $_mmb_item_filter;
         $call_object = $call_object !== null ? $call_object : $this;
-        $return      = array();
 
-        if (isset($_mmb_item_filter[$key]) && !empty($_mmb_item_filter[$key])) {
-            if (isset($params['item_filter']) && !empty($params['item_filter'])) {
-                foreach ($params['item_filter'] as $_items) {
-                    if (!empty($_items)) {
-                        foreach ($_items as $_item) {
-                            if (isset($_item[0]) && in_array($_item[0], $_mmb_item_filter[$key])) {
-                                $_item[1] = isset($_item[1]) ? $_item[1] : array();
-                                $return   = call_user_func(array(&$call_object, 'get_'.$_item[0]), $return, $_item[1]);
-                            }
-                        }
-                    }
+        if (empty($params['item_filter'])) {
+            return array();
+        }
+
+        $return = array();
+
+        foreach ($params['item_filter'] as $_items) {
+            if (empty($_items)) {
+                continue;
+            }
+
+            foreach ($_items as $_item) {
+                if (!isset($_item[0])) {
+                    continue;
                 }
+
+                mwp_logger()->debug('Before getting '.$_item[0]);
+
+                $_item[1] = isset($_item[1]) ? $_item[1] : array();
+                $return   = call_user_func(array(&$call_object, 'get_'.$_item[0]), $return, $_item[1]);
+
+                mwp_logger()->debug('After getting '.$_item[0]);
             }
         }
 
@@ -388,109 +396,5 @@ class MMB_Helper
         }
 
         return $users_authors;
-    }
-
-    public function doCoreUpdateCheck()
-    {
-        global $wp_current_filter;
-        $wp_current_filter[] = 'load-update-core.php';
-
-        if (function_exists('wp_clean_update_cache')) {
-            wp_clean_update_cache();
-        }
-
-        wp_version_check();
-
-        array_pop($wp_current_filter);
-
-        do_action('load-plugins.php');
-    }
-
-    public function doPluginUpdateCheck($doAdminInit = false)
-    {
-        global $wp_current_filter;
-
-        $callablePluginFn  = $this->remove_filter_by_plugin_class('site_transient_update_plugins', 'WPMUDEV_Dashboard_Site');
-        $callableLmsPlugin = $this->remove_filter_by_plugin_class('pre_set_site_transient_update_plugins', 'nss_plugin_updater_sfwd_lms');
-
-        if ($doAdminInit) {
-            do_action('admin_init');
-        }
-
-        $wp_current_filter[] = 'load-update-core.php';
-
-        if (function_exists('wp_clean_update_cache')) {
-            wp_clean_update_cache();
-        }
-
-        wp_update_plugins();
-
-        array_pop($wp_current_filter);
-
-        do_action('load-plugins.php');
-
-        if (!empty($callablePluginFn)) {
-            add_filter('site_transient_update_plugins', $callablePluginFn);
-        }
-
-        if (!empty($callableLmsPlugin)) {
-            add_filter('pre_set_site_transient_update_plugins', $callableLmsPlugin);
-        }
-    }
-
-    public function doThemeUpdateCheck($doAdminInit = false)
-    {
-        global $wp_current_filter;
-
-        $callableThemeFn = $this->remove_filter_by_plugin_class('site_transient_update_themes', 'WPMUDEV_Dashboard_Site');
-
-        if ($doAdminInit) {
-            do_action('admin_init');
-        }
-
-        $wp_current_filter[] = 'load-update-core.php';
-
-        if (function_exists('wp_clean_update_cache')) {
-            wp_clean_update_cache();
-        }
-
-        wp_update_themes();
-
-        array_pop($wp_current_filter);
-
-        do_action('load-plugins.php');
-
-        if (!empty($callableThemeFn)) {
-            add_filter('site_transient_update_themes', $callableThemeFn);
-        }
-    }
-
-    private function remove_filter_by_plugin_class($tag, $class_name)
-    {
-        if (!class_exists($class_name)) {
-            return null;
-        }
-
-        global $wp_filter;
-
-        if (empty($wp_filter[$tag][10])) {
-            return null;
-        }
-
-        foreach ($wp_filter[$tag][10] as $callable) {
-            if (empty($callable['function']) || !is_array($callable['function'])) {
-                continue;
-            }
-
-            if (!is_a($callable['function'][0], $class_name)) {
-                continue;
-            }
-
-            remove_filter($tag, $callable['function']);
-
-            return $callable['function'];
-        }
-
-        return null;
     }
 }
