@@ -90,7 +90,10 @@ get_header( 'shop' ); ?>
 
 	<div id="right">
 	<img src="<?php print get_stylesheet_directory_uri() . '/images/market_hours.png' ?>" class="img-responsive">
-	<p class="market-hours-sidebar">Tuesday-Friday 11am-6pm</p>
+	<p class="market-hours-sidebar">
+		<strong>Online Market Hours:</strong> Wednesday 10 am - Sunday 10 am<br>
+		<strong>Tinwings Walk-in Market:</strong> Tuesday - Friday 11 am - 6 pm
+	</p>
 	<p class="location-sidebar">816 51st Avenue North<br>Nashville, Tennessee</p>
 	<img src="<?php print get_stylesheet_directory_uri() . '/images/my_cart.png' ?>" class="img-responsive">
 	<?php
