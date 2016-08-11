@@ -417,6 +417,7 @@ function tw_archive_top_content() {
 add_action( 'woocommerce_after_main_content', 'tw_archive_bottom_content', 5 );
 function tw_archive_bottom_content() {
 ?>
+<p>For anything not on the menu, <a href="tel:16154545250">please call</a> or <a href="mailto:hello@tinwings.com">click here to email us</a>.</p>
 <div id="woocommerce-archive-info">
   <p><img src="<?php print get_stylesheet_directory_uri() . '/images/tags.png' ?>" class="img-responsive"></p>
   <p>Dietary restrictions? Click on the buttons to see this week's options in any given category.</p>
