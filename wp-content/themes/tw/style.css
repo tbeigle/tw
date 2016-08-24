@@ -43,6 +43,10 @@ input[type="tel"] {
   padding: 8px 6px;
 }
 
+#emma-form {
+  width: 100% !important;
+}
+
 /* small display fix, do not remove */
 #find, #right {
   clear: right;
