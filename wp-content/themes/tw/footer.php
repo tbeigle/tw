@@ -4,8 +4,8 @@
 816 51st Avenue North<br/>
 Nashville, Tennessee</p>
 
-<p><strong>Online Market Hours:</strong> Wednesday 10 am - Sunday 10 am<br>
-<strong>Tinwings Walk-in Market:</strong> Tuesday - Friday 11 am - 6 pm</p>
+<p><strong>Online Market Hours:</strong><br> Wednesday 10 am - Sunday 10 am<br>
+<strong>Tinwings Walk-in Market:</strong><br> Tuesday - Friday 11 am - 6 pm</p>
 
 <img src="<?php bloginfo('template_url'); ?>/images/lets-talk2.png" class="lets-talk2" />
 
